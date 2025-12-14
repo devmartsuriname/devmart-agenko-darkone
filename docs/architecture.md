@@ -51,12 +51,23 @@
 │
 ├── packages/
 │   └── shared/                   # Placeholder for future shared code
+│       ├── ui/                   # UI component placeholder (DO NOT import yet)
+│       │   ├── components/
+│       │   ├── tokens/
+│       │   ├── docs/
+│       │   └── README.md
 │       ├── package.json
 │       └── README.md
 │
 ├── docs/
+│   ├── demo-library/             # DEV-ONLY Demo Library reference
+│   │   ├── README.md
+│   │   ├── darkone-demo-library.registry.json
+│   │   ├── Darkone_Admin_Theme.md
+│   │   └── Darkone_Admin_Pages_Index.md
 │   ├── restorepoints/            # Restore point snapshots
-│   │   └── 2025-12-14_RepoCleanup_Entrypoints.md
+│   │   ├── 2025-12-14_RepoCleanup_Entrypoints.md
+│   │   └── 2025-12-14_AdminDemoLibrary_BeforeCleanup.md
 │   ├── backend.md
 │   └── architecture.md
 │
@@ -65,6 +76,40 @@
 │
 └── [Root config files]           # Vite, TypeScript, Tailwind for Admin
 ```
+
+---
+
+## Demo Library (DEV-ONLY)
+
+The Demo Library preserves Darkone Admin UI patterns for reference without affecting production builds.
+
+### Purpose
+- Read-only reference system for reusable UI patterns
+- Curated showcases for charts, forms, tables, icons, modals, layouts
+- No production impact (routes don't exist in prod builds)
+
+### Location
+- **Routes:** `apps/admin/src/app/(admin)/demo-library/*`
+- **Registry:** `docs/demo-library/darkone-demo-library.registry.json`
+- **Theme Docs:** `docs/demo-library/Darkone_Admin_Theme.md`
+
+### DEV-ONLY Enforcement
+Routes are conditionally loaded in `apps/admin/src/routes/index.tsx`:
+
+```typescript
+// DEV ONLY — DO NOT SHIP
+const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV ? [...] : []
+```
+
+- **DEV mode:** Routes exist and are accessible at `/demo-library/*`
+- **Production:** Routes array is empty, components are tree-shaken, navigating to `/demo-library/*` results in 404
+
+### Registry AllowedReuseMode
+| Mode | Description |
+|------|-------------|
+| `REFERENCE_ONLY` | View and understand (default) |
+| `COPY_SNIPPET` | Copy code patterns |
+| `REUSE_COMPONENT` | Import directly |
 
 ## Legacy Folders (REMOVED)
 
@@ -237,7 +282,8 @@ server {
 3. **JSX preserved:** Zivan remains JSX, no TSX conversion
 4. **Vite for both:** Consistent build tooling across apps
 5. **Isolated configs:** PostCSS does not leak across apps
+6. **Demo Library DEV-only:** UI reference system not bundled in production
 
 ---
 
-*Last updated: 2025-12-14 - Root Vite Config for Lovable Builds*
+*Last updated: 2025-12-14 - Phase 1 Demo Library Implementation*
