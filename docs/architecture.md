@@ -1,11 +1,11 @@
 # System Architecture
 
-## Monorepo Structure (Verified)
+## Monorepo Structure (Verified & Cleaned)
 
 ```
 /
 ├── apps/
-│   ├── admin/                    # Darkone Admin (COPIED)
+│   ├── admin/                    # CANONICAL - Darkone Admin
 │   │   ├── src/                  # TypeScript, SCSS
 │   │   │   ├── app/
 │   │   │   ├── assets/
@@ -31,34 +31,48 @@
 │   │   ├── eslint.config.js
 │   │   └── .prettierrc.json
 │   │
-│   └── public/                   # Zivan Public (1:1 COPIED)
+│   └── public/                   # CANONICAL - Zivan Public
 │       ├── src/
 │       │   ├── components/       # 35 component folders
 │       │   ├── helpers/          # FormateNumber.js, PageTitle.js
 │       │   ├── sass/             # SCSS styles
 │       │   ├── App.jsx
-│       │   └── index.jsx
+│       │   ├── index.jsx
+│       │   └── main.jsx
 │       ├── public/
 │       │   ├── data/
-│       │   ├── images/           # 10 image folders + files
-│       │   ├── others-image/
+│       │   ├── images/
 │       │   └── ...
 │       ├── zivan-documentation/
-│       └── package.json
+│       ├── index.html
+│       ├── package.json
+│       ├── vite.config.js
+│       └── postcss.config.cjs    # Isolated PostCSS config
 │
 ├── packages/
-│   └── shared/                   # Placeholder
+│   └── shared/                   # Placeholder for future shared code
 │       ├── package.json
 │       └── README.md
 │
 ├── docs/
+│   ├── restorepoints/            # Restore point snapshots
+│   │   └── 2025-12-14_RepoCleanup_Entrypoints.md
 │   ├── backend.md
 │   └── architecture.md
 │
-├── Darkone-React_v1.0/           # SOURCE (to be removed after verification)
-├── zivan-react/                  # SOURCE (to be removed after verification)
-└── src/                          # BROKEN root (to be fixed separately)
+├── src/                          # Lovable system files (DO NOT MODIFY)
+│   └── tailwind.config.lov.json
+│
+└── [Root config files]           # Vite, TypeScript, Tailwind for Admin
 ```
+
+## Legacy Folders (REMOVED)
+
+The following legacy folders have been deleted as they were redundant after the monorepo split:
+- `Darkone-React_v1.0/` - Replaced by `apps/admin/`
+- `zivan-react/` - Replaced by `apps/public/`
+
+---
 
 ## Apps
 
@@ -70,8 +84,9 @@
 | **Framework** | React 18 + TypeScript |
 | **Build Tool** | Vite |
 | **Styling** | Bootstrap + Custom SCSS |
+| **Entry File** | `src/main.tsx` |
 | **Purpose** | Content management, CRUD operations |
-| **Status** | ✅ Copied from Darkone-React_v1.0 |
+| **Status** | ✅ Ready |
 
 ### Public (Zivan)
 
@@ -79,19 +94,21 @@
 |--------|--------|
 | **Location** | `/apps/public` |
 | **Framework** | React 18 + JSX |
-| **Build Tool** | Vite (migrated from react-scripts in Step 4) |
+| **Build Tool** | Vite |
 | **Styling** | Bootstrap + Custom SASS/SCSS |
+| **Entry File** | `src/main.jsx` |
+| **PostCSS** | Isolated (`postcss.config.cjs`) |
 | **Purpose** | Public-facing website |
-| **Status** | ✅ Migrated to Vite |
+| **Status** | ✅ Ready |
 
 ## Package Manager
 
 - **Primary:** Bun
-- **Lock files:** Unchanged per user constraint
+- **Lock files:** `bun.lockb` (single source of truth)
 
 ---
 
-## Development Commands (Post Step 4)
+## Development Commands
 
 ### Admin App (Darkone)
 ```bash
@@ -122,6 +139,17 @@ The Lovable preview runs from the **root level** which is configured for Darkone
 
 - **Admin:** Available in Lovable preview at `/`
 - **Public:** Run locally with `cd apps/public && bun run dev`
+
+---
+
+## Config Isolation
+
+| Config | Admin | Public | Notes |
+|--------|-------|--------|-------|
+| **Vite** | `apps/admin/vite.config.ts` | `apps/public/vite.config.js` | Separate |
+| **PostCSS** | Root `postcss.config.js` | `apps/public/postcss.config.cjs` | Isolated |
+| **TypeScript** | `apps/admin/tsconfig.json` | N/A (JSX) | Admin only |
+| **Tailwind** | Root `tailwind.config.ts` | N/A | Admin only |
 
 ---
 
@@ -194,26 +222,14 @@ server {
 
 ---
 
-## Step 4 Status
-
-- ✅ Zivan migrated from react-scripts to Vite
-- ✅ Created `apps/public/vite.config.js`
-- ✅ Created `apps/public/index.html`
-- ✅ Created `apps/public/src/main.jsx`
-- ✅ Updated `apps/public/package.json` with Vite scripts
-- ✅ JSX files preserved (no TSX conversion)
-- ✅ All components, routes, styles unchanged
-- ⏸️ Source folders not yet deleted
-
----
-
 ## Key Decisions
 
 1. **No refactoring:** Both apps maintain original structure
 2. **Separate styling:** SCSS (admin) vs SASS (public) - no mixing
 3. **JSX preserved:** Zivan remains JSX, no TSX conversion
 4. **Vite for both:** Consistent build tooling across apps
+5. **Isolated configs:** PostCSS does not leak across apps
 
 ---
 
-*Last updated: Step 4 Complete - Zivan Vite Migration*
+*Last updated: 2025-12-14 - Repo Cleanup & Entrypoints*
