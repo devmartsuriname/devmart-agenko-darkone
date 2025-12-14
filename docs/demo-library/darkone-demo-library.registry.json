@@ -81,7 +81,7 @@
       "name": "Top Navigation Bar",
       "allowedReuseMode": "REFERENCE_ONLY",
       "sourceRoute": "/*",
-      "sourceFiles": ["apps/admin/src/components/layout/TopNavigationBar.tsx"],
+      "sourceFiles": ["apps/admin/src/components/layout/TopNavigationBar/page.tsx"],
       "dependencies": ["react-bootstrap"],
       "propsNotes": "Contains search, notifications, user dropdown",
       "reuseGuidance": "Reference only. Modify for branding changes."
@@ -347,8 +347,8 @@
       "category": "forms",
       "name": "Flatpickr Date/Time Picker",
       "allowedReuseMode": "COPY_SNIPPET",
-      "sourceRoute": "/forms/flatepicker",
-      "sourceFiles": ["apps/admin/src/app/(admin)/forms/flatepicker/page.tsx"],
+      "sourceRoute": "/forms/flat-picker",
+      "sourceFiles": ["apps/admin/src/app/(admin)/forms/flat-picker/page.tsx"],
       "dependencies": ["react-flatpickr", "flatpickr"],
       "propsNotes": "Flatpickr component with various options",
       "reuseGuidance": "Copy Flatpickr setup. Include flatpickr CSS."
@@ -369,8 +369,8 @@
       "category": "forms",
       "name": "File Upload Dropzone",
       "allowedReuseMode": "COPY_SNIPPET",
-      "sourceRoute": "/forms/file-upload",
-      "sourceFiles": ["apps/admin/src/app/(admin)/forms/file-upload/page.tsx"],
+      "sourceRoute": "/forms/file-uploads",
+      "sourceFiles": ["apps/admin/src/app/(admin)/forms/file-uploads/page.tsx"],
       "dependencies": ["react-dropzone"],
       "propsNotes": "useDropzone hook with accept, maxFiles options",
       "reuseGuidance": "Copy dropzone setup for file uploads."
@@ -402,8 +402,8 @@
       "category": "icons",
       "name": "Solar Icons Collection",
       "allowedReuseMode": "REFERENCE_ONLY",
-      "sourceRoute": "/icons/solar",
-      "sourceFiles": ["apps/admin/src/app/(admin)/icons/solar/page.tsx"],
+      "sourceRoute": "/icons/solaricons",
+      "sourceFiles": ["apps/admin/src/app/(admin)/icons/solaricons/page.tsx"],
       "dependencies": ["@iconify/react"],
       "propsNotes": "IconifyIcon with solar: prefix icons",
       "reuseGuidance": "Reference for available solar icons. Use IconifyIcon wrapper."
@@ -446,8 +446,8 @@
       "category": "base-ui",
       "name": "Badge Components",
       "allowedReuseMode": "REFERENCE_ONLY",
-      "sourceRoute": "/base-ui/badges",
-      "sourceFiles": ["apps/admin/src/app/(admin)/base-ui/badges/page.tsx"],
+      "sourceRoute": "/base-ui/badge",
+      "sourceFiles": ["apps/admin/src/app/(admin)/base-ui/badge/page.tsx"],
       "dependencies": ["react-bootstrap"],
       "propsNotes": "Badge with bg prop for color variants",
       "reuseGuidance": "Reference for badge styling."

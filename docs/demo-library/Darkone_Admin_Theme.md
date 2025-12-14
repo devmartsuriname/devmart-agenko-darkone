@@ -283,4 +283,42 @@ When building CMS features:
 
 ---
 
+## Verification
+
+### How to Re-verify Token Values
+
+Line numbers in SCSS files may change over time. Use these commands to verify token values:
+
+```bash
+# Primary color
+grep -n '\$primary:' apps/admin/src/assets/scss/config/_variables.scss
+grep -n '\$purple:' apps/admin/src/assets/scss/config/_variables.scss
+
+# Dark mode body colors
+grep -n 'body-bg-dark' apps/admin/src/assets/scss/config/_variables-dark.scss
+grep -n 'body-color-dark' apps/admin/src/assets/scss/config/_variables-dark.scss
+
+# Font family
+grep -n 'font-family-primary' apps/admin/src/assets/scss/config/_variables.scss
+
+# Border radius
+grep -n 'border-radius:' apps/admin/src/assets/scss/config/_variables.scss
+```
+
+### Verified Token Values (Source-of-Truth)
+
+| Token | Value | Search Key | Verified |
+|-------|-------|------------|----------|
+| `$primary` | `$purple` → `#7e67fe` | `$purple:` | ✅ |
+| `$body-bg-dark` | `#191e23` | `body-bg-dark:` | ✅ |
+| `$body-color-dark` | `#aab8c5` | `body-color-dark:` | ✅ |
+| `$font-family-primary` | `"Play", sans-serif` | `font-family-primary:` | ✅ |
+
+### Note on Line Numbers
+
+Line numbers in the token tables above are **approximate** and may shift if SCSS files are edited. The **Source File** and **Search Key** are the authoritative references. Always use grep/search to verify current line numbers.
+
+---
+
 *Last updated: 2025-12-14*
+*Verification status: Tokens verified against SCSS source files*

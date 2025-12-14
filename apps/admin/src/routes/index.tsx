@@ -386,6 +386,17 @@ const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV && DemoLibraryIndex
   },
 ] : []
 
+// ============================================================================
+// CATCH-ALL 404 ROUTE (exported separately for router to handle WITHOUT auth)
+// Must be rendered last. Unknown paths show 404 page, not login redirect.
+// This ensures /demo-library/* (and any other unknown route) shows 404 in PROD.
+// ============================================================================
+export const catchAllRoute: RoutesProps = {
+  path: '*',
+  name: '404 Catch-All',
+  element: <Error404 />,
+}
+
 export const appRoutes = [
   ...initialRoutes,
   // ...authRoutes,
@@ -397,4 +408,5 @@ export const appRoutes = [
   ...tableRoutes,
   ...iconRoutes,
   ...demoLibraryRoutes, // DEV ONLY — empty in production
+  // NOTE: catchAllRoute is NOT included here - router handles it separately
 ]
