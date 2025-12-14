@@ -7,6 +7,7 @@ import { componentTagger } from "lovable-tagger";
 // Root Vite config points to Admin app for Lovable builds
 export default defineConfig(({ mode }) => ({
   root: "apps/admin",
+  envDir: path.resolve(__dirname),
   server: {
     host: "::",
     port: 8080,
