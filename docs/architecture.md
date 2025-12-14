@@ -99,10 +99,22 @@ Routes are conditionally loaded in `apps/admin/src/routes/index.tsx`:
 ```typescript
 // DEV ONLY — DO NOT SHIP
 const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV ? [...] : []
+
+// Catch-all 404 route (MUST BE LAST)
+const catchAllRoute: RoutesProps[] = [
+  { path: '*', name: '404 Catch-All', element: <Error404 /> },
+]
+
+export const appRoutes = [
+  ...otherRoutes,
+  ...demoLibraryRoutes, // DEV ONLY — empty in production
+  ...catchAllRoute,     // MUST BE LAST — handles unknown routes
+]
 ```
 
 - **DEV mode:** Routes exist and are accessible at `/demo-library/*`
-- **Production:** Routes array is empty, components are tree-shaken, navigating to `/demo-library/*` results in 404
+- **Production:** Routes array is empty, components are tree-shaken
+- **Unknown routes:** Catch-all `*` route renders 404 page (not login redirect)
 
 ### Registry AllowedReuseMode
 | Mode | Description |
