@@ -133,9 +133,16 @@ cd apps/public && bun run dev
 
 ---
 
-## Lovable Preview
+## Lovable Preview & Root Vite Config
 
-The Lovable preview runs from the **root level** which is configured for Darkone Admin.
+The root `vite.config.ts` is configured to build the **Admin app** for Lovable:
+
+```typescript
+// Root vite.config.ts key settings:
+root: "apps/admin"              // Entry point is apps/admin/index.html
+resolve.alias["@"]: "apps/admin/src"  // Imports resolve to admin src
+build.outDir: "<repo>/dist"     // Output stays at repo root for Lovable
+```
 
 - **Admin:** Available in Lovable preview at `/`
 - **Public:** Run locally with `cd apps/public && bun run dev`
@@ -146,7 +153,8 @@ The Lovable preview runs from the **root level** which is configured for Darkone
 
 | Config | Admin | Public | Notes |
 |--------|-------|--------|-------|
-| **Vite** | `apps/admin/vite.config.ts` | `apps/public/vite.config.js` | Separate |
+| **Vite (Root)** | Points to `apps/admin/` | N/A | Lovable builds |
+| **Vite (Local)** | `apps/admin/vite.config.ts` | `apps/public/vite.config.js` | Separate |
 | **PostCSS** | Root `postcss.config.js` | `apps/public/postcss.config.cjs` | Isolated |
 | **TypeScript** | `apps/admin/tsconfig.json` | N/A (JSX) | Admin only |
 | **Tailwind** | Root `tailwind.config.ts` | N/A | Admin only |
@@ -232,4 +240,4 @@ server {
 
 ---
 
-*Last updated: 2025-12-14 - Repo Cleanup & Entrypoints*
+*Last updated: 2025-12-14 - Root Vite Config for Lovable Builds*

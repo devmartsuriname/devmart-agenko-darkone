@@ -22,6 +22,12 @@ The repository has been cleaned up with a clear monorepo structure:
 
 Legacy source folders (`Darkone-React_v1.0/` and `zivan-react/`) have been removed.
 
+## Build Configuration
+
+The root `vite.config.ts` points to the Admin app (`apps/admin/`) for Lovable builds:
+- Entry: `apps/admin/index.html` → `apps/admin/src/main.tsx`
+- Output: `<repo>/dist/`
+
 ## Shared Backend (Future)
 
 Both apps will connect to a shared Supabase backend:
@@ -54,4 +60,4 @@ Per approved scope:
 
 ---
 
-*Last updated: 2025-12-14 - Repo Cleanup & Entrypoints*
+*Last updated: 2025-12-14 - Root Vite Config for Lovable Builds*
