@@ -1,15 +1,26 @@
 import type { Session, User } from '@supabase/supabase-js';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ChildrenType } from '@/types/component-props';
 import { supabase, getUserRoles, type AppRole } from '@/lib/supabase';
 import type { UserProfile, AuthUser } from '@/types/auth';
 
+// Auth state machine states
+export type AuthState = 'loading' | 'unauthenticated' | 'authenticated';
+
 export type AuthContextType = {
   user: AuthUser | null;
   session: Session | null;
+  authState: AuthState;
   isAuthenticated: boolean;
   isLoading: boolean;
+  // Role helpers
+  hasRole: (role: AppRole) => boolean;
+  hasAnyRole: (roles: AppRole[]) => boolean;
+  isAdmin: boolean;
+  isEditor: boolean;
+  isViewer: boolean;
+  // Auth actions
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -30,7 +41,7 @@ export function AuthProvider({ children }: ChildrenType) {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [authState, setAuthState] = useState<AuthState>('loading');
 
   // Fetch user profile and roles
   const fetchUserData = async (authUser: User): Promise<AuthUser | null> => {
@@ -54,12 +65,13 @@ export function AuthProvider({ children }: ChildrenType) {
       };
     } catch (error) {
       console.error('Error fetching user data:', error);
+      // Fail safe: return user with empty roles (deny-by-default)
       return {
         id: authUser.id,
         email: authUser.email || '',
         full_name: null,
         avatar_url: null,
-        roles: [],
+        roles: [], // Empty roles = no access to role-restricted areas
       };
     }
   };
@@ -75,15 +87,20 @@ export function AuthProvider({ children }: ChildrenType) {
         if (newSession?.user) {
           // Defer data fetching to avoid deadlock
           setTimeout(() => {
-            fetchUserData(newSession.user).then(setUser);
+            fetchUserData(newSession.user).then((userData) => {
+              setUser(userData);
+              setAuthState('authenticated');
+            });
           }, 0);
         } else {
           setUser(null);
+          setAuthState('unauthenticated');
         }
 
         if (event === 'SIGNED_OUT') {
           setUser(null);
           setSession(null);
+          setAuthState('unauthenticated');
         }
       }
     );
@@ -94,15 +111,27 @@ export function AuthProvider({ children }: ChildrenType) {
       if (existingSession?.user) {
         fetchUserData(existingSession.user).then((userData) => {
           setUser(userData);
-          setIsLoading(false);
+          setAuthState('authenticated');
         });
       } else {
-        setIsLoading(false);
+        setAuthState('unauthenticated');
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Role helper: check if user has a specific role
+  const hasRole = useCallback((role: AppRole): boolean => {
+    if (!user || !user.roles) return false;
+    return user.roles.includes(role);
+  }, [user]);
+
+  // Role helper: check if user has any of the specified roles
+  const hasAnyRole = useCallback((roles: AppRole[]): boolean => {
+    if (!user || !user.roles) return false;
+    return roles.some(role => user.roles.includes(role));
+  }, [user]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -132,6 +161,7 @@ export function AuthProvider({ children }: ChildrenType) {
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
+    setAuthState('unauthenticated');
     navigate('/auth/sign-in');
   };
 
@@ -147,8 +177,16 @@ export function AuthProvider({ children }: ChildrenType) {
       value={{
         user,
         session,
-        isAuthenticated: !!session,
-        isLoading,
+        authState,
+        isAuthenticated: authState === 'authenticated',
+        isLoading: authState === 'loading',
+        // Role helpers
+        hasRole,
+        hasAnyRole,
+        isAdmin: hasRole('admin'),
+        isEditor: hasRole('editor'),
+        isViewer: hasRole('viewer'),
+        // Auth actions
         signIn,
         signUp,
         signOut,

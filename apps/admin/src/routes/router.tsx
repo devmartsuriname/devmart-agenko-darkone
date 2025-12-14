@@ -3,13 +3,14 @@ import AdminLayout from '@/layouts/AdminLayout';
 import AuthLayout from '@/layouts/AuthLayout';
 import { appRoutes, authRoutes, catchAllRoute } from '@/routes/index';
 import { useAuthContext } from '@/context/useAuthContext';
+import { RequireAuth, RequireGuest, getRequiredRolesForPath } from '@/components/guards/RequireAuth';
 import FallbackLoading from '@/components/FallbackLoading';
 
 const AppRouter = (props: RouteProps) => {
-  const { isAuthenticated, isLoading } = useAuthContext();
+  const { authState } = useAuthContext();
 
   // Show loading state while checking auth
-  if (isLoading) {
+  if (authState === 'loading') {
     return <FallbackLoading />;
   }
 
@@ -22,8 +23,10 @@ const AppRouter = (props: RouteProps) => {
           key={idx + route.name}
           path={route.path}
           element={
-            isAuthenticated && (route.path === '/auth/sign-in' || route.path === '/auth/sign-up') ? (
-              <Navigate to="/dashboards" replace />
+            route.path === '/auth/sign-in' || route.path === '/auth/sign-up' ? (
+              <RequireGuest>
+                <AuthLayout {...props}>{route.element}</AuthLayout>
+              </RequireGuest>
             ) : (
               <AuthLayout {...props}>{route.element}</AuthLayout>
             )
@@ -31,26 +34,22 @@ const AppRouter = (props: RouteProps) => {
         />
       ))}
 
-      {/* App routes - auth required */}
-      {(appRoutes || []).map((route, idx) => (
-        <Route
-          key={idx + route.name}
-          path={route.path}
-          element={
-            isAuthenticated ? (
-              <AdminLayout {...props}>{route.element}</AdminLayout>
-            ) : (
-              <Navigate
-                to={{
-                  pathname: '/auth/sign-in',
-                  search: 'redirectTo=' + encodeURIComponent(route.path),
-                }}
-                replace
-              />
-            )
-          }
-        />
-      ))}
+      {/* App routes - auth required with RBAC */}
+      {(appRoutes || []).map((route, idx) => {
+        const requiredRoles = getRequiredRolesForPath(route.path || '');
+        
+        return (
+          <Route
+            key={idx + route.name}
+            path={route.path}
+            element={
+              <RequireAuth requiredRoles={requiredRoles}>
+                <AdminLayout {...props}>{route.element}</AdminLayout>
+              </RequireAuth>
+            }
+          />
+        );
+      })}
 
       {/* 
         CATCH-ALL 404 ROUTE (no auth required)
