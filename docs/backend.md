@@ -73,12 +73,19 @@ Per approved scope:
 10. Contact Submissions
 11. eCommerce (Products, Variants, Cart, Orders, Wishlist)
 
+## Phase 2A: Sidebar + Placeholder Routes (Complete)
+
+- 12 CMS placeholder pages created (Content, CRM, Marketing, System)
+- Production sidebar shows CMS modules only
+- DEV sidebar includes Demo Library + legacy UI Kit
+- Routes added for all placeholder modules
+
 ## Next Steps
 
-1. **Phase 2:** Cleanup plan approval (no execution yet)
-2. **Phase 3:** Execute controlled admin cleanup (after approval)
+1. **Phase 2B:** Dashboard placeholder (plan only, awaiting approval)
+2. **Phase 3:** Execute remaining cleanup
 3. **Phase 4+:** Enable Lovable Cloud, create database schema, configure auth
 
 ---
 
-*Last updated: 2025-12-14 - Phase 1 Demo Library Implementation*
+*Last updated: 2025-12-14 - Phase 2A Sidebar Restructure*

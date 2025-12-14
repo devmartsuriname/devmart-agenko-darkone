@@ -1,7 +1,15 @@
-import { MENU_ITEMS } from '@/assets/data/menu-items'
+import { MENU_ITEMS, DEV_MENU_ITEMS } from '@/assets/data/menu-items'
 import type { MenuItemType } from '@/types/menu'
 
+// ============================================================================
+// MENU ITEMS SELECTOR
+// Production: returns MENU_ITEMS only (CMS modules)
+// Development: returns MENU_ITEMS + DEV_MENU_ITEMS (includes Demo Library, UI Kit)
+// ============================================================================
 export const getMenuItems = (): MenuItemType[] => {
+  if (import.meta.env.DEV) {
+    return [...MENU_ITEMS, ...DEV_MENU_ITEMS]
+  }
   return MENU_ITEMS
 }
 

@@ -27,7 +27,6 @@ const Toasts = lazy(() => import('@/app/(admin)/base-ui/toasts/page'))
 const Tooltips = lazy(() => import('@/app/(admin)/base-ui/tooltips/page'))
 
 // Charts and Maps Routes
-
 const Apex = lazy(() => import('@/app/(admin)/apex-chart/page'))
 const GoogleMaps = lazy(() => import('@/app/(admin)/maps/google/page'))
 const VectorMaps = lazy(() => import('@/app/(admin)/maps/vector/page'))
@@ -55,13 +54,29 @@ const LockScreen = lazy(() => import('@/app/(other)/auth/lock-screen/page'))
 const Error404 = lazy(() => import('@/app/(other)/error-pages/pages-404/page'))
 const ErrorAlt = lazy(() => import('@/app/(admin)/pages-404-alt/page'))
 
-//layoutsRoutes
-
+// Layouts Routes
 const DarkSideNav = lazy(() => import('@/app/(admin)/(layouts)/dark-sidenav/page'))
 const DarkTopNav = lazy(() => import('@/app/(admin)/(layouts)/dark-topnav/page'))
 const SmallSideNav = lazy(() => import('@/app/(admin)/(layouts)/small-sidenav/page'))
 const HiddenSideNav = lazy(() => import('@/app/(admin)/(layouts)/hidden-sidenav/page'))
 const DarkMode = lazy(() => import('@/app/(admin)/(layouts)/dark-mode/page'))
+
+// ============================================================================
+// CMS PLACEHOLDER ROUTES (PRODUCTION)
+// These are the new CMS module routes for production use.
+// ============================================================================
+const ContentPages = lazy(() => import('@/app/(admin)/content/pages/page'))
+const ContentBlog = lazy(() => import('@/app/(admin)/content/blog/page'))
+const ContentProjects = lazy(() => import('@/app/(admin)/content/projects/page'))
+const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
+const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
+const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
+const MarketingNewsletter = lazy(() => import('@/app/(admin)/marketing/newsletter/page'))
+const MarketingSeo = lazy(() => import('@/app/(admin)/marketing/seo/page'))
+const SystemUsers = lazy(() => import('@/app/(admin)/system/users/page'))
+const SystemRoles = lazy(() => import('@/app/(admin)/system/roles/page'))
+const SystemSettings = lazy(() => import('@/app/(admin)/system/settings/page'))
+const SystemAuditLogs = lazy(() => import('@/app/(admin)/system/audit-logs/page'))
 
 // ============================================================================
 // DEV ONLY — DO NOT SHIP
@@ -100,6 +115,77 @@ const generalRoutes: RoutesProps[] = [
   },
 ]
 
+// ============================================================================
+// CMS MODULE ROUTES (PRODUCTION)
+// These routes are always available in both DEV and PROD.
+// ============================================================================
+const cmsRoutes: RoutesProps[] = [
+  // Content
+  {
+    path: '/content/pages',
+    name: 'Content - Pages',
+    element: <ContentPages />,
+  },
+  {
+    path: '/content/blog',
+    name: 'Content - Blog',
+    element: <ContentBlog />,
+  },
+  {
+    path: '/content/projects',
+    name: 'Content - Projects',
+    element: <ContentProjects />,
+  },
+  {
+    path: '/content/media',
+    name: 'Content - Media',
+    element: <ContentMedia />,
+  },
+  // CRM
+  {
+    path: '/crm/clients',
+    name: 'CRM - Clients',
+    element: <CrmClients />,
+  },
+  {
+    path: '/crm/partners',
+    name: 'CRM - Partners',
+    element: <CrmPartners />,
+  },
+  // Marketing
+  {
+    path: '/marketing/newsletter',
+    name: 'Marketing - Newsletter',
+    element: <MarketingNewsletter />,
+  },
+  {
+    path: '/marketing/seo',
+    name: 'Marketing - SEO',
+    element: <MarketingSeo />,
+  },
+  // System
+  {
+    path: '/system/users',
+    name: 'System - Users',
+    element: <SystemUsers />,
+  },
+  {
+    path: '/system/roles',
+    name: 'System - Roles',
+    element: <SystemRoles />,
+  },
+  {
+    path: '/system/settings',
+    name: 'System - Settings',
+    element: <SystemSettings />,
+  },
+  {
+    path: '/system/audit-logs',
+    name: 'System - Audit Logs',
+    element: <SystemAuditLogs />,
+  },
+]
+
 export const authRoutes: RoutesProps[] = [
   {
     name: 'Sign In',
@@ -111,7 +197,6 @@ export const authRoutes: RoutesProps[] = [
     path: '/auth/sign-up',
     element: <AuthSignUp />,
   },
-
   {
     name: 'Reset Password',
     path: '/auth/reset-password',
@@ -236,6 +321,7 @@ const baseUIRoutes: RoutesProps[] = [
     element: <Tooltips />,
   },
 ]
+
 const chartsMapsRoutes: RoutesProps[] = [
   {
     path: '/apex-chart',
@@ -275,7 +361,6 @@ const formsRoutes: RoutesProps[] = [
     path: '/forms/validation',
     element: <Validation />,
   },
-
   {
     name: 'File Uploads',
     path: '/forms/file-uploads',
@@ -399,10 +484,10 @@ export const catchAllRoute: RoutesProps = {
 
 export const appRoutes = [
   ...initialRoutes,
-  // ...authRoutes,
+  ...generalRoutes,
+  ...cmsRoutes, // CMS module routes (PRODUCTION)
   ...baseUIRoutes,
   ...formsRoutes,
-  ...generalRoutes,
   ...chartsMapsRoutes,
   ...layoutsRoutes,
   ...tableRoutes,
