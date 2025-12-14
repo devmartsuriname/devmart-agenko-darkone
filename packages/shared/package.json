@@ -1,0 +1,10 @@
+{
+  "name": "@monorepo/shared",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Shared utilities placeholder - to be populated as needed",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
