@@ -295,7 +295,17 @@ server {
 4. **Vite for both:** Consistent build tooling across apps
 5. **Isolated configs:** PostCSS does not leak across apps
 6. **Demo Library DEV-only:** UI reference system not bundled in production
+7. **Production/DEV menu separation:** Sidebar shows CMS modules in production, Demo Library + UI Kit in DEV only
 
 ---
 
-*Last updated: 2025-12-14 - Phase 1 Demo Library Implementation*
+## Phase 2A: Sidebar + Placeholder Routes (Complete)
+
+- Created 12 CMS placeholder pages under `/content/`, `/crm/`, `/marketing/`, `/system/`
+- Separated MENU_ITEMS (production) and DEV_MENU_ITEMS (DEV-only)
+- Updated `getMenuItems()` helper to conditionally merge menus
+- Added routes for all CMS modules
+
+---
+
+*Last updated: 2025-12-14 - Phase 2A Sidebar Restructure*

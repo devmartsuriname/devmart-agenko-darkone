@@ -1,23 +1,132 @@
 import { MenuItemType } from '@/types/menu'
 
+// ============================================================================
+// PRODUCTION MENU ITEMS
+// These are the CMS modules visible in production builds.
+// Demo/UI Kit sections are NOT included here.
+// ============================================================================
 export const MENU_ITEMS: MenuItemType[] = [
   {
     key: 'menu',
-    label: 'MENU...',
+    label: 'MENU',
     isTitle: true,
   },
   {
     key: 'dashboards',
-    label: 'dashboard',
+    label: 'Dashboard',
     icon: 'mingcute:home-3-line',
     url: '/dashboards',
-    badge: {
-      text: '03',
-      variant: 'primary',
-    },
   },
-  // ====================Authentication===============
 
+  // ====================CONTENT===============
+  {
+    key: 'content',
+    label: 'Content',
+    icon: 'mingcute:document-line',
+    children: [
+      {
+        key: 'content-pages',
+        label: 'Pages',
+        url: '/content/pages',
+        parentKey: 'content',
+      },
+      {
+        key: 'content-blog',
+        label: 'Blog',
+        url: '/content/blog',
+        parentKey: 'content',
+      },
+      {
+        key: 'content-projects',
+        label: 'Projects',
+        url: '/content/projects',
+        parentKey: 'content',
+      },
+      {
+        key: 'content-media',
+        label: 'Media Library',
+        url: '/content/media',
+        parentKey: 'content',
+      },
+    ],
+  },
+
+  // ====================CRM===============
+  {
+    key: 'crm',
+    label: 'CRM',
+    icon: 'mingcute:user-heart-line',
+    children: [
+      {
+        key: 'crm-clients',
+        label: 'Clients',
+        url: '/crm/clients',
+        parentKey: 'crm',
+      },
+      {
+        key: 'crm-partners',
+        label: 'Partners',
+        url: '/crm/partners',
+        parentKey: 'crm',
+      },
+    ],
+  },
+
+  // ====================MARKETING===============
+  {
+    key: 'marketing',
+    label: 'Marketing',
+    icon: 'mingcute:announcement-line',
+    children: [
+      {
+        key: 'marketing-newsletter',
+        label: 'Newsletter',
+        url: '/marketing/newsletter',
+        parentKey: 'marketing',
+      },
+      {
+        key: 'marketing-seo',
+        label: 'SEO',
+        url: '/marketing/seo',
+        parentKey: 'marketing',
+      },
+    ],
+  },
+
+  // ====================SYSTEM===============
+  {
+    key: 'system',
+    label: 'System',
+    icon: 'mingcute:settings-3-line',
+    children: [
+      {
+        key: 'system-users',
+        label: 'Users',
+        url: '/system/users',
+        parentKey: 'system',
+      },
+      {
+        key: 'system-roles',
+        label: 'Roles',
+        url: '/system/roles',
+        parentKey: 'system',
+      },
+      {
+        key: 'system-settings',
+        label: 'Settings',
+        url: '/system/settings',
+        parentKey: 'system',
+      },
+      {
+        key: 'system-audit-logs',
+        label: 'Audit Logs',
+        url: '/system/audit-logs',
+        parentKey: 'system',
+      },
+    ],
+  },
+
+  // ====================AUTHENTICATION===============
   {
     key: 'auth',
     label: 'Authentication',
@@ -49,8 +158,8 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-  // ====================error===============
 
+  // ====================ERROR PAGES===============
   {
     key: 'error-pages',
     label: 'Error Pages',
@@ -70,10 +179,76 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-  // ====================base-ui===============
+]
+
+// ============================================================================
+// DEV ONLY MENU ITEMS — DO NOT SHIP
+// These items are only visible in development builds.
+// They provide access to Demo Library and legacy UI Kit patterns.
+// ============================================================================
+export const DEV_MENU_ITEMS: MenuItemType[] = [
+  {
+    key: 'dev-only',
+    label: 'DEV ONLY',
+    isTitle: true,
+  },
+  {
+    key: 'demo-library',
+    label: 'Demo Library',
+    icon: 'mingcute:code-line',
+    badge: {
+      text: 'DEV',
+      variant: 'warning',
+    },
+    children: [
+      {
+        key: 'demo-library-index',
+        label: 'Overview',
+        url: '/demo-library',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-charts',
+        label: 'Charts',
+        url: '/demo-library/charts',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-forms',
+        label: 'Forms',
+        url: '/demo-library/forms',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-tables',
+        label: 'Tables',
+        url: '/demo-library/tables',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-icons',
+        label: 'Icons',
+        url: '/demo-library/icons',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-modals-toasts',
+        label: 'Modals & Toasts',
+        url: '/demo-library/modals-toasts',
+        parentKey: 'demo-library',
+      },
+      {
+        key: 'demo-library-layouts',
+        label: 'Layouts',
+        url: '/demo-library/layouts',
+        parentKey: 'demo-library',
+      },
+    ],
+  },
+  // ====================LEGACY UI KIT (DEV REFERENCE)===============
   {
     key: 'ui-kit',
-    label: 'UI Kit...',
+    label: 'UI Kit (Legacy)',
     isTitle: true,
   },
   {
@@ -209,14 +384,12 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-  // ====================apex===============
   {
     key: 'apex',
     label: 'Apex charts',
     icon: 'mingcute:chart-bar-line',
     url: '/apex-chart',
   },
-  // ====================forms===============
   {
     key: 'forms',
     label: 'Forms',
@@ -254,9 +427,6 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-
-  // ====================tables===============
-
   {
     key: 'tables',
     label: 'Tables',
@@ -276,9 +446,6 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-
-  // ====================icons===============
-
   {
     key: 'icons',
     label: 'Icons',
@@ -298,8 +465,6 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-
-  // ====================maps===============
   {
     key: 'maps',
     label: 'Maps',
@@ -319,14 +484,11 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-
   {
     key: 'other',
     label: 'OTHER',
     isTitle: true,
   },
-  // ====================layouts===============
-
   {
     key: 'layouts',
     label: 'layouts',
@@ -368,9 +530,6 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-
-  // ====================menu-items===============
-
   {
     key: 'menu-items',
     label: 'Menu Item',
@@ -395,7 +554,6 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-  // ====================disable-items===============
   {
     key: ' Disable Item',
     label: ' Disable Item',
