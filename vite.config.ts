@@ -4,7 +4,9 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
+// Root Vite config points to Admin app for Lovable builds
 export default defineConfig(({ mode }) => ({
+  root: "apps/admin",
   server: {
     host: "::",
     port: 8080,
@@ -12,7 +14,11 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "apps/admin/src"),
     },
+  },
+  build: {
+    outDir: path.resolve(__dirname, "dist"),
+    emptyOutDir: true,
   },
 }));
