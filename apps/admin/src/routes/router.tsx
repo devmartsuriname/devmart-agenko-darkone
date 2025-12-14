@@ -1,16 +1,34 @@
-import { Navigate, Route, Routes, type RouteProps } from 'react-router-dom'
-import AdminLayout from '@/layouts/AdminLayout'
-import AuthLayout from '@/layouts/AuthLayout'
-import { appRoutes, authRoutes, catchAllRoute } from '@/routes/index'
-import { useAuthContext } from '@/context/useAuthContext'
+import { Navigate, Route, Routes, type RouteProps } from 'react-router-dom';
+import AdminLayout from '@/layouts/AdminLayout';
+import AuthLayout from '@/layouts/AuthLayout';
+import { appRoutes, authRoutes, catchAllRoute } from '@/routes/index';
+import { useAuthContext } from '@/context/useAuthContext';
+import FallbackLoading from '@/components/FallbackLoading';
 
 const AppRouter = (props: RouteProps) => {
-  const { isAuthenticated } = useAuthContext()
+  const { isAuthenticated, isLoading } = useAuthContext();
+
+  // Show loading state while checking auth
+  if (isLoading) {
+    return <FallbackLoading />;
+  }
+
   return (
     <Routes>
       {/* Auth routes (sign-in, sign-up, etc.) - no auth required */}
+      {/* Redirect authenticated users away from auth pages */}
       {(authRoutes || []).map((route, idx) => (
-        <Route key={idx + route.name} path={route.path} element={<AuthLayout {...props}>{route.element}</AuthLayout>} />
+        <Route
+          key={idx + route.name}
+          path={route.path}
+          element={
+            isAuthenticated && (route.path === '/auth/sign-in' || route.path === '/auth/sign-up') ? (
+              <Navigate to="/dashboards" replace />
+            ) : (
+              <AuthLayout {...props}>{route.element}</AuthLayout>
+            )
+          }
+        />
       ))}
 
       {/* App routes - auth required */}
@@ -25,8 +43,9 @@ const AppRouter = (props: RouteProps) => {
               <Navigate
                 to={{
                   pathname: '/auth/sign-in',
-                  search: 'redirectTo=' + route.path,
+                  search: 'redirectTo=' + encodeURIComponent(route.path),
                 }}
+                replace
               />
             )
           }
@@ -44,7 +63,7 @@ const AppRouter = (props: RouteProps) => {
         element={<AuthLayout {...props}>{catchAllRoute.element}</AuthLayout>}
       />
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRouter
+export default AppRouter;

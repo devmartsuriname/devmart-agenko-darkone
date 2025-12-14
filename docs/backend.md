@@ -4,59 +4,171 @@
 
 This document describes the backend architecture for the Zivan-Darkone monorepo.
 
-## Current State (Post Repo Cleanup)
+## Current State
 
-- **Backend:** Not yet configured
-- **Database:** Not yet configured
-- **Authentication:** Not yet configured
+- **Backend:** Supabase (connected)
+- **Database:** PostgreSQL via Supabase
+- **Authentication:** Supabase Auth (email/password)
 - **Storage:** Not yet configured
+- **RBAC:** user_profiles + user_roles tables
 
-## Repository Structure
+## Supabase Configuration
 
-The repository has been cleaned up with a clear monorepo structure:
+### Environment Variables
+The following environment variables are required (set in root `.env`):
 
+| Variable | Description |
+|----------|-------------|
+| `VITE_SUPABASE_URL` | Supabase project URL |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key |
+| `VITE_SUPABASE_PROJECT_ID` | Supabase project ID |
+
+### Supabase Client
+- **Root client:** `src/integrations/supabase/client.ts` (auto-generated)
+- **Admin client:** `apps/admin/src/lib/supabase.ts` (primary for admin app)
+
+## Database Schema
+
+### Tables
+
+#### `user_profiles`
+Stores additional user information beyond Supabase auth.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID (PK) | References auth.users(id) |
+| `email` | TEXT | User email |
+| `full_name` | TEXT | Display name (nullable) |
+| `avatar_url` | TEXT | Profile picture URL (nullable) |
+| `created_at` | TIMESTAMPTZ | Creation timestamp |
+| `updated_at` | TIMESTAMPTZ | Last update timestamp |
+
+#### `user_roles`
+Stores user role assignments for RBAC.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID (PK) | Primary key |
+| `user_id` | UUID | References auth.users(id) |
+| `role` | app_role | Role enum value |
+| `created_at` | TIMESTAMPTZ | Assignment timestamp |
+
+#### `app_role` (Enum)
+- `admin` - Full system access, can manage roles
+- `editor` - Can edit content
+- `viewer` - Read-only access
+
+### Database Functions
+
+| Function | Description |
+|----------|-------------|
+| `has_role(user_id, role)` | Security definer function to check if user has a role |
+| `get_user_roles(user_id)` | Returns all roles for a user |
+| `handle_new_user()` | Trigger function to create profile on signup |
+| `update_updated_at_column()` | Trigger function for updated_at timestamps |
+
+### Triggers
+
+| Trigger | Table | Description |
+|---------|-------|-------------|
+| `on_auth_user_created` | auth.users | Creates user_profile on signup |
+| `update_user_profiles_updated_at` | user_profiles | Updates updated_at on change |
+
+### Row Level Security (RLS)
+
+#### user_profiles
+- Users can SELECT their own profile
+- Users can UPDATE their own profile
+- Users can INSERT their own profile
+
+#### user_roles
+- Users can SELECT their own roles
+- Only admins can INSERT roles
+- Only admins can UPDATE roles
+- Only admins can DELETE roles
+
+## Authentication Flow
+
+### Sign In
+1. User submits email/password
+2. Supabase validates credentials
+3. Session stored in localStorage
+4. Auth state listener updates context
+5. User redirected to dashboard
+
+### Sign Up
+1. User submits name, email, password
+2. Supabase creates auth.users record
+3. Trigger creates user_profiles record
+4. Confirmation email sent (if enabled)
+5. User redirected to sign-in
+
+### Sign Out
+1. User clicks logout
+2. Supabase clears session
+3. Auth state listener clears context
+4. User redirected to sign-in
+
+### Session Persistence
+- Sessions persist across page refreshes via localStorage
+- Auto token refresh enabled
+- Auth state listener handles session changes
+
+## Route Protection
+
+### Protected Routes (require auth)
+- `/dashboards` and all CMS module routes
+- Unauthenticated → redirect to `/auth/sign-in?redirectTo={path}`
+
+### Public Routes (no auth required)
+- `/auth/sign-in`
+- `/auth/sign-up`
+- `/auth/reset-password`
+- `/auth/lock-screen`
+- 404 catch-all
+
+### Auth Page Redirect
+- Authenticated users on `/auth/sign-in` or `/auth/sign-up` → redirect to `/dashboards`
+
+## Admin Role Seeding
+
+To grant admin access to a user:
+
+1. User signs up (creates profile automatically)
+2. Run SQL in Supabase SQL Editor:
+
+```sql
+INSERT INTO public.user_roles (user_id, role)
+VALUES ('<user-uuid-from-auth-users>', 'admin');
 ```
-/apps/admin   - Darkone Admin (content management)
-/apps/public  - Zivan Public (public-facing website)
-```
 
-Legacy source folders (`Darkone-React_v1.0/` and `zivan-react/`) have been removed.
+Note: Get the user UUID from Supabase Dashboard > Authentication > Users
 
-## Build Configuration
+---
 
-The root `vite.config.ts` points to the Admin app (`apps/admin/`) for Lovable builds:
-- Entry: `apps/admin/index.html` → `apps/admin/src/main.tsx`
-- Output: `<repo>/dist/`
+## Phase History
 
-## Shared Backend (Future)
+### Phase 1: Demo Library (Complete)
+- Created Demo Library registry and documentation
+- Preserved Darkone UI patterns for reference
+- Set up DEV-only showcase routes
 
-Both apps will connect to a shared Supabase backend:
-- Database tables for CMS content
-- Authentication for admin access
-- Storage for media files
-- Edge functions for server-side logic
+### Phase 2A: Sidebar + Placeholder Routes (Complete)
+- 12 CMS placeholder pages created
+- Production/DEV menu separation
 
-## Current Phase: Phase 1 - Demo Library (Complete + Hardened)
+### Phase 2B: Dashboard Placeholder (Complete)
+- CMS-ready dashboard layout
+- KPI placeholders, welcome card
 
-Phase 1 is complete and hardened with safety verification:
-- Creating Demo Library registry and documentation
-- Preserving Darkone UI patterns for reference
-- Setting up DEV-only showcase routes
-- Preparing shared UI package placeholder
-- **Phase 1A:** Added catch-all 404 route for production safety
-- **Phase 1B:** Validated and fixed all registry sourceFiles paths
-- **Phase 1C:** Added theme token verification section with grep commands
+### Phase 3A: Supabase Auth + RBAC (Complete)
+- Supabase Auth integration (email/password)
+- user_profiles table with auto-creation trigger
+- user_roles table with RLS policies
+- Protected route guards
+- Role badge display in profile dropdown
 
-**No database or backend changes in Phase 1.** Supabase integration comes in Phase 3+.
-
-### Demo Library Deliverables
-| Deliverable | Location |
-|-------------|----------|
-| Registry JSON | `docs/demo-library/darkone-demo-library.registry.json` |
-| Theme Reference | `docs/demo-library/Darkone_Admin_Theme.md` |
-| Pages Index | `docs/demo-library/Darkone_Admin_Pages_Index.md` |
-| Showcase Routes | `apps/admin/src/app/(admin)/demo-library/` (DEV-only) |
-| Shared UI Placeholder | `packages/shared/ui/` |
+---
 
 ## CMS Modules (Planned)
 
@@ -73,26 +185,6 @@ Per approved scope:
 10. Contact Submissions
 11. eCommerce (Products, Variants, Cart, Orders, Wishlist)
 
-## Phase 2A: Sidebar + Placeholder Routes (Complete)
-
-- 12 CMS placeholder pages created (Content, CRM, Marketing, System)
-
-## Phase 2B: Dashboard Placeholder (Complete)
-
-- Replaced demo dashboard with CMS placeholder layout
-- Welcome card with quick links to CMS modules
-- 4 KPI placeholder cards (Pages, Blog Posts, Projects, Inquiries)
-- Analytics placeholder section (no charts wired yet)
-- Production sidebar shows CMS modules only
-- DEV sidebar includes Demo Library + legacy UI Kit
-- Routes added for all placeholder modules
-
-## Next Steps
-
-1. **Phase 2B:** Dashboard placeholder (plan only, awaiting approval)
-2. **Phase 3:** Execute remaining cleanup
-3. **Phase 4+:** Enable Lovable Cloud, create database schema, configure auth
-
 ---
 
-*Last updated: 2025-12-14 - Phase 2A Sidebar Restructure*
+*Last updated: 2025-12-14 - Phase 3A Supabase Auth + RBAC*

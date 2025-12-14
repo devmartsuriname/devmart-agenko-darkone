@@ -1,30 +1,21 @@
-import { useEffect } from 'react'
-import DarkLogo from '@/assets/images/logo-dark.png'
-import LightLogo from '@/assets/images/logo-light.png'
-import TextFormInput from '@/components/from/TextFormInput'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { Card, CardBody, Col, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
+import DarkLogo from '@/assets/images/logo-dark.png';
+import LightLogo from '@/assets/images/logo-light.png';
+import TextFormInput from '@/components/from/TextFormInput';
+import { Card, CardBody, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import useSignUp from '../useSignUp';
 
 const SignUp = () => {
   useEffect(() => {
-    document.body.classList.add('authentication-bg')
+    document.body.classList.add('authentication-bg');
     return () => {
-      document.body.classList.remove('authentication-bg')
-    }
-  }, [])
+      document.body.classList.remove('authentication-bg');
+    };
+  }, []);
 
-  const messageSchema = yup.object({
-    name: yup.string().required('Please enter Name'),
-    email: yup.string().email().required('Please enter Email'),
-    password: yup.string().required('Please enter password'),
-  })
+  const { loading, handleSignUp, control, register, errors } = useSignUp();
 
-  const { handleSubmit, control } = useForm({
-    resolver: yupResolver(messageSchema),
-  })
   return (
     <>
       <div className="">
@@ -46,12 +37,24 @@ const SignUp = () => {
                       <h4 className="fw-bold text-dark mb-2">Sign Up</h4>
                       <p className="text-muted">New to our platform? Sign up now! It only takes a minute.</p>
                     </div>
-                    <form onSubmit={handleSubmit(() => {})} className="mt-4">
+                    <form onSubmit={handleSignUp} className="mt-4">
                       <div className="mb-3">
-                        <TextFormInput control={control} name="name" placeholder="Enter your Name" className="form-control" label="Name" />
+                        <TextFormInput 
+                          control={control} 
+                          name="name" 
+                          placeholder="Enter your name" 
+                          className="form-control" 
+                          label="Full Name" 
+                        />
                       </div>
                       <div className="mb-3">
-                        <TextFormInput control={control} name="email" placeholder="Enter your email" className="form-control" label="Email" />
+                        <TextFormInput 
+                          control={control} 
+                          name="email" 
+                          placeholder="Enter your email" 
+                          className="form-control" 
+                          label="Email" 
+                        />
                       </div>
                       <div className="mb-3">
                         <TextFormInput
@@ -60,26 +63,41 @@ const SignUp = () => {
                           placeholder="Enter your password"
                           className="form-control"
                           label="Password"
+                          type="password"
                         />
                       </div>
                       <div className="mb-3">
                         <div className="form-check">
-                          <input type="checkbox" className="form-check-input" id="checkbox-signin" />
+                          <input 
+                            type="checkbox" 
+                            className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`}
+                            id="checkbox-signin" 
+                            {...register('acceptTerms')}
+                          />
                           <label className="form-check-label" htmlFor="checkbox-signin">
-                            I accept Terms and Condition
+                            I accept Terms and Conditions
                           </label>
+                          {errors.acceptTerms && (
+                            <div className="invalid-feedback">
+                              {errors.acceptTerms.message}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="mb-1 text-center d-grid">
-                        <button className="btn btn-dark btn-lg fw-medium" type="submit">
-                          Sign Up
+                        <button 
+                          className="btn btn-dark btn-lg fw-medium" 
+                          type="submit"
+                          disabled={loading}
+                        >
+                          {loading ? 'Creating Account...' : 'Sign Up'}
                         </button>
                       </div>
                     </form>
                   </CardBody>
                 </Card>
                 <p className="text-center mt-4 text-white text-opacity-50">
-                  I already have an account&nbsp;
+                  Already have an account?&nbsp;
                   <Link to="/auth/sign-in" className="text-decoration-none text-white fw-bold">
                     Sign In
                   </Link>
@@ -90,7 +108,7 @@ const SignUp = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;
