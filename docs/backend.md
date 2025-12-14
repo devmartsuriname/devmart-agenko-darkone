@@ -62,8 +62,8 @@ Stores user role assignments for RBAC.
 
 #### `app_role` (Enum)
 - `admin` - Full system access, can manage roles
-- `editor` - Can edit content
-- `viewer` - Read-only access
+- `editor` - Can edit content, CRM, marketing
+- `viewer` - Read-only access to dashboard
 
 ### Database Functions
 
@@ -73,6 +73,9 @@ Stores user role assignments for RBAC.
 | `get_user_roles(user_id)` | Returns all roles for a user |
 | `handle_new_user()` | Trigger function to create profile on signup |
 | `update_updated_at_column()` | Trigger function for updated_at timestamps |
+| `assign_role(target_user_id, role)` | Admin-only RPC to assign a role to a user |
+| `revoke_role(target_user_id, role)` | Admin-only RPC to revoke a role from a user |
+| `list_users_with_roles()` | Admin-only RPC to list all users with their roles |
 
 ### Triggers
 
@@ -87,12 +90,39 @@ Stores user role assignments for RBAC.
 - Users can SELECT their own profile
 - Users can UPDATE their own profile
 - Users can INSERT their own profile
+- **Admins can SELECT all profiles** (for user management)
 
 #### user_roles
 - Users can SELECT their own roles
 - Only admins can INSERT roles
 - Only admins can UPDATE roles
 - Only admins can DELETE roles
+
+## Route-Based Access Control (RBAC)
+
+### Route Role Requirements
+
+| Route Prefix | Required Roles | Description |
+|--------------|----------------|-------------|
+| `/system/*` | `admin` | Admin-only system management |
+| `/content/*` | `admin`, `editor` | Content management |
+| `/crm/*` | `admin`, `editor` | CRM management |
+| `/marketing/*` | `admin`, `editor` | Marketing management |
+| `/dashboards` | Any authenticated | Dashboard access |
+
+### Access Control Flow
+
+1. **Authentication Check**: User must be authenticated
+2. **Role Check**: If route requires roles, user must have at least one
+3. **Deny-by-Default**: Missing roles = redirect to 404 (not login)
+
+### Sidebar Visibility
+
+The sidebar dynamically filters menu items based on user roles:
+- **Admin**: Sees all menu items
+- **Editor**: Sees Dashboard, Content, CRM, Marketing (no System)
+- **Viewer**: Sees Dashboard only
+- **DEV-only**: Demo Library visible only in development mode
 
 ## Authentication Flow
 
@@ -175,6 +205,13 @@ Note: Get the user UUID from Supabase Dashboard > Authentication > Users
 - Protected route guards
 - Role badge display in profile dropdown
 
+### Phase 3B: RBAC Hardening (Complete)
+- Route-level RBAC guards with deny-by-default
+- Sidebar role-based filtering
+- Admin-only RPCs: `assign_role`, `revoke_role`, `list_users_with_roles`
+- Admin policy for viewing all user profiles
+- Roles management placeholder page with user list
+
 ---
 
 ## CMS Modules (Planned)
@@ -194,4 +231,4 @@ Per approved scope:
 
 ---
 
-*Last updated: 2025-12-14 - Phase 3A Supabase Auth + RBAC*
+*Last updated: 2025-12-14 - Phase 3B RBAC Hardening*

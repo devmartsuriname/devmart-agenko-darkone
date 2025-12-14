@@ -148,8 +148,10 @@
 | File | Purpose |
 |------|---------|
 | `apps/admin/src/lib/supabase.ts` | Supabase client + role helpers |
-| `apps/admin/src/context/useAuthContext.tsx` | Auth state management |
+| `apps/admin/src/context/useAuthContext.tsx` | Auth state management + role helpers |
+| `apps/admin/src/components/guards/RequireAuth.tsx` | RBAC route guards |
 | `apps/admin/src/routes/router.tsx` | Route protection logic |
+| `apps/admin/src/helpers/Manu.ts` | Role-based sidebar menu filtering |
 | `apps/admin/src/types/auth.ts` | Auth type definitions |
 | `vite.config.ts` | Root Vite config with `envDir` for monorepo env loading |
 
@@ -158,6 +160,23 @@ The monorepo uses a centralized env loading approach:
 - Root `.env` contains all `VITE_SUPABASE_*` variables
 - Root `vite.config.ts` sets `envDir: path.resolve(__dirname)` to load env from repo root
 - Admin client in `apps/admin/src/lib/supabase.ts` throws clear errors if env vars are missing
+
+### Route-Level RBAC
+
+Routes are protected with role-based access control:
+
+| Route Prefix | Required Roles |
+|--------------|----------------|
+| `/system/*` | `admin` |
+| `/content/*` | `admin`, `editor` |
+| `/crm/*` | `admin`, `editor` |
+| `/marketing/*` | `admin`, `editor` |
+| `/dashboards` | Any authenticated |
+
+**Deny-by-Default Behavior:**
+- Unauthenticated → redirect to `/auth/sign-in`
+- Authenticated but missing role → redirect to `/error-pages/pages-404` (NOT login)
+- No role resolution → treated as no roles = deny access to role-restricted routes
 
 ---
 
@@ -269,7 +288,9 @@ cd apps/public && bun install && bun run dev
 7. **Production/DEV menu separation:** Sidebar shows CMS modules in production, Demo Library + UI Kit in DEV only
 8. **Supabase Auth:** Email/password authentication via Supabase
 9. **RBAC via separate table:** Roles stored in user_roles, not user_profiles
+10. **Route-level RBAC:** Deny-by-default with role requirements per route prefix
+11. **Sidebar role filtering:** Menu items hidden if user lacks access
 
 ---
 
-*Last updated: 2025-12-14 - Phase 3A Supabase Auth + RBAC*
+*Last updated: 2025-12-14 - Phase 3B RBAC Hardening*
