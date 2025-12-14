@@ -151,6 +151,13 @@
 | `apps/admin/src/context/useAuthContext.tsx` | Auth state management |
 | `apps/admin/src/routes/router.tsx` | Route protection logic |
 | `apps/admin/src/types/auth.ts` | Auth type definitions |
+| `vite.config.ts` | Root Vite config with `envDir` for monorepo env loading |
+
+### Environment Loading
+The monorepo uses a centralized env loading approach:
+- Root `.env` contains all `VITE_SUPABASE_*` variables
+- Root `vite.config.ts` sets `envDir: path.resolve(__dirname)` to load env from repo root
+- Admin client in `apps/admin/src/lib/supabase.ts` throws clear errors if env vars are missing
 
 ---
 

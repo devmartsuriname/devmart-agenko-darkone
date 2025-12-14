@@ -3,22 +3,31 @@
  * 
  * Environment Variables Required:
  * - VITE_SUPABASE_URL: Supabase project URL
- * - VITE_SUPABASE_PUBLISHABLE_KEY: Supabase anon/public key
+ * - VITE_SUPABASE_ANON_KEY: Supabase anon/public key
  * 
- * These are already set in the root .env file.
+ * These are loaded from the root .env file via Vite's envDir config.
  */
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error('Missing Supabase environment variables. Check .env file.');
+// Defensive guard: prevent client creation with missing credentials
+if (!SUPABASE_URL) {
+  console.error('CRITICAL: VITE_SUPABASE_URL is not configured. Check root .env file and Vite envDir setting.');
+  throw new Error('Supabase URL is required. Please configure VITE_SUPABASE_URL in your environment.');
 }
 
+if (!SUPABASE_ANON_KEY) {
+  console.error('CRITICAL: VITE_SUPABASE_ANON_KEY is not configured. Check root .env file and Vite envDir setting.');
+  throw new Error('Supabase Anon Key is required. Please configure VITE_SUPABASE_ANON_KEY in your environment.');
+}
+
+console.log('[Supabase] Client initialized successfully');
+
 export const supabase = createClient(
-  SUPABASE_URL || '',
-  SUPABASE_ANON_KEY || '',
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
   {
     auth: {
       storage: localStorage,
