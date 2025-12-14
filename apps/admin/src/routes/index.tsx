@@ -63,6 +63,20 @@ const SmallSideNav = lazy(() => import('@/app/(admin)/(layouts)/small-sidenav/pa
 const HiddenSideNav = lazy(() => import('@/app/(admin)/(layouts)/hidden-sidenav/page'))
 const DarkMode = lazy(() => import('@/app/(admin)/(layouts)/dark-mode/page'))
 
+// ============================================================================
+// DEV ONLY — DO NOT SHIP
+// Demo Library routes are conditionally loaded only in development builds.
+// In production: demoLibraryRoutes = [] (empty array, routes do not exist)
+// Production safety: navigating to /demo-library/* results in 404
+// ============================================================================
+const DemoLibraryIndex = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/page')) : null
+const DemoLibraryCharts = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/charts/page')) : null
+const DemoLibraryForms = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/forms/page')) : null
+const DemoLibraryTables = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/tables/page')) : null
+const DemoLibraryIcons = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/icons/page')) : null
+const DemoLibraryModalsToasts = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/modals-toasts/page')) : null
+const DemoLibraryLayouts = import.meta.env.DEV ? lazy(() => import('@/app/(admin)/demo-library/layouts/page')) : null
+
 export type RoutesProps = {
   path: RouteProps['path']
   name: string
@@ -328,6 +342,50 @@ const layoutsRoutes: RoutesProps[] = [
   },
 ]
 
+// ============================================================================
+// DEV ONLY — DO NOT SHIP
+// Demo Library routes: empty array in production, populated only in DEV
+// Condition: import.meta.env.DEV (Vite environment variable)
+// Production behavior: routes don't exist → 404 via catch-all or missing route
+// ============================================================================
+const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV && DemoLibraryIndex ? [
+  {
+    path: '/demo-library',
+    name: 'Demo Library',
+    element: <DemoLibraryIndex />,
+  },
+  {
+    path: '/demo-library/charts',
+    name: 'Demo Library - Charts',
+    element: <DemoLibraryCharts />,
+  },
+  {
+    path: '/demo-library/forms',
+    name: 'Demo Library - Forms',
+    element: <DemoLibraryForms />,
+  },
+  {
+    path: '/demo-library/tables',
+    name: 'Demo Library - Tables',
+    element: <DemoLibraryTables />,
+  },
+  {
+    path: '/demo-library/icons',
+    name: 'Demo Library - Icons',
+    element: <DemoLibraryIcons />,
+  },
+  {
+    path: '/demo-library/modals-toasts',
+    name: 'Demo Library - Modals & Toasts',
+    element: <DemoLibraryModalsToasts />,
+  },
+  {
+    path: '/demo-library/layouts',
+    name: 'Demo Library - Layouts',
+    element: <DemoLibraryLayouts />,
+  },
+] : []
+
 export const appRoutes = [
   ...initialRoutes,
   // ...authRoutes,
@@ -338,4 +396,5 @@ export const appRoutes = [
   ...layoutsRoutes,
   ...tableRoutes,
   ...iconRoutes,
+  ...demoLibraryRoutes, // DEV ONLY — empty in production
 ]
