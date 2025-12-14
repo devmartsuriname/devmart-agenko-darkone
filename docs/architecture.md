@@ -89,15 +89,39 @@
 - **Primary:** Bun
 - **Lock files:** Unchanged per user constraint
 
-## Build Commands
+## Run Commands (Verified)
 
+### Admin App (Darkone)
 ```bash
-# Admin (from apps/admin)
-cd apps/admin && bun install && bun run dev
-
-# Public (from apps/public)
-cd apps/public && bun install && bun run start
+cd apps/admin
+bun install
+bun run dev
+# Default port: 5173 (Vite)
 ```
+
+### Public App (Zivan)
+```bash
+cd apps/public
+bun install
+bun run start
+# Default port: 3000 (react-scripts)
+```
+
+### Key Routes
+
+**Admin (apps/admin):**
+- `/` - Dashboard
+- `/auth/login` - Login page
+- `/auth/register` - Register page
+
+**Public (apps/public):**
+- `/` - Home (Creative Agency)
+- `/service` - Services page
+- `/blog` - Blog page
+- `/portfolio` - Portfolio page
+- `/contact` - Contact page
+- `/shop` - Shop page
+- `/light/` - Light mode variants
 
 ## Key Decisions
 
