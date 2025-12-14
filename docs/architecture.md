@@ -306,6 +306,14 @@ server {
 - Updated `getMenuItems()` helper to conditionally merge menus
 - Added routes for all CMS modules
 
+## Phase 2B: Dashboard Placeholder (Complete)
+
+- Dashboard at `/dashboards` now shows CMS-ready placeholder content
+- Welcome card with quick links (Pages, Blog, Projects, Settings)
+- 4 KPI placeholder cards with "—" values (no data integration)
+- Analytics placeholder section referencing `charts__sparkline`
+- Demo components (Cards, Chart, User) preserved in ./components but not rendered
+
 ---
 
 *Last updated: 2025-12-14 - Phase 2A Sidebar Restructure*
