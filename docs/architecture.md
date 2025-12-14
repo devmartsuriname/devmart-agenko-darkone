@@ -79,38 +79,107 @@
 |--------|--------|
 | **Location** | `/apps/public` |
 | **Framework** | React 18 + JSX |
-| **Build Tool** | react-scripts (Create React App) |
+| **Build Tool** | Vite (migrated from react-scripts in Step 4) |
 | **Styling** | Bootstrap + Custom SASS/SCSS |
 | **Purpose** | Public-facing website |
-| **Status** | ✅ 1:1 copied from zivan-react |
+| **Status** | ✅ Migrated to Vite |
 
 ## Package Manager
 
 - **Primary:** Bun
 - **Lock files:** Unchanged per user constraint
 
-## Step 3 Verification Status
+---
 
-### Lovable Preview (Root = Admin)
-- ✅ Build passes
-- ✅ Admin app runs in Lovable preview
-- Root `src/` now contains Darkone Admin files (synced from apps/admin/src)
+## Development Commands (Post Step 4)
 
-### Local Development Commands
+### Admin App (Darkone)
 ```bash
-# Admin (Lovable or local)
 cd apps/admin && bun install && bun run dev
-# Port: 5173 (Vite)
-
-# Public (local only - react-scripts)
-cd apps/public && bun install && bun run start
-# Port: 3000 (CRA)
+# Port: 5173
 ```
 
-### Key Routes Verified
+### Public App (Zivan)
+```bash
+cd apps/public && bun install && bun run dev
+# Port: 3000
+```
+
+### Run Both Apps (Local)
+```bash
+# Terminal 1
+cd apps/admin && bun run dev
+
+# Terminal 2
+cd apps/public && bun run dev
+```
+
+---
+
+## Lovable Preview
+
+The Lovable preview runs from the **root level** which is configured for Darkone Admin.
+
+- **Admin:** Available in Lovable preview at `/`
+- **Public:** Run locally with `cd apps/public && bun run dev`
+
+---
+
+## VPS/Nginx Deployment (Hostinger)
+
+### Build Commands
+```bash
+# Build both apps
+cd apps/admin && bun run build  # Output: apps/admin/dist/
+cd apps/public && bun run build  # Output: apps/public/dist/
+```
+
+### Nginx Configuration for SPA Routing
+
+```nginx
+# Admin: admin.yourdomain.com
+server {
+    listen 80;
+    server_name admin.yourdomain.com;
+    root /var/www/apps/admin/dist;
+    index index.html;
+    
+    # SPA fallback - all routes serve index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+
+# Public: yourdomain.com
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    root /var/www/apps/public/dist;
+    index index.html;
+    
+    # SPA fallback - all routes serve index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+### Key Routes
 
 **Admin (apps/admin):**
-- `/` - Dashboard
+- `/` - Dashboard (auth protected)
 - `/auth/sign-in` - Login page
 - `/auth/sign-up` - Register page
 
@@ -123,39 +192,28 @@ cd apps/public && bun install && bun run start
 - `/shop` - Shop page
 - `/light/` - Light mode variants
 
-### Key Routes
+---
 
-**Admin (apps/admin):**
-- `/` - Dashboard
-- `/auth/login` - Login page
-- `/auth/register` - Register page
+## Step 4 Status
 
-**Public (apps/public):**
-- `/` - Home (Creative Agency)
-- `/service` - Services page
-- `/blog` - Blog page
-- `/portfolio` - Portfolio page
-- `/contact` - Contact page
-- `/shop` - Shop page
-- `/light/` - Light mode variants
+- ✅ Zivan migrated from react-scripts to Vite
+- ✅ Created `apps/public/vite.config.js`
+- ✅ Created `apps/public/index.html`
+- ✅ Created `apps/public/src/main.jsx`
+- ✅ Updated `apps/public/package.json` with Vite scripts
+- ✅ JSX files preserved (no TSX conversion)
+- ✅ All components, routes, styles unchanged
+- ⏸️ Source folders not yet deleted
+
+---
 
 ## Key Decisions
 
 1. **No refactoring:** Both apps maintain original structure
 2. **Separate styling:** SCSS (admin) vs SASS (public) - no mixing
 3. **JSX preserved:** Zivan remains JSX, no TSX conversion
-4. **react-scripts preserved:** Zivan build tool unchanged
-
-## Step 2 Status
-
-- ✅ Folder structure created
-- ✅ Darkone copied to /apps/admin
-- ✅ Zivan copied 1:1 to /apps/public
-- ✅ packages/shared placeholder created
-- ✅ docs/ created with backend.md and architecture.md
-- ⏸️ Root src/ remains broken (separate fix needed)
-- ⏸️ Source folders not yet deleted (awaiting verification)
+4. **Vite for both:** Consistent build tooling across apps
 
 ---
 
-*Last updated: Step 2 Complete - Repo Split Executed*
+*Last updated: Step 4 Complete - Zivan Vite Migration*
