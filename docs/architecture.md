@@ -89,23 +89,39 @@
 - **Primary:** Bun
 - **Lock files:** Unchanged per user constraint
 
-## Run Commands (Verified)
+## Step 3 Verification Status
 
-### Admin App (Darkone)
+### Lovable Preview (Root = Admin)
+- ✅ Build passes
+- ✅ Admin app runs in Lovable preview
+- Root `src/` now contains Darkone Admin files (synced from apps/admin/src)
+
+### Local Development Commands
 ```bash
-cd apps/admin
-bun install
-bun run dev
-# Default port: 5173 (Vite)
+# Admin (Lovable or local)
+cd apps/admin && bun install && bun run dev
+# Port: 5173 (Vite)
+
+# Public (local only - react-scripts)
+cd apps/public && bun install && bun run start
+# Port: 3000 (CRA)
 ```
 
-### Public App (Zivan)
-```bash
-cd apps/public
-bun install
-bun run start
-# Default port: 3000 (react-scripts)
-```
+### Key Routes Verified
+
+**Admin (apps/admin):**
+- `/` - Dashboard
+- `/auth/sign-in` - Login page
+- `/auth/sign-up` - Register page
+
+**Public (apps/public):**
+- `/` - Home (Creative Agency)
+- `/service` - Services page
+- `/blog` - Blog page
+- `/portfolio` - Portfolio page
+- `/contact` - Contact page
+- `/shop` - Shop page
+- `/light/` - Light mode variants
 
 ### Key Routes
 
