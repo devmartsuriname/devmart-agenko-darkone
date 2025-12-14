@@ -76,6 +76,13 @@ Per approved scope:
 ## Phase 2A: Sidebar + Placeholder Routes (Complete)
 
 - 12 CMS placeholder pages created (Content, CRM, Marketing, System)
+
+## Phase 2B: Dashboard Placeholder (Complete)
+
+- Replaced demo dashboard with CMS placeholder layout
+- Welcome card with quick links to CMS modules
+- 4 KPI placeholder cards (Pages, Blog Posts, Projects, Inquiries)
+- Analytics placeholder section (no charts wired yet)
 - Production sidebar shows CMS modules only
 - DEV sidebar includes Demo Library + legacy UI Kit
 - Routes added for all placeholder modules
