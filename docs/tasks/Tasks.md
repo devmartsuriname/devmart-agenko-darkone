@@ -89,6 +89,34 @@
 
 ---
 
+## Admin Types Resolution Fix ✅
+
+**Status:** ✅ Complete (2025-12-15)
+
+### Issue
+- Runtime crash: "A component suspended while responding to synchronous input"
+- Projects/Services CRUD pages failing to load due to types import path traversing outside Vite root
+
+### Root Cause
+`apps/admin/src/integrations/supabase/types.ts` used re-export from path outside Vite root:
+```ts
+export * from '../../../../../src/integrations/supabase/types'
+```
+
+### Solution
+Copied full types content directly into `apps/admin/src/integrations/supabase/types.ts` to ensure all types are resolvable within the Vite root (`apps/admin`).
+
+### Files Modified
+| File | Action |
+|------|--------|
+| `apps/admin/src/integrations/supabase/types.ts` | Replaced re-export with full types content |
+| `docs/restorepoints/2025-06-15_AdminTypesFix_BeforeChange.md` | Created |
+
+### Follow-up Risk
+Types file is now duplicated. If schema changes, both `src/integrations/supabase/types.ts` and `apps/admin/src/integrations/supabase/types.ts` must be updated (or automation added).
+
+---
+
 ## Phase A1: Admin CRUD Implementation — Services Module ✅
 
 **Status:** ✅ Complete (2025-12-15)
