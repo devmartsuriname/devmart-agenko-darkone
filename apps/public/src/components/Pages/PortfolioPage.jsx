@@ -4,59 +4,37 @@ import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
 import Portfolio from '../Portfolio';
 import CtaStyle2 from '../Cta/CtaStyle2';
 import { pageTitle } from '../../helpers/PageTitle';
-const portfolioData = [
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_1.jpeg',
-    title: 'Awesome colorful artwork',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_2.jpeg',
-    title: 'Admin dashboard UI design',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_3.jpeg',
-    title: 'Product designing with brand',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_4.jpeg',
-    title: 'Kids education website design',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_5.jpeg',
-    title: 'Portable device UI/UX design',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_6.jpeg',
-    title: 'Social app design for IOS device',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_7.jpeg',
-    title: '3d table light lamp rendering',
-    btnText: 'See Project',
-  },
-  {
-    href: '/portfolio/portfolio-details',
-    imgUrl: '/images/creative-agency/portfolio_8.jpeg',
-    title: 'Old telephone 3d new model',
-    btnText: 'See Project',
-  },
+import { useProjects } from '../../hooks/useContent';
+
+// Static fallback data
+const fallbackProjects = [
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_1.jpeg', title: 'Awesome colorful artwork', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_2.jpeg', title: 'Admin dashboard UI design', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_3.jpeg', title: 'Product designing with brand', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_4.jpeg', title: 'Kids education website design', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_5.jpeg', title: 'Portable device UI/UX design', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_6.jpeg', title: 'Social app design for IOS device', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_7.jpeg', title: '3d table light lamp rendering', btnText: 'See Project' },
+  { href: '/portfolio/portfolio-details', imgUrl: '/images/creative-agency/portfolio_8.jpeg', title: 'Old telephone 3d new model', btnText: 'See Project' },
 ];
+
+function transformProjectsData(projects) {
+  if (!projects || projects.length === 0) return fallbackProjects;
+  
+  return projects.map(p => ({
+    href: `/portfolio/${p.slug}`,
+    imgUrl: p.thumbnail_url || p.featured_image_url || '/images/creative-agency/portfolio_1.jpeg',
+    title: p.title,
+    btnText: 'See Project',
+  }));
+}
 
 export default function PortfolioPage() {
   pageTitle('Portfolio');
+  
+  const { projects, loading } = useProjects();
+  const portfolioData = transformProjectsData(projects);
+
   return (
     <>
       <Spacing lg="70" md="70" />
