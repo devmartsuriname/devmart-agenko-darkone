@@ -301,6 +301,15 @@ cd apps/public && bun install && bun run dev
 | 2A | ✅ Complete | Sidebar + placeholder routes |
 | 2B | ✅ Complete | Dashboard placeholder |
 | 3A | ✅ Complete | Supabase Auth + RBAC foundation |
+| 3B | ✅ Complete | RBAC Hardening |
+| 4 | 🔄 In Progress | Documentation + Verification Gate |
+
+### Phase 4 Verification Gate (2025-12-15)
+- ✅ Content Data Model documented
+- ✅ Content Contract v2.0 finalized
+- ✅ SQL artifacts created (NOT executed)
+- ✅ Restore point captured
+- ⏳ Awaiting approval for schema execution
 
 ---
 
