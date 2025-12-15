@@ -4,6 +4,31 @@
 
 This document describes the backend architecture for the Zivan-Darkone monorepo.
 
+---
+
+## Current Phase
+
+**Phase 4 — Documentation (In Progress)**
+
+| Phase | Status |
+|-------|--------|
+| Phase 1 — Admin Demo Library | ✅ Complete |
+| Phase 2 — Admin Cleanup | ✅ Complete |
+| Phase 3A — Supabase Auth | ✅ Complete |
+| Phase 3B — RBAC Hardening | ✅ Complete |
+| **Phase 4 — Documentation** | 🔄 In Progress |
+| Phase 5 — Frontend Cleanup | ⏸️ Pending |
+
+### Planned Documents (Not Yet Created)
+
+See [`/docs/planned/README.md`](./planned/README.md) for full list:
+- Frontend Cleanup & Route Reduction Plan (Zivan)
+- Admin ↔ Frontend Content Contract
+- Branding Settings Specification
+- Content Data Model (Supabase)
+
+---
+
 ## Current State
 
 - **Backend:** Supabase (connected)
