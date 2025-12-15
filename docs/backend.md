@@ -27,12 +27,14 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Frontend Variant Audit | ✅ `/docs/frontend/frontend-variant-audit.md` |
 | Phased Plan (Reference) | ✅ `/docs/frontend/frontend-cleanup-phased-plan-reference.md` |
 
-### Planned Documents (Not Yet Created)
+### Supabase Schema Documents
 
-See [`/docs/planned/README.md`](./planned/README.md) for remaining:
-- Admin ↔ Frontend Content Contract
-- Branding Settings Specification
-- Content Data Model (Supabase)
+| Document | Status |
+|----------|--------|
+| Content Contract v2.0 | ✅ `/docs/contracts/Admin_Frontend_Content_Contract.md` |
+| Content Data Model | ✅ `/docs/supabase/Content_Data_Model.md` (Docs Only — Not Executed) |
+
+See [`/docs/planned/README.md`](./planned/README.md) for remaining planned docs.
 
 ---
 
@@ -246,21 +248,31 @@ Note: Get the user UUID from Supabase Dashboard > Authentication > Users
 
 ---
 
-## CMS Modules (Planned)
+## CMS Tables (Planned — Documentation Complete)
 
-Per approved scope:
-1. Site Settings
-2. Hero Sections
-3. Services
-4. Portfolio/Projects
-5. Team Members
-6. Blog
-7. Testimonials
-8. Awards (dynamic)
-9. FAQs
-10. Contact Submissions
-11. eCommerce (Products, Variants, Cart, Orders, Wishlist)
+Schema defined in [`/docs/supabase/Content_Data_Model.md`](./supabase/Content_Data_Model.md):
+
+| Table | Purpose | Status |
+|-------|---------|--------|
+| `site_settings` | Global branding, SEO, social links | 📄 Documented |
+| `pages` | Static/CMS pages | 📄 Documented |
+| `hero_sections` | Homepage heroes | 📄 Documented |
+| `services` | Service offerings | 📄 Documented |
+| `projects` | Portfolio/projects | 📄 Documented |
+| `blog_posts` | Blog articles | 📄 Documented |
+| `testimonials` | Client testimonials | 📄 Documented |
+| `team_members` | Team profiles | 📄 Documented |
+| `awards` | Awards/recognition | 📄 Documented |
+| `faqs` | FAQ entries | 📄 Documented |
+| `contact_submissions` | Contact form data | 📄 Documented |
+| `newsletter_subscribers` | Newsletter signups | 📄 Documented |
+
+**Storage Buckets (Planned):**
+- `media` (public) — Images
+- `documents` (private) — PDFs, docs
+
+> ⚠️ Schema NOT executed. Awaiting approval before migration.
 
 ---
 
-*Last updated: 2025-12-14 - Phase 3B RBAC Hardening*
+*Last updated: 2025-12-15 - Phase 4 Content Data Model Documentation*

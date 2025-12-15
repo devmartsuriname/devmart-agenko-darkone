@@ -9,7 +9,8 @@
 | **Primary Kickoff** | [`/docs/kickoff/devmart-internal-platform-kickoff.md`](./kickoff/devmart-internal-platform-kickoff.md) | Project scope, phase gates, non-negotiables |
 | **Primary PRD** | [`/docs/prd/prd-devmart-internal-platform.md`](./prd/prd-devmart-internal-platform.md) | Platform-wide requirements (Admin + Frontend) |
 | **Secondary PRD** | [`/docs/prd/prd-devmart-company-website.md`](./prd/prd-devmart-company-website.md) | Frontend-specific requirements (Zivan) |
-| **Content Contract** | [`/docs/contracts/Admin_Frontend_Content_Contract.md`](./contracts/Admin_Frontend_Content_Contract.md) | Data contract between Admin, Frontend, Supabase |
+| **Content Contract** | [`/docs/contracts/Admin_Frontend_Content_Contract.md`](./contracts/Admin_Frontend_Content_Contract.md) | Data contract between Admin, Frontend, Supabase (v2.0 FINAL) |
+| **Content Data Model** | [`/docs/supabase/Content_Data_Model.md`](./supabase/Content_Data_Model.md) | Supabase schema, RLS, Storage design (Docs Only) |
 | **Frontend Cleanup Plan** | [`/docs/frontend/frontend-cleanup-route-reduction-plan.md`](./frontend/frontend-cleanup-route-reduction-plan.md) | Primary execution plan for Zivan cleanup |
 | **Frontend Variant Audit** | [`/docs/frontend/frontend-variant-audit.md`](./frontend/frontend-variant-audit.md) | Creative Agency selection audit |
 | **Phased Plan (Reference)** | [`/docs/frontend/frontend-cleanup-phased-plan-reference.md`](./frontend/frontend-cleanup-phased-plan-reference.md) | Supporting phased approach (reference only) |
