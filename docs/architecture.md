@@ -9,6 +9,9 @@
 | **Primary Kickoff** | [`/docs/kickoff/devmart-internal-platform-kickoff.md`](./kickoff/devmart-internal-platform-kickoff.md) | Project scope, phase gates, non-negotiables |
 | **Primary PRD** | [`/docs/prd/prd-devmart-internal-platform.md`](./prd/prd-devmart-internal-platform.md) | Platform-wide requirements (Admin + Frontend) |
 | **Secondary PRD** | [`/docs/prd/prd-devmart-company-website.md`](./prd/prd-devmart-company-website.md) | Frontend-specific requirements (Zivan) |
+| **Frontend Cleanup Plan** | [`/docs/frontend/frontend-cleanup-route-reduction-plan.md`](./frontend/frontend-cleanup-route-reduction-plan.md) | Primary execution plan for Zivan cleanup |
+| **Frontend Variant Audit** | [`/docs/frontend/frontend-variant-audit.md`](./frontend/frontend-variant-audit.md) | Creative Agency selection audit |
+| **Phased Plan (Reference)** | [`/docs/frontend/frontend-cleanup-phased-plan-reference.md`](./frontend/frontend-cleanup-phased-plan-reference.md) | Supporting phased approach (reference only) |
 | **Planned Docs** | [`/docs/planned/README.md`](./planned/README.md) | List of missing-but-planned documents |
 
 ### Authoritative Documents
@@ -16,6 +19,8 @@
 - **Scope & Constraints:** Primary Kickoff Checklist
 - **Technical Requirements:** Primary PRD (Devmart Internal Platform)
 - **Frontend Details:** Secondary PRD (Devmart Company Website)
+- **Frontend Cleanup Execution:** Frontend Cleanup Plan (Document #1)
+- **Frontend Variant Selection:** Frontend Variant Audit (Document #2) — **Creative Agency ONLY**
 - **Backend Schema:** [`/docs/backend.md`](./backend.md)
 
 ---

@@ -19,10 +19,17 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase 4 — Documentation** | 🔄 In Progress |
 | Phase 5 — Frontend Cleanup | ⏸️ Pending |
 
+### Frontend Documents (Created)
+
+| Document | Status |
+|----------|--------|
+| Frontend Cleanup Plan | ✅ `/docs/frontend/frontend-cleanup-route-reduction-plan.md` |
+| Frontend Variant Audit | ✅ `/docs/frontend/frontend-variant-audit.md` |
+| Phased Plan (Reference) | ✅ `/docs/frontend/frontend-cleanup-phased-plan-reference.md` |
+
 ### Planned Documents (Not Yet Created)
 
-See [`/docs/planned/README.md`](./planned/README.md) for full list:
-- Frontend Cleanup & Route Reduction Plan (Zivan)
+See [`/docs/planned/README.md`](./planned/README.md) for remaining:
 - Admin ↔ Frontend Content Contract
 - Branding Settings Specification
 - Content Data Model (Supabase)
