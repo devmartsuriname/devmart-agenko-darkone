@@ -248,46 +248,53 @@ Note: Get the user UUID from Supabase Dashboard > Authentication > Users
 
 ---
 
-## CMS Tables (Planned — Documentation Complete)
+## CMS Tables (EXECUTED ✅)
 
-Schema defined in [`/docs/supabase/Content_Data_Model.md`](./supabase/Content_Data_Model.md):
+Schema executed on 2025-12-15. All 12 tables created with RLS enabled.
 
 | Table | Purpose | Status |
 |-------|---------|--------|
-| `site_settings` | Global branding, SEO, social links | 📄 Documented |
-| `pages` | Static/CMS pages | 📄 Documented |
-| `hero_sections` | Homepage heroes | 📄 Documented |
-| `services` | Service offerings | 📄 Documented |
-| `projects` | Portfolio/projects | 📄 Documented |
-| `blog_posts` | Blog articles | 📄 Documented |
-| `testimonials` | Client testimonials | 📄 Documented |
-| `team_members` | Team profiles | 📄 Documented |
-| `awards` | Awards/recognition | 📄 Documented |
-| `faqs` | FAQ entries | 📄 Documented |
-| `contact_submissions` | Contact form data | 📄 Documented |
-| `newsletter_subscribers` | Newsletter signups | 📄 Documented |
+| `site_settings` | Global branding, SEO, social links | ✅ Created |
+| `pages` | Static/CMS pages | ✅ Created |
+| `hero_sections` | Homepage heroes | ✅ Created |
+| `services` | Service offerings | ✅ Created |
+| `projects` | Portfolio/projects | ✅ Created |
+| `blog_posts` | Blog articles | ✅ Created |
+| `testimonials` | Client testimonials | ✅ Created |
+| `team_members` | Team profiles | ✅ Created |
+| `awards` | Awards/recognition | ✅ Created |
+| `faqs` | FAQ entries | ✅ Created |
+| `contact_submissions` | Contact form data | ✅ Created |
+| `newsletter_subscribers` | Newsletter signups | ✅ Created |
 
-**Storage Buckets (Planned):**
+**Storage Buckets (CREATED ✅):**
 - `media` (public) — Images
 - `documents` (private) — PDFs, docs
 
-> ⚠️ Schema NOT executed. Awaiting approval before migration.
+**Seed Data:**
+- 1 site_settings row
+- 1 hero_sections row
+- 1 published page (about-snippet)
 
 ---
 
-## SQL Artifacts Created (Verification Gate)
+## Schema Execution Summary
 
-| File | Purpose | Status |
-|------|---------|--------|
-| `docs/supabase/sql/20251215000001_content_schema.sql` | 12 tables, indexes, triggers | 📄 Ready |
-| `docs/supabase/sql/20251215000002_content_rls.sql` | RLS enable + policies | 📄 Ready |
-| `docs/supabase/sql/20251215000003_storage_policies.sql` | Buckets + storage RLS | 📄 Ready |
-| `docs/supabase/sql/seed_content_minimal.sql` | Minimal seed data | 📄 Ready |
+**Executed:** 2025-12-15
 
-> Note: SQL artifacts stored in docs/supabase/sql/ for review before execution.
+| Migration | Purpose | Status |
+|-----------|---------|--------|
+| Content Schema | 12 tables, indexes, triggers | ✅ Executed |
+| Content RLS | RLS enable + 60 policies | ✅ Executed |
+| Storage Policies | 2 buckets + 10 policies | ✅ Executed |
+| Seed Data | Minimal content | ✅ Executed |
 
-> ⚠️ SQL artifacts created but NOT executed. Awaiting approval.
+**Security Status:**
+- All 12 tables have RLS enabled
+- All policies use existing `has_role()` function
+- No anon SELECT on contact_submissions or newsletter_subscribers
+- Documents bucket is private (auth required)
 
 ---
 
-*Last updated: 2025-12-15 - Phase 4 Verification Gate Complete*
+*Last updated: 2025-12-15 - Phase 4 Schema Execution Complete*

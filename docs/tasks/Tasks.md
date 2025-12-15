@@ -15,8 +15,8 @@
 | Phase 2B | Dashboard Placeholder | ✅ Complete | 100% |
 | Phase 3A | Supabase Auth | ✅ Complete | 100% |
 | Phase 3B | RBAC Hardening | ✅ Complete | 100% |
-| Phase 4 | Documentation & Schema | 🔄 In Progress | 90% |
-| Phase F1 | Frontend Cleanup | ⏳ Pending | 0% |
+| Phase 4 | Documentation & Schema | ✅ Complete | 100% |
+| Phase F1 | Frontend Cleanup | ⏳ Ready | 0% |
 | Phase F2 | Frontend ↔ CMS Wiring | ⏳ Pending | 0% |
 | Phase F3 | Branding & Theme Sync | ⏳ Pending | 0% |
 | Phase F4 | Content Seeding & QA | ⏳ Pending | 0% |
@@ -63,7 +63,7 @@
 - [x] Add admin policy for viewing all user profiles
 - [x] Create roles management placeholder page
 
-### Phase 4: Documentation & Schema (Current)
+### Phase 4: Documentation & Schema (COMPLETE ✅)
 - [x] Create Content Contract v2.0 FINAL
 - [x] Resolve all 7 open questions (Awards, FAQ, Newsletter, Contact, Media, Rich Text, Images)
 - [x] Create Content Data Model documentation
@@ -73,10 +73,10 @@
 - [x] Create SQL storage artifact (buckets + policies)
 - [x] Create minimal seed data artifact
 - [x] Cross-check Contract vs Data Model alignment
-- [ ] **Execute schema migration** (awaiting approval)
-- [ ] Verify tables created successfully
-- [ ] Verify RLS policies applied correctly
-- [ ] Verify storage buckets created
+- [x] **Execute schema migration** (2025-12-15)
+- [x] Verify tables created successfully (12/12)
+- [x] Verify RLS policies applied correctly (60 policies)
+- [x] Verify storage buckets created (media + documents)
 
 ---
 
