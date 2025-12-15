@@ -1,9 +1,8 @@
 import React from 'react';
 import Spacing from '../Spacing';
 import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
-import AboutStyle4 from '../About/AboutStyle4';
+import About from '../About';
 import FunFact from '../FunFact';
-import AboutStyle5 from '../About/AboutStyle5';
 import IconBoxStyle6 from '../IconBox/IconBoxStyle6';
 import SectionHeadingStyle5 from '../SectionHeading/SectionHeadingStyle5';
 import SectionHeading from '../SectionHeading';
@@ -11,12 +10,14 @@ import TeamSlider from '../Slider/TeamSlider';
 import Marquee from '../Marquee';
 import Brands from '../Brands';
 import { pageTitle } from '../../helpers/PageTitle';
+
 const funfactData = [
   { title: 'Happy Customers', number: '22k' },
-  { title: 'Work’s Completed', number: '15k' },
+  { title: 'Work's Completed', number: '15k' },
   { title: 'Skilled Team Members', number: '121' },
   { title: 'Most Valuable Awards', number: '15' },
 ];
+
 const teamData = [
   {
     memberImg: '/images/studio-agency/team_1.jpeg',
@@ -67,41 +68,19 @@ const teamData = [
     href: '/team/team-details',
   },
 ];
+
 const brandList = [
-  {
-    logoSrc: '/images/marketing-agency/brand_1.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_2.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_3.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_4.svg',
-    logoAlt: 'Brand',
-  },
+  { logoSrc: '/images/marketing-agency/brand_1.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_2.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_3.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_4.svg', logoAlt: 'Brand' },
 ];
+
 const brandListDark = [
-  {
-    logoSrc: '/images/marketing-agency/brand_1_dark.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_2_dark.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_3_dark.svg',
-    logoAlt: 'Brand',
-  },
-  {
-    logoSrc: '/images/marketing-agency/brand_4_dark.svg',
-    logoAlt: 'Brand',
-  },
+  { logoSrc: '/images/marketing-agency/brand_1_dark.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_2_dark.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_3_dark.svg', logoAlt: 'Brand' },
+  { logoSrc: '/images/marketing-agency/brand_4_dark.svg', logoAlt: 'Brand' },
 ];
 
 export default function AboutPage({ darkMode }) {
@@ -117,34 +96,45 @@ export default function AboutPage({ darkMode }) {
         shape="shape_1"
       />
       <Spacing lg="75" md="60" />
-      <AboutStyle4
-        thumbnailSrc="/images/digital-agency/about_1.jpeg"
-        miniTitle="Company Info"
+      
+      {/* About Section using available About component */}
+      <About
+        thumbnail="/images/digital-agency/about_1.jpeg"
+        uperTitle="Company Info"
         title="Marketing agency for your business"
-        subTitle="Our team, specializing in strategic digital marketing, partners with aiming the world's leading brands. Breaking from the norm, we push boundaries and do merge imaginative thinking posible.
-        dolores eos qui ratione voluptatem lipe sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam ever the world lorem ipsum."
+        subTitle="Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking with real possibilities."
+        featureList={[
+          'Strategic Digital Marketing',
+          'Brand Development',
+          'Creative Solutions',
+          'Data-Driven Results',
+        ]}
         btnText="See Our Services"
         btnUrl="/service"
       />
+      
       <Spacing lg="125" md="70" />
       <div className="container">
         <FunFact data={funfactData} />
       </div>
       <Spacing lg="125" md="70" />
-      <AboutStyle5
-        variant="cs_type_1"
-        thumbnailSrc="/images/digital-agency/about_2.jpeg"
-        miniTitle="What We Do"
+      
+      {/* What We Do Section */}
+      <About
+        thumbnail="/images/digital-agency/about_2.jpeg"
+        uperTitle="What We Do"
         title="Best value service provider agency"
-        subTitle="We make specializing in strategic digital marketing, partners with aiming the world's leading brands. Breaking from the norm, we push boundaries and do merge imaginative thinking posible dolores."
-        progressBarList={[
-          { title: 'Digital Marketing', percentage: '75' },
-          { title: 'Brand Strategy', percentage: '85' },
-          { title: 'Competitor Analysis', percentage: '95' },
+        subTitle="We specialize in strategic digital marketing, partnering with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking with real possibilities."
+        featureList={[
+          'Digital Marketing Excellence',
+          'Brand Strategy Development',
+          'Competitor Analysis',
+          'Performance Optimization',
         ]}
-        salesTitle="Sales Increase"
-        groth="25"
+        btnText="Learn More"
+        btnUrl="/service"
       />
+      
       <Spacing lg="150" md="80" />
       <section className="cs_primary_bg">
         <Spacing lg="140" md="70" />
