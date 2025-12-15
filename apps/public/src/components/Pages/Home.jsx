@@ -35,7 +35,7 @@ const fallbackHero = {
 
 const fallbackFunfact = [
   { title: 'Happy Customers', number: '22k' },
-  { title: 'Work's Completed', number: '15k' },
+  { title: "Work's Completed", number: '15k' },
   { title: 'Skilled Team Members', number: '121' },
   { title: 'Most Valuable Awards', number: '15' },
 ];
