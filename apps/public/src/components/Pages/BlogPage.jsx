@@ -5,92 +5,36 @@ import PostStyle4 from '../Post/PostStyle4';
 import { Icon } from '@iconify/react';
 import Sidebar from '../Sidebar';
 import { pageTitle } from '../../helpers/PageTitle';
-const blogData = [
-  {
-    thumbnailSrc: '/images/blog/post_1.jpeg',
-    category: 'Branding',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_2.jpeg',
-    category: 'LifeStyle',
-    title: 'Best SEO practices for better web page rankings',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_3.jpeg',
-    category: 'Travel',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_4.jpeg',
-    category: 'Event',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_5.jpeg',
-    category: 'Tech',
-    title: 'Inspiration for creating compelling visuals',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_1.jpeg',
-    category: 'Branding',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_2.jpeg',
-    category: 'LifeStyle',
-    title: 'Best SEO practices for better web page rankings',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_3.jpeg',
-    category: 'Travel',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_4.jpeg',
-    category: 'Event',
-    title: 'Strategies for building a strong brand identity',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/blog/post_5.jpeg',
-    category: 'Tech',
-    title: 'Inspiration for creating compelling visuals',
-    subTitle:
-      'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge to help you stay ahead of the curve...',
-    href: '/blog/blog-details',
-  },
+import { useBlogPosts } from '../../hooks/useContent';
+
+// Static fallback data
+const fallbackPosts = [
+  { thumbnailSrc: '/images/blog/post_1.jpeg', category: 'Branding', title: 'Strategies for building a strong brand identity', subTitle: 'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge...', href: '/blog/blog-details' },
+  { thumbnailSrc: '/images/blog/post_2.jpeg', category: 'LifeStyle', title: 'Best SEO practices for better web page rankings', subTitle: 'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge...', href: '/blog/blog-details' },
+  { thumbnailSrc: '/images/blog/post_3.jpeg', category: 'Travel', title: 'Strategies for building a strong brand identity', subTitle: 'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge...', href: '/blog/blog-details' },
+  { thumbnailSrc: '/images/blog/post_4.jpeg', category: 'Event', title: 'Strategies for building a strong brand identity', subTitle: 'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge...', href: '/blog/blog-details' },
+  { thumbnailSrc: '/images/blog/post_5.jpeg', category: 'Tech', title: 'Inspiration for creating compelling visuals', subTitle: 'From social media to SEO, branding to lead generation, our team of experienced marketers shares their expertise and industry knowledge...', href: '/blog/blog-details' },
 ];
+
+function transformBlogData(posts) {
+  if (!posts || posts.length === 0) return fallbackPosts;
+  
+  return posts.map(p => ({
+    thumbnailSrc: p.featured_image_url || '/images/blog/post_1.jpeg',
+    category: p.category || 'General',
+    title: p.title,
+    subTitle: p.excerpt || p.meta_description || '',
+    href: `/blog/${p.slug}`,
+  }));
+}
 
 export default function BlogPage() {
   const [itemShow, setItemShow] = useState(4);
   pageTitle('Blog');
+  
+  const { posts, loading } = useBlogPosts({ limit: 50 });
+  const blogData = transformBlogData(posts);
+
   return (
     <>
       <Spacing lg="70" md="70" />

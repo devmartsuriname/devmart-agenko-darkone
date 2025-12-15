@@ -14,60 +14,77 @@ import Cta from '../Cta';
 import TestimonialSlider from '../Slider/TestimonialSlider';
 import PostCarousel from '../Slider/PostCarousel';
 import { pageTitle } from '../../helpers/PageTitle';
-const funfactData = [
+import {
+  useHeroSections,
+  useServices,
+  useProjects,
+  useTestimonials,
+  useAwards,
+  useBlogPosts,
+  useFaqs,
+} from '../../hooks/useContent';
+
+// ============================================
+// STATIC FALLBACK DATA
+// Used when CMS data is empty or loading
+// ============================================
+const fallbackHero = {
+  title: ['London Based Creative Agency', '25+ Years of Experience', '30+ Worldwide Partnership', 'Take World-class Service'],
+  subtitle: 'Craft Distinct Brand Image with Expert Guidance & Fresh Approach.',
+  videoSrc: 'https://www.youtube.com/embed/VcaAVWtP48A',
+  bgUrl: '/images/creative-agency/hero_video_bg_1.jpeg',
+};
+
+const fallbackFunfact = [
   { title: 'Happy Customers', number: '22k' },
-  { title: 'Work’s Completed', number: '15k' },
+  { title: 'Work's Completed', number: '15k' },
   { title: 'Skilled Team Members', number: '121' },
   { title: 'Most Valuable Awards', number: '15' },
 ];
-const whyChoseFeatureData = [
+
+const fallbackWhyChose = [
   {
     title: 'Talented, professional & expert team',
-    content:
-      'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
+    content: 'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
   },
   {
     title: 'Highly accuracy AI based system',
-    content:
-      'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
+    content: 'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
   },
   {
     title: 'Secret successful brand strategy formula',
-    content:
-      'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
+    content: 'Our team, specializing in strategic digital marketing, are not partners with the world is leading brands. Breaking from the norm, we push boundaries and merge.',
   },
 ];
-const serviceListData = [
+
+const fallbackServices = [
   {
     title: 'WP Development',
-    subtitle:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
+    subtitle: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
     imgUrl: '/images/creative-agency/service_7.jpeg',
     href: '/service/service-details',
   },
   {
     title: 'UI/UX Design',
-    subtitle:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
+    subtitle: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
     imgUrl: '/images/creative-agency/service_8.jpeg',
     href: '/service/service-details',
   },
   {
     title: 'Branding',
-    subtitle:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
+    subtitle: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
     imgUrl: '/images/creative-agency/service_9.jpeg',
     href: '/service/service-details',
   },
   {
     title: 'Social Ad Campaign',
-    subtitle:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
+    subtitle: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium lorema doloremque laudantium, totam rem aperiam, eaque ipsa quae.',
     imgUrl: '/images/creative-agency/service_10.jpeg',
     href: '/service/service-details',
   },
 ];
-const portfolioData = [
+
+const fallbackProjects = [
   {
     href: '/portfolio/portfolio-details',
     imgUrl: '/images/creative-agency/portfolio_1.jpeg',
@@ -93,33 +110,32 @@ const portfolioData = [
     btnText: 'See Project',
   },
 ];
-const awardData = [
+
+const fallbackAwards = [
   {
     brand: 'Behance',
     title: 'UI/UX design of the month',
-    subTitle:
-      'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
+    subTitle: 'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
     date: 'December 12, 2023',
     awardImgUrl: '/images/creative-agency/award_img_1.svg',
   },
   {
     brand: 'Awwwards',
     title: 'CSS awards design',
-    subTitle:
-      'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
+    subTitle: 'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
     date: 'January 05, 2022',
     awardImgUrl: '/images/creative-agency/award_img_2.svg',
   },
   {
     brand: 'Google',
     title: 'Website of the day',
-    subTitle:
-      'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
+    subTitle: 'Accusamus et iusto odio dignissimos ducimus qui blanditiis fedarals praesentium voluptatum deleniti atque corrupti quos dolores',
     date: 'March 20, 2021',
     awardImgUrl: '/images/creative-agency/award_img_3.svg',
   },
 ];
-const testimonialData = [
+
+const fallbackTestimonials = [
   {
     text: 'Zivans Motion Graphics did an excellent job on my video related projects. The motion graphics added an extra layer of polish and really brought the video to life. I highly recommend their high quality services and work.',
     avatarName: 'Ansari Patron',
@@ -136,111 +152,167 @@ const testimonialData = [
     avatarDesignation: 'MD at Delta',
   },
 ];
-const faqData = [
+
+const fallbackFaqs = [
   {
     title: '01. I need your services and how can i contact you throw email?',
-    content:
-      'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born.',
+    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
   },
   {
     title: '02. What are the different types of service we provide?',
-    content:
-      'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born.',
+    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
   },
   {
     title: '03. What are the different stages of the working process?',
-    content:
-      'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born.',
+    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
   },
   {
     title: '04. What is the difference between direct and digital marketing?',
-    content:
-      'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born.',
+    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
   },
   {
     title: '05. How can i payment proceed after complete project?',
-    content:
-      'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born.',
+    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
   },
 ];
 
-const postData = [
-  {
-    thumbnailSrc: '/images/creative-agency/post_1.jpeg',
-    title: 'How to keep fear from ruining your art business with confident',
-    date: '07 Mar 2023',
-    url: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_2.jpeg',
-    title: 'Artistic mind will be great for creation anything',
-    date: '22 Apr 2023',
-    url: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_3.jpeg',
-    title: 'AI will take over all job for human within few years',
-    date: '13 May 2023',
-    url: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_4.jpeg',
-    title: 'Your agency need to replace some artistic mind people',
-    date: '15 Mar 2023',
-    url: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_1.jpeg',
-    title: 'How to keep fear from ruining your art business with confident',
-    date: '07 Mar 2023',
-    url: '/blog/blog-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_2.jpeg',
-    title: 'Artistic mind will be great for creation anything',
-    date: '22 Apr 2023',
-    url: '/portfolio/portfolio-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_3.jpeg',
-    title: 'AI will take over all job for human within few years',
-    date: '13 May 2023',
-    url: '/portfolio/portfolio-details',
-  },
-  {
-    thumbnailSrc: '/images/creative-agency/post_4.jpeg',
-    title: 'Your agency need to replace some artistic mind people',
-    date: '15 Mar 2023',
-    url: '/portfolio/portfolio-details',
-  },
+const fallbackPosts = [
+  { thumbnailSrc: '/images/creative-agency/post_1.jpeg', title: 'How to keep fear from ruining your art business with confident', date: '07 Mar 2023', url: '/blog/blog-details' },
+  { thumbnailSrc: '/images/creative-agency/post_2.jpeg', title: 'Artistic mind will be great for creation anything', date: '22 Apr 2023', url: '/blog/blog-details' },
+  { thumbnailSrc: '/images/creative-agency/post_3.jpeg', title: 'AI will take over all job for human within few years', date: '13 May 2023', url: '/blog/blog-details' },
+  { thumbnailSrc: '/images/creative-agency/post_4.jpeg', title: 'Your agency need to replace some artistic mind people', date: '15 Mar 2023', url: '/blog/blog-details' },
 ];
 
+const fallbackLayeredImages = [
+  '/images/creative-agency/layer_img_1.jpeg',
+  '/images/creative-agency/layer_img_2.jpeg',
+  '/images/creative-agency/layer_img_3.jpeg',
+  '/images/creative-agency/layer_img_4.jpeg',
+  '/images/creative-agency/layer_img_5.jpeg',
+];
+
+// ============================================
+// DATA TRANSFORMERS
+// Map CMS data to component props
+// ============================================
+function transformHeroData(heroes) {
+  if (!heroes || heroes.length === 0) return fallbackHero;
+  
+  const hero = heroes[0]; // Use first active hero
+  return {
+    title: hero.heading ? [hero.heading] : fallbackHero.title,
+    subtitle: hero.subheading || fallbackHero.subtitle,
+    videoSrc: hero.background_video_url || fallbackHero.videoSrc,
+    bgUrl: hero.background_image_url || fallbackHero.bgUrl,
+  };
+}
+
+function transformServicesData(services) {
+  if (!services || services.length === 0) return fallbackServices;
+  
+  return services.map(s => ({
+    title: s.title,
+    subtitle: s.short_description || '',
+    imgUrl: s.image_url || '/images/creative-agency/service_7.jpeg',
+    href: `/service/${s.slug}`,
+  }));
+}
+
+function transformProjectsData(projects) {
+  if (!projects || projects.length === 0) return fallbackProjects;
+  
+  return projects.map(p => ({
+    href: `/portfolio/${p.slug}`,
+    imgUrl: p.thumbnail_url || p.featured_image_url || '/images/creative-agency/portfolio_1.jpeg',
+    title: p.title,
+    btnText: 'See Project',
+  }));
+}
+
+function transformAwardsData(awards) {
+  if (!awards || awards.length === 0) return fallbackAwards;
+  
+  return awards.map(a => ({
+    brand: a.issuer || 'Award',
+    title: a.title,
+    subTitle: a.description || '',
+    date: a.year ? `Year ${a.year}` : '',
+    awardImgUrl: a.image_url || '/images/creative-agency/award_img_1.svg',
+  }));
+}
+
+function transformTestimonialsData(testimonials) {
+  if (!testimonials || testimonials.length === 0) return fallbackTestimonials;
+  
+  return testimonials.map(t => ({
+    text: t.quote,
+    avatarName: t.client_name,
+    avatarDesignation: t.client_role ? `${t.client_role}${t.client_company ? ` at ${t.client_company}` : ''}` : (t.client_company || ''),
+  }));
+}
+
+function transformFaqsData(faqs) {
+  if (!faqs || faqs.length === 0) return fallbackFaqs;
+  
+  return faqs.map((f, index) => ({
+    title: `${String(index + 1).padStart(2, '0')}. ${f.question}`,
+    content: f.answer,
+  }));
+}
+
+function transformBlogPostsData(posts) {
+  if (!posts || posts.length === 0) return fallbackPosts;
+  
+  return posts.map(p => ({
+    thumbnailSrc: p.featured_image_url || '/images/creative-agency/post_1.jpeg',
+    title: p.title,
+    date: p.published_at ? new Date(p.published_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
+    url: `/blog/${p.slug}`,
+  }));
+}
+
+// ============================================
+// HOME COMPONENT
+// ============================================
 export default function Home() {
   pageTitle('Zivan');
+
+  // Fetch CMS data (READ-ONLY)
+  const { heroes, loading: heroLoading } = useHeroSections();
+  const { services, loading: servicesLoading } = useServices();
+  const { projects, loading: projectsLoading } = useProjects({ featuredOnly: true });
+  const { testimonials, loading: testimonialsLoading } = useTestimonials();
+  const { awards, loading: awardsLoading } = useAwards();
+  const { posts, loading: postsLoading } = useBlogPosts({ limit: 8 });
+  const { faqs, loading: faqsLoading } = useFaqs();
+
+  // Transform CMS data with fallbacks
+  const heroData = transformHeroData(heroes);
+  const serviceListData = transformServicesData(services);
+  const portfolioData = transformProjectsData(projects);
+  const awardData = transformAwardsData(awards);
+  const testimonialData = transformTestimonialsData(testimonials);
+  const faqData = transformFaqsData(faqs);
+  const postData = transformBlogPostsData(posts);
+
   return (
     <>
       <Hero
-        title={[
-          'London Based Creative Agency',
-          '25+ Years of Experience',
-          '30+ Worldwide Partnership',
-          'Take World-class Service',
-        ]}
-        subtitle="Craft Distinct Brand Image with Expert Guidance & Fresh Approach."
-        videoSrc="https://www.youtube.com/embed/VcaAVWtP48A"
-        bgUrl="/images/creative-agency/hero_video_bg_1.jpeg"
+        title={heroData.title}
+        subtitle={heroData.subtitle}
+        videoSrc={heroData.videoSrc}
+        bgUrl={heroData.bgUrl}
       />
       <Spacing lg="125" md="70" />
       <div className="container">
-        <FunFact data={funfactData} />
+        <FunFact data={fallbackFunfact} />
       </div>
       <Spacing lg="125" md="70" />
       <About
         thumbnail="/images/creative-agency/about_1.jpeg"
         uperTitle="Who We Are"
         title="Full-stack creatives and designing agency"
-        subTitle="Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking, consumer behavior,
-        and data-driven design with advanced technology to deliver unparalleled brand experiences."
+        subTitle="Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking, consumer behavior, and data-driven design with advanced technology to deliver unparalleled brand experiences."
         featureList={[
           'Designing content with AI power',
           'Trending marketing tools involve',
@@ -253,7 +325,7 @@ export default function Home() {
       <WhyChose
         sectionTitle="We have depth of market knowledge"
         sectionSubTitle="Why Choose Us"
-        whyChoseFeatureData={whyChoseFeatureData}
+        whyChoseFeatureData={fallbackWhyChose}
         thumbnailSrc="/images/creative-agency/why_choose_us_img_3.jpeg"
       />
       <Spacing lg="150" md="80" />
@@ -319,13 +391,7 @@ export default function Home() {
         <Spacing lg="150" md="80" />
       </section>
       <TestimonialSlider
-        layeredImages={[
-          '/images/creative-agency/layer_img_1.jpeg',
-          '/images/creative-agency/layer_img_2.jpeg',
-          '/images/creative-agency/layer_img_3.jpeg',
-          '/images/creative-agency/layer_img_4.jpeg',
-          '/images/creative-agency/layer_img_5.jpeg',
-        ]}
+        layeredImages={fallbackLayeredImages}
         data={testimonialData}
       />
       <section>
