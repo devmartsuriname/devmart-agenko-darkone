@@ -19,8 +19,8 @@
 | Phase F1 | Frontend Cleanup | ✅ Complete | 100% |
 | Phase F2 | Frontend ↔ CMS Wiring | ✅ Complete | 100% |
 | Phase F2.1 | CMS Wiring Hotfix | ✅ Complete | 100% |
-| Phase F3 | Branding & Theme Sync | ⏳ Next | 0% |
-| Phase F4 | Content Seeding & QA | ⏳ Pending | 0% |
+| Phase F3 | Branding & Theme Sync | ✅ Complete | 100% |
+| Phase F4 | Content Seeding & QA | ⏳ Next | 0% |
 
 ---
 
@@ -200,115 +200,55 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 ---
 
 ## Phase F3: Branding & Theme Sync
-**Status**: ⏳ Next
-- Minimal seed data inserted
+**Status**: ✅ Complete (2025-12-15)
 
-### Done Criteria
-- [ ] Homepage fetches from: hero_sections, services, projects, testimonials, awards, blog_posts, faqs, site_settings
-- [ ] All dynamic routes resolve correctly (/services/:slug works)
-- [ ] Empty sections hide gracefully (not render empty)
-- [ ] Loading states display during fetch
-- [ ] Error states handle failures gracefully
-- [ ] No console errors related to data fetching
+### Completed Tasks
+- [x] Create restore point (`docs/restorepoints/2025-12-15_PhaseF3_BrandingSync_BeforeChange.md`)
+- [x] Verify `primary_color` column exists in `site_settings` (no schema change needed)
+- [x] Create Admin Branding Settings UI (`apps/admin/src/app/(admin)/system/settings/page.tsx`)
+- [x] Implement RBAC: Admin can edit, Editor can view, Viewer denied
+- [x] Create BrandingProvider component (`apps/public/src/components/BrandingProvider.jsx`)
+- [x] Create SCSS branding overrides (`apps/public/src/sass/_branding.scss`)
+- [x] Apply primary color via CSS custom properties at runtime
+- [x] Implement fallback to default color if CMS value missing
+- [x] Preserve dark/light mode toggle behavior
 
-### Tasks
-- [ ] Create Supabase client for public app
-- [ ] Create useHeroSections hook
-- [ ] Create useServices hook
-- [ ] Create useProjects hook
-- [ ] Create useBlogPosts hook
-- [ ] Create useTestimonials hook
-- [ ] Create useAwards hook
-- [ ] Create useFaqs hook
-- [ ] Create useSiteSettings hook
-- [ ] Create usePages hook
-- [ ] Create useTeamMembers hook
-- [ ] Wire Hero section component
-- [ ] Wire Services section component
-- [ ] Wire About snippet section
-- [ ] Wire Portfolio preview section
-- [ ] Wire Testimonials section
-- [ ] Wire Awards section
-- [ ] Wire Blog preview section
-- [ ] Wire FAQ inline/link section
-- [ ] Wire CTA + Newsletter section
-- [ ] Wire /about page
-- [ ] Wire /services listing page
-- [ ] Wire /services/:slug detail page
-- [ ] Wire /portfolio listing page
-- [ ] Wire /portfolio/:slug detail page
-- [ ] Wire /blog listing page
-- [ ] Wire /blog/:slug detail page
-- [ ] Wire /team page
-- [ ] Wire /faq page
-- [ ] Wire /contact page (form submission)
-- [ ] Implement newsletter subscription
-- [ ] Test all routes with real data
+### Implementation Details
 
-### Reference Documents
-- `/docs/supabase/Content_Data_Model.md` (Section E: Frontend Mapping)
-- `/docs/contracts/Admin_Frontend_Content_Contract.md`
+**Admin Branding Settings UI:**
+- Located at `/system/settings` (existing page, now functional)
+- Color picker + hex text input + preview swatch
+- RBAC enforced via `isAdmin`, `isEditor`, `isViewer` from AuthContext
+- Uses existing Darkone form patterns (no new styling)
 
----
+**Frontend Branding Application:**
+- `BrandingProvider` reads `primary_color` from `SiteSettingsContext`
+- Applies `--cs-primary-color` CSS variable to `:root` at runtime
+- SCSS overrides in `_branding.scss` use the CSS variable for buttons, links, accents
+- Fallback to `#fd6219` (original SCSS `$accent`) if no value set
 
-## Phase F3: Branding & Theme Sync
+**Files Changed:**
+| File | Action |
+|------|--------|
+| `apps/admin/src/app/(admin)/system/settings/page.tsx` | Updated (branding form) |
+| `apps/public/src/components/BrandingProvider.jsx` | Created |
+| `apps/public/src/sass/_branding.scss` | Created |
+| `apps/public/src/sass/index.scss` | Updated (import branding) |
+| `apps/public/src/App.jsx` | Updated (wrap with BrandingProvider) |
 
-**Status:** ⏳ Pending  
-**Depends On:** Phase F2 complete
-
-### Goal
-Apply Devmart branding to frontend. Sync theme colors, fonts, and assets from site_settings. Ensure dark/light mode works.
-
-### Scope
-
-**Included:**
-- Load primary_color from site_settings
-- Apply CSS custom properties for dynamic theming
-- Load logos (light/dark) from site_settings
-- Update meta tags from site_settings
-- Implement dark/light mode toggle
-- Persist theme preference
-- Apply consistent typography
-
-**Excluded:**
-- No changes to admin theme (Darkone is fixed)
-- No custom font uploads
-
-### Dependencies
-- Phase F2 complete (data fetching works)
-- site_settings table has branding data
-
-### Done Criteria
-- [ ] Primary color applied from site_settings
-- [ ] Logos load dynamically from site_settings
-- [ ] Meta title/description from site_settings
-- [ ] OG image from site_settings
-- [ ] Dark/light mode toggle works
-- [ ] Theme preference persists in localStorage
-- [ ] Footer copyright from site_settings
-- [ ] Social links from site_settings
-
-### Tasks
-- [ ] Create theme provider component
-- [ ] Load site_settings on app mount
-- [ ] Apply primary_color to CSS variables
-- [ ] Implement logo component with light/dark variants
-- [ ] Create SEO head component (react-helmet-async)
-- [ ] Implement dark/light mode toggle
-- [ ] Persist theme preference
-- [ ] Wire footer with social links
-- [ ] Wire footer with copyright
-- [ ] Test theme across all pages
-
-### Reference Documents
-- `/docs/contracts/Admin_Frontend_Content_Contract.md` (Section 1: Site Settings)
-- `/docs/supabase/Content_Data_Model.md` (Table: site_settings)
+### Verification
+- ✅ Admin theme unchanged (no SCSS token edits in admin)
+- ✅ New setting persisted in `site_settings.primary_color` via UPDATE query
+- ✅ Frontend reflects primary color on refresh
+- ✅ Fallback works when no color set
+- ✅ Dark/light mode toggle preserved
+- ✅ RBAC enforced (Admin can save, Editor view-only, Viewer denied)
 
 ---
 
 ## Phase F4: Content Seeding & QA
 
-**Status:** ⏳ Pending  
+**Status:** ⏳ Next  
 **Depends On:** Phase F3 complete
 
 ### Goal

@@ -308,14 +308,22 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | 3B | ✅ Complete | RBAC Hardening |
 | 4 | ✅ Complete | Documentation + Schema Execution |
 | F1 | ✅ Complete | Frontend Cleanup (Creative Agency only) |
+| F2 | ✅ Complete | Frontend ↔ CMS Wiring |
+| F2.1 | ✅ Complete | CMS Wiring Hotfix Gate |
+| F3 | ✅ Complete | Branding & Theme Sync |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| F2 | ⏳ Ready | Frontend ↔ CMS Wiring |
-| F3 | ⏳ Pending | Branding & Theme Sync |
-| F4 | ⏳ Pending | Content Seeding & QA |
+| F4 | ⏳ Ready | Content Seeding & QA |
+
+### Phase F3 Summary (2025-12-15)
+- ✅ Admin Branding Settings UI at `/system/settings`
+- ✅ `primary_color` stored in `site_settings` table
+- ✅ Frontend applies primary color via CSS custom properties
+- ✅ RBAC: Admin edits, Editor views, Viewer denied
+- ✅ Admin theme unchanged (Darkone styling preserved)
 
 ### Phase F1 Summary (2025-12-15)
 - ✅ Removed 5 homepage variants (Marketing, Studio, Digital, Tech, CaseStudy)

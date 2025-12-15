@@ -1,0 +1,79 @@
+/*--------------------------------------------------------------
+## CMS-Driven Branding Overrides
+----------------------------------------------------------------*/
+
+/**
+ * This file provides CSS custom property overrides for dynamic branding.
+ * The --cs-primary-color variable is set at runtime by BrandingProvider.jsx
+ * based on the primary_color value from site_settings table.
+ */
+
+:root {
+  // Default fallback (matches $accent in _color_variable.scss)
+  --cs-primary-color: #fd6219;
+  --cs-primary-color-rgb: 253, 98, 25;
+}
+
+// Override accent color where CSS custom properties are supported
+// This allows CMS-driven primary color without modifying SCSS variables
+
+// Buttons
+.cs_btn.cs_style_1 {
+  background-color: var(--cs-primary-color) !important;
+  
+  &:hover {
+    background-color: var(--cs-primary-color) !important;
+    filter: brightness(1.1);
+  }
+}
+
+// Links hover state
+a:hover {
+  color: var(--cs-primary-color);
+}
+
+// Accent text
+.cs_accent_color {
+  color: var(--cs-primary-color) !important;
+}
+
+// Accent background
+.cs_accent_bg {
+  background-color: var(--cs-primary-color) !important;
+}
+
+// Icon boxes with accent
+.cs_iconbox.cs_style_1 .cs_iconbox_icon {
+  color: var(--cs-primary-color);
+}
+
+// Counter accent
+.cs_counter.cs_style_1 .cs_counter_number {
+  color: var(--cs-primary-color);
+}
+
+// Portfolio hover
+.cs_portfolio.cs_style_1 .cs_portfolio_overlay {
+  background: rgba(var(--cs-primary-color-rgb), 0.9);
+}
+
+// Testimonial accent
+.cs_testimonial.cs_style_1 .cs_testimonial_quote {
+  color: var(--cs-primary-color);
+}
+
+// CTA section
+.cs_cta.cs_style_1 .cs_btn {
+  background-color: var(--cs-primary-color);
+}
+
+// Section title accent
+.cs_section_title .cs_accent {
+  color: var(--cs-primary-color);
+}
+
+// Loading spinner
+.cs_spinner {
+  border-color: var(--cs-primary-color);
+  border-top-color: transparent;
+}
