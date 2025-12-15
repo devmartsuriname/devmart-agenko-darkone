@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase 4 — Documentation (In Progress)**
+**Phase F1 — Frontend Cleanup (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -16,8 +16,9 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase 2 — Admin Cleanup | ✅ Complete |
 | Phase 3A — Supabase Auth | ✅ Complete |
 | Phase 3B — RBAC Hardening | ✅ Complete |
-| **Phase 4 — Documentation** | 🔄 In Progress |
-| Phase 5 — Frontend Cleanup | ⏸️ Pending |
+| Phase 4 — Schema Execution | ✅ Complete |
+| **Phase F1 — Frontend Cleanup** | ✅ Complete |
+| Phase F2 — Frontend ↔ CMS Wiring | ⏳ Ready |
 
 ### Frontend Documents (Created)
 
