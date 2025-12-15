@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase F1 — Frontend Cleanup (Complete)**
+**Phase F2.1 — CMS Wiring Hotfix (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -17,8 +17,10 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase 3A — Supabase Auth | ✅ Complete |
 | Phase 3B — RBAC Hardening | ✅ Complete |
 | Phase 4 — Schema Execution | ✅ Complete |
-| **Phase F1 — Frontend Cleanup** | ✅ Complete |
-| Phase F2 — Frontend ↔ CMS Wiring | ⏳ Ready |
+| Phase F1 — Frontend Cleanup | ✅ Complete |
+| **Phase F2 — Frontend ↔ CMS Wiring** | ✅ Complete |
+| **Phase F2.1 — CMS Wiring Hotfix** | ✅ Complete |
+| Phase F3 — Branding & Theme Sync | ⏳ Next |
 
 ### Frontend Documents (Created)
 
@@ -42,10 +44,11 @@ See [`/docs/planned/README.md`](./planned/README.md) for remaining planned docs.
 ## Current State
 
 - **Backend:** Supabase (connected)
-- **Database:** PostgreSQL via Supabase
+- **Database:** PostgreSQL via Supabase (12 CMS tables + RBAC tables)
 - **Authentication:** Supabase Auth (email/password)
-- **Storage:** Not yet configured
+- **Storage:** Configured (media + documents buckets)
 - **RBAC:** user_profiles + user_roles tables
+- **Frontend CMS Wiring:** Complete (READ-ONLY SELECT queries)
 
 ## Supabase Configuration
 

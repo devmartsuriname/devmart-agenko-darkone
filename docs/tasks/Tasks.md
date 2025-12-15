@@ -17,8 +17,9 @@
 | Phase 3B | RBAC Hardening | ✅ Complete | 100% |
 | Phase 4 | Documentation & Schema | ✅ Complete | 100% |
 | Phase F1 | Frontend Cleanup | ✅ Complete | 100% |
-| Phase F2 | Frontend ↔ CMS Wiring | ⏳ Ready | 0% |
-| Phase F3 | Branding & Theme Sync | ⏳ Pending | 0% |
+| Phase F2 | Frontend ↔ CMS Wiring | ✅ Complete | 100% |
+| Phase F2.1 | CMS Wiring Hotfix | ✅ Complete | 100% |
+| Phase F3 | Branding & Theme Sync | ⏳ Next | 0% |
 | Phase F4 | Content Seeding & QA | ⏳ Pending | 0% |
 
 ---
@@ -147,32 +148,59 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 ---
 
 ## Phase F2: Frontend ↔ CMS Wiring
+**Status**: ✅ Complete (2025-12-15)
 
-**Status:** ⏳ Ready  
-**Depends On:** Phase F1 complete ✅
+### Completed Tasks
+- [x] Create Supabase client for public app (`apps/public/src/lib/supabase.js`)
+- [x] Implement data fetching hooks (`apps/public/src/hooks/useContent.js`)
+- [x] Wire homepage sections to CMS tables (hero, services, projects, testimonials, awards, blog)
+- [x] Wire individual pages (ServicePage, PortfolioPage, TeamPage, BlogPage)
+- [x] Implement loading states with static fallbacks
+- [x] All queries are SELECT-only (READ-ONLY)
 
-### Goal
-Connect frontend components to Supabase CMS tables. Homepage sections fetch real data. All public routes work with CMS content.
+### Tables Wired
+| Table | Hook | Used By |
+|-------|------|---------|
+| `hero_sections` | `useHeroSections()` | Home |
+| `services` | `useServices()` | Home, ServicePage, Footer |
+| `projects` | `useProjects()` | Home, PortfolioPage |
+| `testimonials` | `useTestimonials()` | Home |
+| `awards` | `useAwards()` | Home |
+| `blog_posts` | `useBlogPosts()` | Home, BlogPage |
+| `team_members` | `useTeamMembers()` | TeamPage |
+| `faqs` | `useFaqs()` | FaqPage |
 
-### Scope
+---
 
-**Included:**
-- Create Supabase client for public app
-- Implement data fetching hooks per content type
-- Wire homepage sections to CMS tables
-- Wire individual pages (About, Services, etc.)
-- Implement dynamic routes (/services/:slug, /portfolio/:slug, /blog/:slug)
-- Handle empty states gracefully
-- Implement loading states
+## Phase F2.1: CMS Wiring Hotfix Gate
+**Status**: ✅ Complete (2025-12-15)
 
-**Excluded:**
-- No admin CRUD UI (out of scope for frontend)
-- No authentication on public site
-- No branding changes yet
+### Completed Tasks
+- [x] Wire `site_settings` to Header/Footer via SiteSettingsContext
+- [x] Create standalone `/faq` route with FaqPage component
+- [x] Remove FAQ section from Home (per Content Contract)
+- [x] Clean Header navigation (removed deprecated variants)
+- [x] Wire Footer to use services from CMS
+- [x] Add newsletter submission TODO placeholder (Phase F4)
+- [x] Add contact form submission TODO placeholder (Phase F4)
+- [x] Update documentation
 
-### Dependencies
-- Phase F1 complete (cleanup done)
-- Phase 4 schema executed (tables exist with RLS)
+### Additional Tables Wired
+| Table | Hook | Used By |
+|-------|------|---------|
+| `site_settings` | `useSiteSettings()` | SiteSettingsContext → Header, Footer |
+| `faqs` | `useFaqs()` | FaqPage (standalone) |
+
+### Contract Compliance
+- ✅ `/faq` is standalone route (not embedded in Home)
+- ✅ Newsletter form present with TODO for Phase F4 INSERT
+- ✅ Contact form present with TODO for Phase F4 INSERT
+- ✅ All queries remain SELECT-only
+
+---
+
+## Phase F3: Branding & Theme Sync
+**Status**: ⏳ Next
 - Minimal seed data inserted
 
 ### Done Criteria

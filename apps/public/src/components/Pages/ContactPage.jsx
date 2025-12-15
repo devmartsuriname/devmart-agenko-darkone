@@ -3,9 +3,32 @@ import Spacing from '../Spacing';
 import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
 import { pageTitle } from '../../helpers/PageTitle';
 import { Icon } from '@iconify/react';
+import { useSiteSettingsContext } from '../../context/SiteSettingsContext';
 
 export default function ContactPage() {
   pageTitle('Contact');
+  const { settings } = useSiteSettingsContext();
+
+  /**
+   * TODO: Phase F4 will implement contact form submission
+   * This will INSERT into contact_submissions table with fields:
+   * - name (required)
+   * - email (required)
+   * - subject (optional)
+   * - message (required)
+   * - ip_address (captured server-side)
+   * - user_agent (captured server-side)
+   * 
+   * Reference: docs/contracts/Admin_Frontend_Content_Contract.md
+   * Reference: docs/tasks/Tasks.md (Phase F4)
+   */
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Phase F4 - INSERT into contact_submissions
+    console.log('[Contact] Form submission placeholder - Phase F4 will implement');
+    alert('Contact form submission coming soon!');
+  };
+
   return (
     <>
       <Spacing lg="70" md="70" />
@@ -28,56 +51,69 @@ export default function ContactPage() {
               <ul className="cs_mp0 cs_contact_info">
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Email:</h3>
-                  <p className="mb-0">hello@zivan.com</p>
+                  <p className="mb-0">hello@devmart.com</p>
                 </li>
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Phone:</h3>
-                  <p className="mb-0">+54 45 454 78 23</p>
+                  <p className="mb-0">+1 (555) 123-4567</p>
                 </li>
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Address:</h3>
-                  <p className="mb-0">55/53 Jay Pathshala Apt. 908, USA</p>
+                  <p className="mb-0">123 Creative Street, Design City</p>
                 </li>
               </ul>
             </div>
             <div className="col-lg-6">
               <div className="cs_contact_form_wrap">
                 <div className="cs_gray_bg_3 cs_contact_form_bg" />
-                <form className="cs_contact_form">
+                {/* TODO: Phase F4 - Wire to contact_submissions INSERT */}
+                <form className="cs_contact_form" onSubmit={handleContactSubmit}>
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
-                    Your full name
+                    Your full name *
                   </label>
                   <input
                     placeholder="Type your name"
                     type="text"
                     className="cs_form_field"
+                    name="name"
+                    required
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
-                    Give valid email
+                    Email address *
                   </label>
                   <input
                     placeholder="Type your email address"
-                    type="text"
+                    type="email"
                     className="cs_form_field"
+                    name="email"
+                    required
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
-                    Phone number
+                    Subject
                   </label>
                   <input
-                    placeholder="Type your phone number"
+                    placeholder="What is this regarding?"
                     type="text"
                     className="cs_form_field"
+                    name="subject"
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
-                    Project brief
+                    Your message *
                   </label>
-                  <textarea cols={30} rows={5} className="cs_form_field" />
+                  <textarea 
+                    cols={30} 
+                    rows={5} 
+                    className="cs_form_field"
+                    name="message"
+                    placeholder="Tell us about your project..."
+                    required
+                  />
                   <div className="cs_height_38 cs_height_lg_25" />
-                  <button className="cs_btn cs_style_1">
-                    Learn More{' '}
+                  <button type="submit" className="cs_btn cs_style_1">
+                    Send Message
                     <span>
                       <i>
                         <Icon icon="fa6-solid:arrow-right" />
