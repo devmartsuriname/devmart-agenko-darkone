@@ -1,5 +1,25 @@
 # System Architecture
 
+---
+
+## Active Documentation Set
+
+| Document | Location | Role |
+|----------|----------|------|
+| **Primary Kickoff** | [`/docs/kickoff/devmart-internal-platform-kickoff.md`](./kickoff/devmart-internal-platform-kickoff.md) | Project scope, phase gates, non-negotiables |
+| **Primary PRD** | [`/docs/prd/prd-devmart-internal-platform.md`](./prd/prd-devmart-internal-platform.md) | Platform-wide requirements (Admin + Frontend) |
+| **Secondary PRD** | [`/docs/prd/prd-devmart-company-website.md`](./prd/prd-devmart-company-website.md) | Frontend-specific requirements (Zivan) |
+| **Planned Docs** | [`/docs/planned/README.md`](./planned/README.md) | List of missing-but-planned documents |
+
+### Authoritative Documents
+
+- **Scope & Constraints:** Primary Kickoff Checklist
+- **Technical Requirements:** Primary PRD (Devmart Internal Platform)
+- **Frontend Details:** Secondary PRD (Devmart Company Website)
+- **Backend Schema:** [`/docs/backend.md`](./backend.md)
+
+---
+
 ## Monorepo Structure (Verified & Cleaned)
 
 ```
