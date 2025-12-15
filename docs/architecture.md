@@ -293,7 +293,11 @@ cd apps/public && bun install && bun run dev
 
 ---
 
-## Phase History
+## Phase History & Roadmap
+
+See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
+
+### Completed Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
@@ -302,7 +306,16 @@ cd apps/public && bun install && bun run dev
 | 2B | ✅ Complete | Dashboard placeholder |
 | 3A | ✅ Complete | Supabase Auth + RBAC foundation |
 | 3B | ✅ Complete | RBAC Hardening |
-| 4 | 🔄 In Progress | Documentation + Verification Gate |
+| 4 | 🔄 90% | Documentation + Verification Gate |
+
+### Upcoming Phases
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| F1 | ⏳ Pending | Frontend Cleanup (Creative Agency only) |
+| F2 | ⏳ Pending | Frontend ↔ CMS Wiring |
+| F3 | ⏳ Pending | Branding & Theme Sync |
+| F4 | ⏳ Pending | Content Seeding & QA |
 
 ### Phase 4 Verification Gate (2025-12-15)
 - ✅ Content Data Model documented
