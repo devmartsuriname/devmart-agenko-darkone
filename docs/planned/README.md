@@ -11,7 +11,8 @@ This folder tracks future documentation as phases progress.
 | Frontend Cleanup Plan | `/docs/frontend/frontend-cleanup-route-reduction-plan.md` | ✅ Created |
 | Frontend Variant Audit | `/docs/frontend/frontend-variant-audit.md` | ✅ Created |
 | Phased Plan (Reference) | `/docs/frontend/frontend-cleanup-phased-plan-reference.md` | ✅ Created |
-| **Admin ↔ Frontend Content Contract** | `/docs/contracts/Admin_Frontend_Content_Contract.md` | ✅ Created |
+| Admin ↔ Frontend Content Contract | `/docs/contracts/Admin_Frontend_Content_Contract.md` | ✅ Created (v2.0 FINAL) |
+| **Content Data Model (Supabase)** | `/docs/supabase/Content_Data_Model.md` | ✅ Created (Docs Only) |
 
 ---
 
@@ -21,8 +22,9 @@ The following documents are planned but not yet created:
 
 | Document | Purpose | Prerequisite |
 |----------|---------|--------------|
-| **Branding Settings Specification** | Define configurable branding fields (logo, colors, favicon) | Open Questions resolved in Content Contract |
-| **Content Data Model (Supabase)** | Full Supabase table definitions for CMS content types | Open Questions resolved in Content Contract |
+| **Branding Settings Specification** | Define configurable branding fields (logo, colors, favicon) | Covered in Content Data Model |
+
+> **Note:** Branding settings are now documented within the `site_settings` table definition in the Content Data Model. A separate document may not be needed.
 
 ---
 
