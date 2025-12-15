@@ -9,7 +9,6 @@ import Portfolio from '../Portfolio';
 import Button from '../Button';
 import SectionHeading from '../SectionHeading';
 import Award from '../Award';
-import Accordion from '../Accordion';
 import Cta from '../Cta';
 import TestimonialSlider from '../Slider/TestimonialSlider';
 import PostCarousel from '../Slider/PostCarousel';
@@ -21,7 +20,6 @@ import {
   useTestimonials,
   useAwards,
   useBlogPosts,
-  useFaqs,
 } from '../../hooks/useContent';
 
 // ============================================
@@ -153,28 +151,7 @@ const fallbackTestimonials = [
   },
 ];
 
-const fallbackFaqs = [
-  {
-    title: '01. I need your services and how can i contact you throw email?',
-    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-  },
-  {
-    title: '02. What are the different types of service we provide?',
-    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-  },
-  {
-    title: '03. What are the different stages of the working process?',
-    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-  },
-  {
-    title: '04. What is the difference between direct and digital marketing?',
-    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-  },
-  {
-    title: '05. How can i payment proceed after complete project?',
-    content: 'Marketing eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.',
-  },
-];
+// FAQ section moved to standalone /faq page per Content Contract
 
 const fallbackPosts = [
   { thumbnailSrc: '/images/creative-agency/post_1.jpeg', title: 'How to keep fear from ruining your art business with confident', date: '07 Mar 2023', url: '/blog/blog-details' },
@@ -251,14 +228,7 @@ function transformTestimonialsData(testimonials) {
   }));
 }
 
-function transformFaqsData(faqs) {
-  if (!faqs || faqs.length === 0) return fallbackFaqs;
-  
-  return faqs.map((f, index) => ({
-    title: `${String(index + 1).padStart(2, '0')}. ${f.question}`,
-    content: f.answer,
-  }));
-}
+// FAQ transformer removed - FAQ is now standalone /faq page
 
 function transformBlogPostsData(posts) {
   if (!posts || posts.length === 0) return fallbackPosts;
@@ -278,13 +248,12 @@ export default function Home() {
   pageTitle('Zivan');
 
   // Fetch CMS data (READ-ONLY)
-  const { heroes, loading: heroLoading } = useHeroSections();
-  const { services, loading: servicesLoading } = useServices();
-  const { projects, loading: projectsLoading } = useProjects({ featuredOnly: true });
-  const { testimonials, loading: testimonialsLoading } = useTestimonials();
-  const { awards, loading: awardsLoading } = useAwards();
-  const { posts, loading: postsLoading } = useBlogPosts({ limit: 8 });
-  const { faqs, loading: faqsLoading } = useFaqs();
+  const { heroes } = useHeroSections();
+  const { services } = useServices();
+  const { projects } = useProjects({ featuredOnly: true });
+  const { testimonials } = useTestimonials();
+  const { awards } = useAwards();
+  const { posts } = useBlogPosts({ limit: 8 });
 
   // Transform CMS data with fallbacks
   const heroData = transformHeroData(heroes);
@@ -292,7 +261,6 @@ export default function Home() {
   const portfolioData = transformProjectsData(projects);
   const awardData = transformAwardsData(awards);
   const testimonialData = transformTestimonialsData(testimonials);
-  const faqData = transformFaqsData(faqs);
   const postData = transformBlogPostsData(posts);
 
   return (
@@ -412,19 +380,9 @@ export default function Home() {
         </div>
         <PostCarousel data={postData} />
       </section>
-      <section>
-        <Spacing lg="143" md="75" />
-        <div className="container">
-          <SectionHeading title="Frequently asked question" subTitle="FAQs" />
-          <Spacing lg="55" md="30" />
-          <div className="row">
-            <div className="col-lg-10 offset-lg-1">
-              <Accordion variant="cs_type_1" data={faqData} />
-            </div>
-          </div>
-        </div>
-        <Spacing lg="120" md="50" />
-      </section>
+      {/* FAQ section moved to standalone /faq page per Content Contract */}
+      {/* See: apps/public/src/components/Pages/FaqPage.jsx */}
+      <Spacing lg="50" md="30" />
     </>
   );
 }
