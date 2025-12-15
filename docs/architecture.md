@@ -316,7 +316,15 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| F4 | ⏳ Ready | Content Seeding & QA |
+| A2 | ⏳ Next | Admin CRUD — Projects Module |
+
+### Phase A1 Summary (2025-12-15)
+- ✅ Services CRUD module complete
+- ✅ Route `/content/services` with RBAC
+- ✅ List, Create, Edit, Publish/Unpublish, Delete
+- ✅ Image upload to Supabase Storage
+- ✅ Slug uniqueness validation
+- ✅ Admin-only delete, Editor can publish
 
 ### Phase F3 Summary (2025-12-15)
 - ✅ Admin Branding Settings UI at `/system/settings`
@@ -331,6 +339,62 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 - ✅ Removed 4 Hero variants, 3 About variants, unused sliders
 - ✅ Cleaned App.jsx routing to Creative Agency only
 - ✅ Admin/CMS untouched
+
+---
+
+## Admin CRUD Pattern (Phase A1+)
+
+### Standard CRUD Module Structure
+```
+apps/admin/src/app/(admin)/content/{module}/
+├── page.tsx                    # List page with table
+└── components/
+    ├── {Module}Form.tsx        # Create/Edit modal
+    ├── {Module}DeleteModal.tsx # Delete confirmation
+    └── {Module}ImageUpload.tsx # Optional: image upload
+```
+
+### RBAC Requirements
+| Operation | Roles Required |
+|-----------|----------------|
+| View List | Admin, Editor |
+| Create | Admin, Editor |
+| Edit | Admin, Editor |
+| Publish/Unpublish | Admin, Editor |
+| Delete | Admin only |
+
+### Standard Features
+1. **List Page:** Sortable table with status badges, actions column
+2. **Create/Edit Form:** Modal with Zod validation, auto-slug generation
+3. **Image Upload:** Supabase Storage integration (media bucket)
+4. **Slug Uniqueness:** UI pre-check + DB constraint fallback
+5. **User Tracking:** `created_by` / `updated_by` fields
+6. **Toast Notifications:** Success/error feedback for all actions
+
+### Database Operations Pattern
+```typescript
+// Create
+const { error } = await supabase.from('table').insert({
+  ...data,
+  created_by: user.id,
+})
+
+// Update
+const { error } = await supabase.from('table').update({
+  ...data,
+  updated_by: user.id,
+}).eq('id', id)
+
+// Delete (Admin only)
+const { error } = await supabase.from('table').delete().eq('id', id)
+
+// Publish
+const { error } = await supabase.from('table').update({
+  status: 'published',
+  published_at: new Date().toISOString(),
+  updated_by: user.id,
+}).eq('id', id)
+```
 
 ---
 

@@ -328,4 +328,59 @@ Schema executed on 2025-12-15. All 12 tables created with RLS enabled.
 
 ---
 
-*Last updated: 2025-12-15 - Phase F3 Branding & Theme Sync Complete*
+## Phase A1: Admin CRUD — Services Module (Complete)
+
+**Implemented:** 2025-12-15
+
+### Overview
+First Admin CRUD module implementing full create/read/update/delete operations for the Services content type.
+
+### Route
+- **URL:** `/content/services`
+- **Component:** `apps/admin/src/app/(admin)/content/services/page.tsx`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Title, Status, Featured, Sort Order, Updated At, Actions |
+| Create | Modal form with Zod validation |
+| Edit | Same modal, pre-populated with existing data |
+| Publish/Unpublish | Toggle status + set `published_at` when publishing |
+| Delete | Admin-only with confirmation modal |
+| Image Upload | Supabase Storage (`media` bucket) |
+| Slug Check | UI pre-check for uniqueness + DB constraint fallback |
+
+### RBAC Matrix
+| Role | View | Create | Edit | Publish | Delete |
+|------|------|--------|------|---------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+### Files
+| File | Purpose |
+|------|---------|
+| `page.tsx` | List page with table and actions |
+| `components/ServiceForm.tsx` | Create/Edit modal with Zod validation |
+| `components/ServiceDeleteModal.tsx` | Admin-only delete confirmation |
+| `components/ServiceImageUpload.tsx` | Supabase Storage upload component |
+
+### Database Operations
+| Operation | Query | User Tracking |
+|-----------|-------|---------------|
+| Create | `supabase.from('services').insert(data)` | `created_by: user.id` |
+| Update | `supabase.from('services').update(data).eq('id', id)` | `updated_by: user.id` |
+| Delete | `supabase.from('services').delete().eq('id', id)` | Admin only |
+| Publish | Update `status: 'published'` + `published_at: now()` | `updated_by: user.id` |
+
+### Image Upload Flow
+1. User selects or drops image file
+2. Validate type (JPG, PNG, WebP, GIF) and size (max 5MB)
+3. Upload to `media` bucket: `services/{timestamp}-{filename}`
+4. Get public URL and store in `image_url` field
+5. "Remove" clears DB field only (storage cleanup deferred)
+
+---
+
+*Last updated: 2025-12-15 - Phase A1 Services CRUD Complete*
