@@ -21,6 +21,8 @@
 | Phase F2.1 | CMS Wiring Hotfix | ✅ Complete | 100% |
 | Phase F3 | Branding & Theme Sync | ✅ Complete | 100% |
 | Phase F4 | Content Seeding | ✅ Complete | 100% |
+| Phase A1 | Services CRUD | ✅ Complete | 100% |
+| Phase A2 | Projects CRUD | ✅ Complete | 100% |
 
 ---
 
@@ -323,15 +325,56 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 
 ---
 
+## Phase A2: Admin CRUD Implementation — Projects Module ✅
+
+**Status:** ✅ Complete (2025-12-15)
+
+### Completed Tasks
+- [x] Create restore point (`docs/restorepoints/2025-12-15_PhaseA2_ProjectsCRUD_BeforeChange.md`)
+- [x] Projects List Page with table (Title, Category, Status, Featured, Sort Order, Updated, Actions)
+- [x] Create/Edit ProjectForm modal with Zod validation
+- [x] Tabbed form layout (Basic Info, Media, Details)
+- [x] Thumbnail image upload to Supabase Storage (`media` bucket)
+- [x] Featured image upload to Supabase Storage (`media` bucket)
+- [x] Gallery multi-image upload component (up to 10 images)
+- [x] Technologies tag/chip input component
+- [x] Slug uniqueness UI pre-check + DB fallback
+- [x] Publish/Unpublish toggle (Admin + Editor)
+- [x] Delete with confirmation modal (Admin only)
+- [x] RBAC enforced: Admin/Editor allowed, Viewer denied at route level
+- [x] Toast notifications for all actions
+- [x] Update documentation (Tasks.md)
+
+### RBAC Matrix
+| Role | View | Create | Edit | Publish | Delete |
+|------|------|--------|------|---------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+### Form Fields (matches DB schema exactly)
+- title, slug, short_description, content
+- thumbnail_url, featured_image_url, gallery_urls[]
+- client_name, project_url, technologies[], category
+- meta_title, meta_description
+- is_featured, status, sort_order
+
+### Files Created/Modified
+| File | Action |
+|------|--------|
+| `apps/admin/src/app/(admin)/content/projects/page.tsx` | Replaced |
+| `apps/admin/src/app/(admin)/content/projects/components/ProjectForm.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/projects/components/ProjectDeleteModal.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/projects/components/ProjectImageUpload.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/projects/components/ProjectGalleryUpload.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/projects/components/TechnologiesInput.tsx` | Created |
+| `docs/restorepoints/2025-12-15_PhaseA2_ProjectsCRUD_BeforeChange.md` | Created |
+
+---
+
 ## Future Phases (Out of Current Scope)
 
-### Phase A2: Admin CRUD — Projects Module (NEXT)
-- Implement CRUD for Projects table
-- Same pattern as Services module
-- Image gallery support
-- Technology tags
-
-### Phase A3: Admin CRUD — Remaining Content Modules
+### Phase A3: Admin CRUD — Remaining Content Modules (NEXT)
 - Blog Posts CRUD
 - Pages CRUD
 - Team Members CRUD
