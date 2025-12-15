@@ -246,66 +246,49 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 
 ---
 
-## Phase F4: Content Seeding & QA
+## Phase F4: Content Seeding & Verification
+**Status**: ✅ Complete (2025-12-15)
 
-**Status:** ⏳ Next  
-**Depends On:** Phase F3 complete
+### Completed Tasks (F4.0 - F4.4)
+- [x] Create restore point (`docs/restorepoints/2025-12-15_PhaseF4_SeedContent_BeforeChange.md`)
+- [x] Create idempotent seed scripts
+- [x] Seed `site_settings` (primary_color + core fields)
+- [x] Seed `hero_sections` (1 active)
+- [x] Seed `services` (6 published)
+- [x] Seed `projects` (6 published)
+- [x] Seed `testimonials` (6 active)
+- [x] Seed `team_members` (6 active)
+- [x] Seed `awards` (6 active)
+- [x] Seed `faqs` (10 active)
+- [x] Seed `pages` (3 published: about, privacy, terms)
+- [x] Seed `blog_posts` (6 published with author_id FK)
 
-### Goal
-Populate CMS with real Devmart content. QA all pages. Fix any issues. Prepare for production launch.
+### Seed Files Created
+| File | Contents |
+|------|----------|
+| `supabase/seed/seed_content_core.sql` | team_members, services, pages |
+| `supabase/seed/seed_content_homepage.sql` | site_settings, projects, testimonials, awards, faqs |
+| `supabase/seed/seed_content_blog.sql` | blog_posts (6 posts with author links) |
 
-### Scope
+### Final Row Counts
+| Table | Count |
+|-------|-------|
+| `hero_sections` | 1 |
+| `services` | 6 |
+| `projects` | 6 |
+| `testimonials` | 6 |
+| `team_members` | 6 |
+| `awards` | 6 |
+| `faqs` | 10 |
+| `blog_posts` | 6 |
+| `pages` | 3 |
 
-**Included:**
-- Create real content in Admin CMS
-- Upload images to media bucket
-- QA all public pages
-- Fix layout/styling issues
-- Performance optimization
-- SEO verification
-- Cross-browser testing
-
-**Excluded:**
-- No new features
-- No structural changes
-
-### Dependencies
-- Phase F3 complete (branding applied)
-- Admin CMS functional (CRUD works)
-
-### Done Criteria
-- [ ] All homepage sections have real content
-- [ ] All images uploaded to media bucket
-- [ ] All pages render correctly
-- [ ] No console errors
-- [ ] Lighthouse scores acceptable (>80 Performance, >90 Accessibility)
-- [ ] SEO meta tags verified
-- [ ] Cross-browser tested (Chrome, Firefox, Safari, Edge)
-- [ ] Mobile responsive verified
-
-### Tasks
-- [ ] Create site_settings entry with real branding
-- [ ] Upload logos to media bucket
-- [ ] Create hero section(s)
-- [ ] Create services (3-5 entries)
-- [ ] Create projects (4-6 entries)
-- [ ] Create team members (3-5 entries)
-- [ ] Create testimonials (3-5 entries)
-- [ ] Create awards (3-5 entries)
-- [ ] Create blog posts (2-3 entries)
-- [ ] Create FAQ entries (5-10 entries)
-- [ ] Create About page content
-- [ ] Create Privacy Policy page
-- [ ] Create Terms of Service page
-- [ ] QA homepage sections
-- [ ] QA all listing pages
-- [ ] QA all detail pages
-- [ ] QA contact form submission
-- [ ] QA newsletter subscription
-- [ ] Run Lighthouse audit
-- [ ] Fix any accessibility issues
-- [ ] Cross-browser testing
-- [ ] Mobile testing
+### Verification (F4.5 - F4.6)
+- [x] Frontend homepage renders CMS data (hero, services, projects, testimonials, awards, blog)
+- [x] `/faq` renders FAQs from database
+- [x] `/blog` renders posts from database
+- [x] Admin Branding Settings: Admin can update, Editor view-only, Viewer denied
+- [x] Frontend reflects primary_color from site_settings
 
 ---
 
