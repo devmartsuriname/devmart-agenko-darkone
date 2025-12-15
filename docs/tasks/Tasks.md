@@ -83,18 +83,49 @@
 
 ## In Progress Tasks 🔄
 
-### Phase 4: Schema Execution (Pending Approval)
-- [ ] Run `20251215000001_content_schema.sql`
-- [ ] Run `20251215000002_content_rls.sql`
-- [ ] Run `20251215000003_storage_policies.sql`
-- [ ] Run `seed_content_minimal.sql`
-- [ ] Verify Supabase types regenerated
+*No tasks currently in progress*
+
+---
+
+## Phase A1: Admin CRUD Implementation — Services Module ✅
+
+**Status:** ✅ Complete (2025-12-15)
+
+### Completed Tasks
+- [x] Create restore point (`docs/restorepoints/2025-12-15_PhaseA1_ServicesCRUD_BeforeChange.md`)
+- [x] Add "Services" menu item under Content in sidebar
+- [x] Add `/content/services` route with RBAC guards
+- [x] Services List Page with table (Title, Status, Featured, Sort Order, Updated, Actions)
+- [x] Create/Edit ServiceForm modal with Zod validation
+- [x] Markdown textarea for content (per Content Contract)
+- [x] Image upload to Supabase Storage (`media` bucket)
+- [x] Slug uniqueness UI pre-check + DB fallback
+- [x] Publish/Unpublish toggle (Admin + Editor)
+- [x] Delete with confirmation modal (Admin only)
+- [x] RBAC enforced: Admin/Editor allowed, Viewer denied at route level
+- [x] Toast notifications for all actions
+- [x] Update documentation (Tasks.md, backend.md, architecture.md)
+
+### RBAC Matrix
+| Role | View | Create | Edit | Publish | Delete |
+|------|------|--------|------|---------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+### Files Created/Modified
+| File | Action |
+|------|--------|
+| `apps/admin/src/app/(admin)/content/services/page.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/services/components/ServiceForm.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/services/components/ServiceDeleteModal.tsx` | Created |
+| `apps/admin/src/app/(admin)/content/services/components/ServiceImageUpload.tsx` | Created |
+| `apps/admin/src/assets/data/menu-items.ts` | Modified |
+| `apps/admin/src/routes/index.tsx` | Modified |
 
 ---
 
 ## Upcoming Phases
-
----
 
 ## Phase F1: Frontend Cleanup (COMPLETE ✅)
 
@@ -294,19 +325,28 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 
 ## Future Phases (Out of Current Scope)
 
-### Phase A1: Admin CRUD Implementation
-- Implement CRUD for all content types in Admin
-- Build form interfaces for each table
-- Image upload integration
-- Preview functionality
+### Phase A2: Admin CRUD — Projects Module (NEXT)
+- Implement CRUD for Projects table
+- Same pattern as Services module
+- Image gallery support
+- Technology tags
 
-### Phase A2: Admin Dashboard Wiring
+### Phase A3: Admin CRUD — Remaining Content Modules
+- Blog Posts CRUD
+- Pages CRUD
+- Team Members CRUD
+- Testimonials CRUD
+- Awards CRUD
+- FAQs CRUD
+- Hero Sections CRUD
+
+### Phase A4: Admin Dashboard Wiring
 - Wire real analytics data
 - Display content counts
 - Recent activity feed
 - User activity metrics
 
-### Phase A3: Advanced Features
+### Phase A5: Advanced Features
 - Content scheduling
 - Bulk operations
 - Import/export

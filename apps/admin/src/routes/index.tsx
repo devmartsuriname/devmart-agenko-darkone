@@ -68,6 +68,7 @@ const DarkMode = lazy(() => import('@/app/(admin)/(layouts)/dark-mode/page'))
 const ContentPages = lazy(() => import('@/app/(admin)/content/pages/page'))
 const ContentBlog = lazy(() => import('@/app/(admin)/content/blog/page'))
 const ContentProjects = lazy(() => import('@/app/(admin)/content/projects/page'))
+const ContentServices = lazy(() => import('@/app/(admin)/content/services/page'))
 const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
 const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
 const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
@@ -135,6 +136,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/content/projects',
     name: 'Content - Projects',
     element: <ContentProjects />,
+  },
+  {
+    path: '/content/services',
+    name: 'Content - Services',
+    element: <ContentServices />,
   },
   {
     path: '/content/media',
