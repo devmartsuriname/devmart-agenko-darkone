@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase F2.1 — CMS Wiring Hotfix (Complete)**
+**Phase F3 — Branding & Theme Sync (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -18,9 +18,10 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase 3B — RBAC Hardening | ✅ Complete |
 | Phase 4 — Schema Execution | ✅ Complete |
 | Phase F1 — Frontend Cleanup | ✅ Complete |
-| **Phase F2 — Frontend ↔ CMS Wiring** | ✅ Complete |
-| **Phase F2.1 — CMS Wiring Hotfix** | ✅ Complete |
-| Phase F3 — Branding & Theme Sync | ⏳ Next |
+| Phase F2 — Frontend ↔ CMS Wiring | ✅ Complete |
+| Phase F2.1 — CMS Wiring Hotfix | ✅ Complete |
+| **Phase F3 — Branding & Theme Sync** | ✅ Complete |
+| Phase F4 — Content Seeding & QA | ⏳ Next |
 
 ### Frontend Documents (Created)
 
@@ -301,4 +302,30 @@ Schema executed on 2025-12-15. All 12 tables created with RLS enabled.
 
 ---
 
-*Last updated: 2025-12-15 - Phase 4 Schema Execution Complete*
+## Phase F3: Branding & Theme Sync (Complete)
+
+**Implemented:** 2025-12-15
+
+### Branding Storage
+- `site_settings.primary_color` — stores frontend primary color (hex)
+- Default value: `#7e67fe`
+- Admin can update via `/system/settings` UI
+
+### Admin Writes
+- Admin Branding Settings UI at `/system/settings`
+- Uses Supabase UPDATE query on `site_settings`
+- RBAC: Admin can edit, Editor can view, Viewer denied
+
+### Public Reads & Applies
+- `SiteSettingsContext` provides `primary_color` to frontend
+- `BrandingProvider` component applies `--cs-primary-color` CSS variable at runtime
+- `_branding.scss` overrides use the CSS variable for buttons, links, accents
+- Fallback to `#fd6219` (original SCSS `$accent`) if no value set
+
+### Important
+- Admin theme unchanged — Darkone styling preserved
+- Only frontend primary color is configurable via CMS
+
+---
+
+*Last updated: 2025-12-15 - Phase F3 Branding & Theme Sync Complete*

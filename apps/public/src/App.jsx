@@ -17,6 +17,7 @@ import ContactPage from './components/Pages/ContactPage';
 import FaqPage from './components/Pages/FaqPage';
 import ErrorPage from './components/Pages/ErrorPage';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
+import BrandingProvider from './components/BrandingProvider';
 
 function App() {
   const { pathname } = useLocation();
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <SiteSettingsProvider>
+      <BrandingProvider>
       <Routes>
         {/* Creative Agency Homepage (Dark Mode Default) */}
         <Route path="/" element={<Layout2 darkMode />}>
@@ -71,6 +73,7 @@ function App() {
         {/* 404 Catch-all */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+      </BrandingProvider>
     </SiteSettingsProvider>
   );
 }
