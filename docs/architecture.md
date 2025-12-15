@@ -306,26 +306,23 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | 2B | ✅ Complete | Dashboard placeholder |
 | 3A | ✅ Complete | Supabase Auth + RBAC foundation |
 | 3B | ✅ Complete | RBAC Hardening |
-| 4 | 🔄 90% | Documentation + Verification Gate |
+| 4 | ✅ Complete | Documentation + Schema Execution |
+| F1 | ✅ Complete | Frontend Cleanup (Creative Agency only) |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| F1 | ⏳ Pending | Frontend Cleanup (Creative Agency only) |
-| F2 | ⏳ Pending | Frontend ↔ CMS Wiring |
+| F2 | ⏳ Ready | Frontend ↔ CMS Wiring |
 | F3 | ⏳ Pending | Branding & Theme Sync |
 | F4 | ⏳ Pending | Content Seeding & QA |
 
-### Phase 4 Schema Execution (2025-12-15)
-- ✅ Content Data Model documented
-- ✅ Content Contract v2.0 finalized
-- ✅ 12 CMS tables created
-- ✅ 60 RLS policies applied
-- ✅ 2 storage buckets created (media, documents)
-- ✅ Seed data inserted (site_settings, hero, page)
-
-**Phase F1 is now UNBLOCKED and ready to begin.**
+### Phase F1 Summary (2025-12-15)
+- ✅ Removed 5 homepage variants (Marketing, Studio, Digital, Tech, CaseStudy)
+- ✅ Removed Shop/eCommerce (6 pages + 6 components)
+- ✅ Removed 4 Hero variants, 3 About variants, unused sliders
+- ✅ Cleaned App.jsx routing to Creative Agency only
+- ✅ Admin/CMS untouched
 
 ---
 
