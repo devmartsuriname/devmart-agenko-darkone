@@ -1,7 +1,7 @@
 # Admin ↔ Frontend Content Contract
 
-> **Status:** DRAFT  
-> **Version:** 1.0  
+> **Status:** FINAL  
+> **Version:** 2.0  
 > **Last Updated:** 2025-12-15  
 > **Authoritative:** Yes — defines the data contract between Admin CMS, Zivan Frontend, and Supabase
 
@@ -44,7 +44,7 @@ Settings managed in Admin CMS and consumed by Frontend.
 | Social Links | `JSON` | Admin | Frontend | `{ twitter, linkedin, github }` |
 
 ### Storage Location
-- **Supabase Table:** `site_settings` (single-row or key-value)
+- **Supabase Table:** `site_settings` (single-row)
 - **Admin Route:** `/system/settings`
 
 ---
@@ -60,8 +60,9 @@ The Creative Agency homepage consists of the following sections, in order:
 | 3 | **About / Why Devmart** | CMS | `pages` (slug: `about-snippet`) | heading, body_content, image |
 | 4 | **Portfolio Preview** | CMS | `projects` (featured=true, limit 6) | title, thumbnail, slug, category |
 | 5 | **Testimonials** | CMS | `testimonials` (active=true) | name, role, company, quote, avatar |
-| 6 | **Blog Preview** | CMS | `blog_posts` (recent 3, published) | title, excerpt, featured_image, slug, published_at |
-| 7 | **Call-to-Action** | CMS | `site_settings` or `cta_blocks` | heading, subheading, button_text, button_link |
+| 6 | **Awards** | CMS | `awards` (active=true) | title, issuer, year, logo_url |
+| 7 | **Blog Preview** | CMS | `blog_posts` (recent 3, published) | title, excerpt, featured_image, slug, published_at |
+| 8 | **Call-to-Action + Newsletter** | CMS | `site_settings` | cta_heading, cta_subheading, cta_button_text, cta_button_link, newsletter_enabled |
 
 ### Section Display Rules
 - Sections with no data are **hidden** (not shown with empty state)
@@ -82,11 +83,14 @@ The Creative Agency homepage consists of the following sections, in order:
 | Testimonials | `testimonials` | Admin | Frontend | `/content/testimonials` |
 | Team Members | `team_members` | Admin | Frontend | `/content/team` |
 | Hero Sections | `hero_sections` | Admin | Frontend | `/content/hero` |
+| Awards | `awards` | Admin | Frontend | `/content/awards` |
+| FAQs | `faqs` | Admin | Frontend | `/content/faq` |
 | Contact Submissions | `contact_submissions` | Frontend (submit) | Admin (read) | `/crm/contacts` |
+| Newsletter Subscribers | `newsletter_subscribers` | Frontend (submit) | Admin (read) | `/crm/newsletter` |
 
 ### Content Ownership Rules
-- **Admin creates/edits:** All content types except Contact Submissions
-- **Frontend creates:** Contact Submissions only (form submissions)
+- **Admin creates/edits:** All content types except Contact Submissions and Newsletter Subscribers
+- **Frontend creates:** Contact Submissions, Newsletter Subscribers (form submissions)
 - **Frontend reads:** All content types (public read access)
 
 ---
@@ -97,7 +101,7 @@ The Creative Agency homepage consists of the following sections, in order:
 
 | Route | Type | Data Source | Notes |
 |-------|------|-------------|-------|
-| `/` | CMS-driven | Multiple tables | Homepage (hero, services, projects, testimonials, blog) |
+| `/` | CMS-driven | Multiple tables | Homepage (hero, services, projects, testimonials, awards, blog) |
 | `/about` | CMS-driven | `pages` (slug: `about`) | Single page content |
 | `/services` | CMS-driven | `services` (list) | All active services |
 | `/services/:slug` | CMS-driven | `services` (single) | Service detail page |
@@ -106,6 +110,7 @@ The Creative Agency homepage consists of the following sections, in order:
 | `/blog` | CMS-driven | `blog_posts` (list) | All published posts |
 | `/blog/:slug` | CMS-driven | `blog_posts` (single) | Blog post detail page |
 | `/team` | CMS-driven | `team_members` (list) | Team listing page |
+| `/faq` | CMS-driven | `faqs` (list) | FAQ accordion page |
 | `/contact` | Hybrid | Static layout + form | Form submits to `contact_submissions` |
 | `/404` | Static | Hardcoded | Error page |
 
@@ -120,7 +125,10 @@ The Creative Agency homepage consists of the following sections, in order:
 | `/content/blog` | Blog Posts | admin, editor |
 | `/content/testimonials` | Testimonials | admin, editor |
 | `/content/team` | Team Members | admin, editor |
+| `/content/awards` | Awards | admin, editor |
+| `/content/faq` | FAQs | admin, editor |
 | `/crm/contacts` | Contact Submissions | admin, editor |
+| `/crm/newsletter` | Newsletter Subscribers | admin, editor |
 
 ---
 
@@ -143,23 +151,167 @@ The following are explicitly **OUT OF SCOPE** for this platform:
 
 ---
 
-## 6. Open Questions
+## 6. Resolved Decisions
 
-Items requiring clarification before schema implementation:
+All previously open questions have been resolved:
 
-| # | Question | Context | Status |
-|---|----------|---------|--------|
-| 1 | **Awards section** | PRD mentions "Awards (dynamic)" | **OPEN:** Include in homepage or separate page? |
-| 2 | **FAQ section** | PRD mentions "FAQs" module | **OPEN:** Homepage section or standalone `/faq` page? |
-| 3 | **Newsletter** | PRD mentions "Newsletter" module | **OPEN:** Footer signup or dedicated CRM section? |
-| 4 | **Contact form fields** | Not defined in PRD | **OPEN:** What are the required/optional fields? |
-| 5 | **Media Library** | File storage approach | **OPEN:** Supabase Storage buckets or external URLs? |
-| 6 | **Rich text format** | Blog/Page body content | **OPEN:** Markdown, HTML, or structured JSON? |
-| 7 | **Image dimensions** | Thumbnail vs full-size | **OPEN:** Define required image sizes per content type? |
+| # | Question | Decision | Status | Impact |
+|---|----------|----------|--------|--------|
+| 1 | **Awards section** | Homepage section (after Testimonials) | **FINAL** | Add `awards` table, display on homepage |
+| 2 | **FAQ section** | Standalone `/faq` page | **FINAL** | Add `faqs` table, new frontend route |
+| 3 | **Newsletter** | Footer inline form (part of CTA section) | **FINAL** | Add `newsletter_subscribers` table, toggle in settings |
+| 4 | **Contact form fields** | 4 fields: Name*, Email*, Subject (optional), Message* | **FINAL** | Simple form, no phone/company fields |
+| 5 | **Media Library** | Supabase Storage with 2 buckets | **FINAL** | `media` (public), `documents` (private) |
+| 6 | **Rich text format** | Markdown (stored as text, rendered client-side) | **FINAL** | Simple, portable, editor-friendly |
+| 7 | **Image dimensions** | Defined per content type (see Appendix) | **FINAL** | Frontend handles responsive sizing |
 
 ---
 
-## 7. Related Documents
+## 7. Decision Details
+
+### 7.1 Awards Section (FINAL)
+
+**Decision:** Homepage section displayed after Testimonials.
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| title | `string` | Yes | Award name (e.g., "Best Agency 2024") |
+| issuer | `string` | Yes | Awarding organization |
+| year | `integer` | Yes | Year received |
+| logo_url | `string` | No | Award/issuer logo (optional) |
+| display_order | `integer` | Yes | Sort order on homepage |
+| is_active | `boolean` | Yes | Show/hide toggle |
+
+**Rationale:** Awards add credibility and are visually compact. Homepage placement is standard for agency sites.
+
+---
+
+### 7.2 FAQ Section (FINAL)
+
+**Decision:** Standalone page at `/faq` with accordion UI.
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| question | `string` | Yes | The question text |
+| answer | `text` | Yes | Markdown-supported answer |
+| category | `string` | No | Optional grouping (e.g., "Services", "Pricing") |
+| display_order | `integer` | Yes | Sort order |
+| is_published | `boolean` | Yes | Show/hide toggle |
+
+**Rationale:** FAQs are typically long-form content unsuitable for homepage. Standalone page allows proper SEO and categorization.
+
+---
+
+### 7.3 Newsletter (FINAL)
+
+**Decision:** Inline footer form within the CTA section.
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| email | `string` | Yes | Subscriber email |
+| subscribed_at | `timestamp` | Yes | Auto-generated |
+| is_confirmed | `boolean` | Yes | Default: false (no double opt-in in MVP) |
+| source | `string` | No | e.g., "footer", "blog" |
+
+**Site Settings Addition:**
+| Setting | Type | Default |
+|---------|------|---------|
+| newsletter_enabled | `boolean` | true |
+| newsletter_heading | `string` | "Stay Updated" |
+| newsletter_placeholder | `string` | "Enter your email" |
+
+**Rationale:** Footer placement is unobtrusive and doesn't require a separate page. CRM section for admin viewing only.
+
+---
+
+### 7.4 Contact Form Fields (FINAL)
+
+**Decision:** 4 simple fields, minimal friction.
+
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| name | `string` | Yes | Max 100 chars |
+| email | `string` | Yes | Valid email, max 255 chars |
+| subject | `string` | No | Max 200 chars |
+| message | `text` | Yes | Max 2000 chars |
+
+**Additional Fields (Auto-generated):**
+| Field | Type | Notes |
+|-------|------|-------|
+| submitted_at | `timestamp` | Auto-generated |
+| is_read | `boolean` | Default: false |
+| ip_address | `string` | For spam prevention (optional) |
+
+**Rationale:** No phone/company fields reduces friction. Subject is optional but helps categorization.
+
+---
+
+### 7.5 Media Library (FINAL)
+
+**Decision:** Supabase Storage with 2 buckets.
+
+| Bucket | Visibility | Purpose | Allowed Types |
+|--------|------------|---------|---------------|
+| `media` | Public | Images, logos, thumbnails | jpg, png, webp, svg, gif |
+| `documents` | Private | PDFs, internal files | pdf, doc, docx |
+
+**File Naming Convention:**
+```
+{content_type}/{id}/{filename}
+Example: projects/abc123/hero.webp
+```
+
+**Size Limits:**
+- Images: Max 5MB
+- Documents: Max 10MB
+
+**Rationale:** Supabase Storage is integrated, supports CDN, and handles permissions. Two buckets separate public assets from private documents.
+
+---
+
+### 7.6 Rich Text Format (FINAL)
+
+**Decision:** Markdown stored as plain text.
+
+| Content Type | Field | Format |
+|--------------|-------|--------|
+| Pages | body | Markdown |
+| Blog Posts | body | Markdown |
+| Services | description | Plain text (short) |
+| FAQs | answer | Markdown |
+| Projects | description | Markdown |
+
+**Editor:** Use a simple Markdown editor in Admin (e.g., react-markdown + textarea, or react-quill in markdown mode).
+
+**Rationale:** Markdown is portable, version-control friendly, and renders consistently. Avoids HTML security concerns and complex WYSIWYG state.
+
+---
+
+### 7.7 Image Dimensions (FINAL)
+
+**Decision:** Define standard dimensions per use case.
+
+| Use Case | Dimensions | Aspect Ratio | Format |
+|----------|------------|--------------|--------|
+| Hero Background | 1920×1080 | 16:9 | webp, jpg |
+| Project Thumbnail | 800×600 | 4:3 | webp, jpg |
+| Project Full | 1200×800 | 3:2 | webp, jpg |
+| Blog Featured | 1200×675 | 16:9 | webp, jpg |
+| Team Avatar | 400×400 | 1:1 | webp, jpg, png |
+| Testimonial Avatar | 150×150 | 1:1 | webp, jpg, png |
+| Award Logo | 200×200 | 1:1 | png, svg |
+| Service Icon | 64×64 | 1:1 | svg, png |
+| Logo (light/dark) | 300×80 | ~4:1 | svg, png |
+| Favicon | 32×32 | 1:1 | ico, png |
+| OG Image | 1200×630 | ~1.9:1 | jpg, png |
+
+**Frontend Responsibility:** Responsive image handling via `srcset` or CSS object-fit. CMS stores original; frontend resizes as needed.
+
+**Rationale:** Defined dimensions ensure visual consistency and optimal performance. WebP preferred for smaller file sizes.
+
+---
+
+## 8. Related Documents
 
 | Document | Purpose |
 |----------|---------|
@@ -169,24 +321,39 @@ Items requiring clarification before schema implementation:
 
 ---
 
-## Appendix: Content Type Field Reference
+## Appendix: Content Type Field Reference (Updated)
 
-> **Note:** Detailed field specifications will be added in the **Content Data Model (Supabase)** document once Open Questions are resolved.
-
-### Minimum Viable Fields (Per Content Type)
+### Full Field Specifications
 
 | Content Type | Required Fields |
 |--------------|-----------------|
-| Site Settings | site_name, logo_url, favicon_url, primary_color, meta_title, meta_description |
-| Pages | id, slug, title, body, meta_title, meta_description, is_published |
-| Services | id, slug, title, description, icon, display_order, is_featured |
-| Projects | id, slug, title, description, thumbnail, category, is_featured |
-| Blog Posts | id, slug, title, excerpt, body, featured_image, published_at, is_published |
-| Testimonials | id, name, role, company, quote, avatar_url, is_active |
-| Team Members | id, name, role, bio, avatar_url, display_order |
-| Hero Sections | id, heading, subheading, cta_text, cta_link, background_image, is_active |
-| Contact Submissions | id, name, email, message, submitted_at, is_read |
+| Site Settings | site_name, logo_url, logo_dark_url, favicon_url, primary_color, meta_title, meta_description, og_image_url, footer_copyright, social_links, newsletter_enabled, newsletter_heading, cta_heading, cta_button_text, cta_button_link |
+| Pages | id, slug, title, body (markdown), meta_title, meta_description, is_published, created_at, updated_at |
+| Services | id, slug, title, description, icon_url, display_order, is_featured, is_published |
+| Projects | id, slug, title, description (markdown), thumbnail_url, full_image_url, category, client_name, project_url, is_featured, is_published, created_at |
+| Blog Posts | id, slug, title, excerpt, body (markdown), featured_image_url, author_id, published_at, is_published, created_at, updated_at |
+| Testimonials | id, name, role, company, quote, avatar_url, is_active, display_order |
+| Team Members | id, name, role, bio, avatar_url, email, linkedin_url, display_order, is_active |
+| Hero Sections | id, heading, subheading, cta_text, cta_link, background_image_url, is_active |
+| Awards | id, title, issuer, year, logo_url, display_order, is_active |
+| FAQs | id, question, answer (markdown), category, display_order, is_published |
+| Contact Submissions | id, name, email, subject, message, submitted_at, is_read, ip_address |
+| Newsletter Subscribers | id, email, subscribed_at, is_confirmed, source |
 
 ---
 
-*End of Contract Document*
+## Decision Summary Table
+
+| # | Question | Decision | Status | Impact |
+|---|----------|----------|--------|--------|
+| 1 | Awards | Homepage section (after Testimonials) | **FINAL** | New `awards` table |
+| 2 | FAQ | Standalone `/faq` page | **FINAL** | New `faqs` table + route |
+| 3 | Newsletter | Footer inline form | **FINAL** | New `newsletter_subscribers` table |
+| 4 | Contact fields | Name*, Email*, Subject, Message* | **FINAL** | 4-field form |
+| 5 | Media Library | Supabase Storage (2 buckets) | **FINAL** | `media` (public) + `documents` (private) |
+| 6 | Rich text | Markdown | **FINAL** | Simple editor, portable |
+| 7 | Image sizes | Defined per content type | **FINAL** | See dimension table |
+
+---
+
+*End of Contract Document — Version 2.0 FINAL*
