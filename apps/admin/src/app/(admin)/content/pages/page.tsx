@@ -140,16 +140,18 @@ const ContentPagesPage = () => {
     <>
       <PageTitle subName="Content" title="Pages" />
 
+      {/* Add button placed ABOVE ComponentContainerCard */}
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="primary" onClick={handleCreate}>
+          <Icon icon="mingcute:add-line" className="me-1" />
+          Add Page
+        </Button>
+      </div>
+
       <ComponentContainerCard
         id="pages-list"
         title="Pages"
         description="Manage static pages for your website (About, Terms, Privacy, etc.)"
-        headerAction={
-          <Button variant="primary" onClick={handleCreate}>
-            <Icon icon="mingcute:add-line" className="me-1" />
-            Add Page
-          </Button>
-        }
       >
         {loading ? (
           <div className="text-center py-5">

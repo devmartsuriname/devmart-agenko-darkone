@@ -321,6 +321,7 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A6 | ✅ Complete | Admin CRUD — Testimonials Module |
 | A7 | ✅ Complete | Admin CRUD — Awards Module |
 | A8 | ✅ Complete | Admin CRUD — FAQs Module |
+| A8.1 | ✅ Complete | UI Parity Fix — Add buttons (Pages, Blog, Services, Projects) |
 
 ### Upcoming Phases
 
