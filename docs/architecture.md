@@ -319,12 +319,13 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A4 | ✅ Complete | Admin CRUD — Pages Module |
 | A5 | ✅ Complete | Admin CRUD — Team Members Module |
 | A6 | ✅ Complete | Admin CRUD — Testimonials Module |
+| A7 | ✅ Complete | Admin CRUD — Awards Module |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| A7 | ⏳ Next | Admin CRUD — Awards/FAQs Module |
+| A8 | ⏳ Next | Admin CRUD — FAQs Module |
 
 ### Phase A1 Summary (2025-12-15)
 - ✅ Services CRUD module complete
@@ -419,7 +420,8 @@ const { error } = await supabase.from('table').update({
 9. **RBAC via separate table:** Roles stored in user_roles, not user_profiles
 10. **Route-level RBAC:** Deny-by-default with role requirements per route prefix
 11. **Sidebar role filtering:** Menu items hidden if user lacks access
+12. **Boolean toggles pattern:** Awards/Testimonials use is_active/is_featured instead of status/published_at
 
 ---
 
-*Last updated: 2025-12-14 - Phase 3B RBAC Hardening*
+*Last updated: 2025-12-16 - Phase A7 Awards CRUD Complete*

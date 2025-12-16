@@ -28,6 +28,7 @@
 | Phase A4 | Pages CRUD | ✅ Complete | 100% |
 | Phase A5 | Team Members CRUD | ✅ Complete | 100% |
 | Phase A6 | Testimonials CRUD | ✅ Complete | 100% |
+| Phase A7 | Awards CRUD | ✅ Complete | 100% |
 ---
 
 ## Completed Tasks ✅
@@ -154,6 +155,72 @@ Full CRUD implementation for Testimonials module in Admin app, following Service
 - ✅ project_id empty saved as null (NOT "")
 - ✅ Projects dropdown resilient (fetch failure shows warning, form works)
 - ✅ Modal parity with other modules (xl + tabs)
+
+---
+
+## Phase A7: Awards CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for Awards module in Admin app, following Testimonials pattern.
+
+### Pre-Flight Schema Verification
+Verified Awards table columns + defaults before implementation:
+- `is_featured` defaults to **TRUE** (unusual, form defaults to FALSE to prevent auto-featuring)
+- `is_active` defaults to TRUE
+- `sort_order` defaults to 0
+- `year` is nullable (integer 1900-2100)
+- `link_url` is nullable (validated URL when present)
+
+### Key Implementation Notes
+- Uses `is_active` + `is_featured` boolean toggles (NO status/published_at)
+- Form default for `is_featured` is FALSE despite DB default TRUE
+- z.preprocess for: year ("" → null), sort_order ("" → 0), link_url ("" → null)
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA7_AwardsCRUD_BeforeChange.md)
+- [x] Verify schema via Supabase query (is_featured=true, is_active=true, sort_order=0)
+- [x] Add Awards menu item under Content in sidebar
+- [x] Add `/content/awards` route with RBAC guards
+- [x] Create AwardImageUpload component (upload to media/awards/)
+- [x] Create AwardDeleteModal component (Admin-only)
+- [x] Create AwardForm modal (xl size, 3-tab layout: Basic Info, Media, Details)
+- [x] Create awards list page with full CRUD
+- [x] Implement z.preprocess for year (empty → null), sort_order (empty → 0), link_url (empty → null)
+- [x] Implement is_active + is_featured toggles (NOT status/published_at)
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/awards/page.tsx` | Full CRUD list page |
+| `apps/admin/src/app/(admin)/content/awards/components/AwardForm.tsx` | Create/Edit modal |
+| `apps/admin/src/app/(admin)/content/awards/components/AwardImageUpload.tsx` | Image upload |
+| `apps/admin/src/app/(admin)/content/awards/components/AwardDeleteModal.tsx` | Delete confirmation |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/routes/index.tsx` | Added ContentAwards lazy import + route |
+| `apps/admin/src/assets/data/menu-items.ts` | Added Awards menu item under Content |
+
+### RBAC Matrix
+| Role | List | Create | Edit | Toggle Active | Toggle Featured | Delete |
+|------|------|--------|------|---------------|-----------------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — | — |
+
+### Data Integrity (z.preprocess)
+| Field | Empty Input | Behavior |
+|-------|-------------|----------|
+| `year` | `""` | → `null` (NOT NaN) |
+| `sort_order` | `""` | → `0` |
+| `link_url` | `""` | → `null` (validated URL only when present) |
+| `issuer` | `""` | → `null` |
+| `description` | `""` | → `null` |
 
 ---
 

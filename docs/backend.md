@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A6 — Testimonials CRUD (Complete)**
+**Phase A7 — Awards CRUD (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -28,8 +28,9 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A3 — Blog Posts CRUD | ✅ Complete |
 | Phase A4 — Pages CRUD | ✅ Complete |
 | Phase A5 — Team Members CRUD | ✅ Complete |
-| **Phase A6 — Testimonials CRUD** | ✅ Complete |
-| Phase A7 — Awards/FAQs CRUD | ⏳ Next |
+| Phase A6 — Testimonials CRUD | ✅ Complete |
+| **Phase A7 — Awards CRUD** | ✅ Complete |
+| Phase A8 — FAQs CRUD | ⏳ Next |
 
 ### Frontend Documents (Created)
 
@@ -549,4 +550,70 @@ Fourth Admin CRUD module implementing full CRUD for static Pages content type (A
 
 ---
 
-*Last updated: 2025-12-16 — Phase A4 Pages CRUD Complete*
+## Phase A7: Admin CRUD — Awards Module (Complete)
+
+**Implemented:** 2025-12-16
+
+### Overview
+Seventh Admin CRUD module implementing full CRUD for Awards content type with boolean toggles (is_active, is_featured).
+
+### Pre-Flight Schema Verification
+Verified Awards table before implementation:
+- `is_featured` defaults to **TRUE** (unusual)
+- `is_active` defaults to TRUE
+- `sort_order` defaults to 0
+- `year` nullable integer (1900-2100)
+- `link_url` nullable (validated URL when present)
+
+**Important:** Form default for `is_featured` is FALSE to prevent all new awards appearing as featured.
+
+### Route
+- **URL:** `/content/awards`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Award (title + image), Issuer, Year, Status, Featured, Order, Actions |
+| Create/Edit | Tabbed modal (Basic Info, Media, Details) |
+| Image Upload | Award badge/image upload to `media/awards/` |
+| Link URL | Optional external link with URL validation |
+| Toggle Active | is_active boolean (NOT status/published_at) |
+| Toggle Featured | is_featured boolean |
+| Delete | Admin-only with confirmation |
+
+### Form Structure (Modal: xl, Tabs)
+**Basic Info Tab:**
+- Title (required)
+- Issuer (optional)
+- Year (optional, 1900-2100)
+- Description (optional)
+
+**Media Tab:**
+- Award Image upload
+
+**Details Tab:**
+- Link URL (optional, validated)
+- Sort Order
+- is_active toggle
+- is_featured toggle
+
+### Data Integrity (z.preprocess)
+| Field | Empty Input | Result |
+|-------|-------------|--------|
+| `year` | `""` | `null` (NOT NaN) |
+| `sort_order` | `""` | `0` |
+| `link_url` | `""` | `null` (validated URL only when present) |
+| `issuer` | `""` | `null` |
+| `description` | `""` | `null` |
+
+### RBAC Matrix
+| Role | View | Create | Edit | Toggle | Delete |
+|------|------|--------|------|--------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+---
+
+*Last updated: 2025-12-16 — Phase A7 Awards CRUD Complete*
