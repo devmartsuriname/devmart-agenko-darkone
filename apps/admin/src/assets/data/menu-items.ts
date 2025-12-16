@@ -99,6 +99,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         url: '/crm/partners',
         parentKey: 'crm',
       },
+      {
+        key: 'crm-contact-submissions',
+        label: 'Contact Submissions',
+        url: '/crm/contact-submissions',
+        parentKey: 'crm',
+      },
     ],
   },
 

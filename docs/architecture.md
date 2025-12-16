@@ -25,6 +25,14 @@
 - **Frontend Variant Selection:** Frontend Variant Audit (Document #2) — **Creative Agency ONLY**
 - **Backend Schema:** [`/docs/backend.md`](./backend.md)
 
+### Completed Phases (Latest)
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| A1–A8 | CRUD Modules (Services, Projects, Blog, Pages, Team, Testimonials, Awards, FAQs) | ✅ Complete |
+| A8.1 | UI Parity Fix (Add buttons) | ✅ Complete |
+| **A10** | Contact Submissions (Read-Only + Deactivate) | ✅ Complete |
+
 ---
 
 ## Monorepo Structure (Verified & Cleaned)
