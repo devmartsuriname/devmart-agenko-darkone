@@ -311,12 +311,18 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | F2 | ✅ Complete | Frontend ↔ CMS Wiring |
 | F2.1 | ✅ Complete | CMS Wiring Hotfix Gate |
 | F3 | ✅ Complete | Branding & Theme Sync |
+| F4 | ✅ Complete | Content Seeding |
+| A1 | ✅ Complete | Admin CRUD — Services Module |
+| A2 | ✅ Complete | Admin CRUD — Projects Module |
+| A2.1 | ✅ Complete | UI Cleanup (Modal Parity) |
+| A3 | ✅ Complete | Admin CRUD — Blog Posts Module |
+| A4 | ✅ Complete | Admin CRUD — Pages Module |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| A2 | ⏳ Next | Admin CRUD — Projects Module |
+| A5 | ⏳ Next | Admin CRUD — Team/Testimonials Module |
 
 ### Phase A1 Summary (2025-12-15)
 - ✅ Services CRUD module complete
