@@ -23,6 +23,7 @@
 | Phase F4 | Content Seeding | ✅ Complete | 100% |
 | Phase A1 | Services CRUD | ✅ Complete | 100% |
 | Phase A2 | Projects CRUD | ✅ Complete | 100% |
+| Phase A2.1 | UI Cleanup (Services + Projects) | ✅ Complete | 100% |
 
 ---
 
@@ -400,6 +401,35 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 
 ---
 
+## Phase A2.1: UI Cleanup — Services & Projects Modal Parity ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Visual and structural alignment of Services and Projects CRUD modules to match Darkone Demo Library patterns.
+
+### Completed Tasks
+- [x] ServiceForm modal size changed from `lg` → `xl` (match ProjectForm)
+- [x] ServiceForm converted to tabbed layout (Basic Info, Media, Details)
+- [x] Field grouping aligned between Services and Projects
+- [x] SEO section moved to "Details" tab (removed `<hr />` separator)
+- [x] Content textarea rows adjusted (8 → 6)
+- [x] Navigation blank-page bug fixed (Suspense fallback in AdminLayout)
+
+### Files Modified
+| File | Action |
+|------|--------|
+| `apps/admin/src/app/(admin)/content/services/components/ServiceForm.tsx` | Modal parity + tabs |
+| `apps/admin/src/layouts/AdminLayout.tsx` | Suspense fallback fix |
+
+### Verification
+- ✅ Services modal visually matches Projects modal
+- ✅ Both modules render without blank-page on navigation
+- ✅ Darkone 1:1 parity achieved
+- ✅ Build passes
+
+---
+
 ## Future Phases (Out of Current Scope)
 
 ### Phase A3: Admin CRUD — Remaining Content Modules (NEXT)
@@ -449,4 +479,4 @@ Remove all non-Creative Agency variants from Zivan Public app. Simplify to a sin
 
 ---
 
-*Last updated: 2025-12-15*
+*Last updated: 2025-12-16 — Phase A2.1 UI Cleanup Complete*
