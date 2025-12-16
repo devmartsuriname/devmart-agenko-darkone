@@ -25,6 +25,7 @@
 | Phase A2 | Projects CRUD | ✅ Complete | 100% |
 | Phase A2.1 | UI Cleanup (Services + Projects) | ✅ Complete | 100% |
 | Phase A3 | Blog Posts CRUD | ✅ Complete | 100% |
+| Phase A4 | Pages CRUD | ✅ Complete | 100% |
 
 ---
 
@@ -88,6 +89,46 @@
 ## In Progress Tasks 🔄
 
 *No tasks currently in progress*
+
+---
+
+## Phase A4: Pages CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for Pages module in Admin app, following Services/Projects/Blog patterns.
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA4_PagesCRUD_BeforeChange.md)
+- [x] Create PageImageUpload component (upload to media/pages/)
+- [x] Create PageDeleteModal component (Admin-only)
+- [x] Create PageForm modal (xl size, 3-tab layout: Basic Info, Media, Details)
+- [x] Replace pages page placeholder with full CRUD list page
+- [x] Implement slug auto-generation and uniqueness check
+- [x] Implement sort_order field for page ordering
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/pages/components/PageImageUpload.tsx` | Featured image upload |
+| `apps/admin/src/app/(admin)/content/pages/components/PageDeleteModal.tsx` | Delete confirmation |
+| `apps/admin/src/app/(admin)/content/pages/components/PageForm.tsx` | Create/Edit modal |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/app/(admin)/content/pages/page.tsx` | Replaced placeholder with CRUD page |
+
+### Verification
+- ✅ Build: PASS
+- ✅ Route loads: /content/pages
+- ✅ CRUD operations: Create, Edit, Publish/Unpublish, Delete
+- ✅ Image upload to Supabase Storage
+- ✅ RBAC enforced
+- ✅ Modal parity with Projects/Services/Blog (xl + tabs)
 
 ---
 

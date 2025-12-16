@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A3 — Blog Posts CRUD (Complete)**
+**Phase A4 — Pages CRUD (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -25,8 +25,9 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A1 — Services CRUD | ✅ Complete |
 | Phase A2 — Projects CRUD | ✅ Complete |
 | Phase A2.1 — UI Cleanup | ✅ Complete |
-| **Phase A3 — Blog Posts CRUD** | ✅ Complete |
-| Phase A4 — Team/Testimonials CRUD | ⏳ Next |
+| Phase A3 — Blog Posts CRUD | ✅ Complete |
+| **Phase A4 — Pages CRUD** | ✅ Complete |
+| Phase A5 — Team/Testimonials CRUD | ⏳ Next |
 
 ### Frontend Documents (Created)
 
@@ -486,4 +487,64 @@ Third Admin CRUD module implementing full CRUD for Blog Posts content type with 
 
 ---
 
-*Last updated: 2025-12-16 — Phase A3 Blog Posts CRUD Complete*
+## Phase A4: Admin CRUD — Pages Module (Complete)
+
+**Implemented:** 2025-12-16
+
+### Overview
+Fourth Admin CRUD module implementing full CRUD for static Pages content type (About, Terms, Privacy, etc.).
+
+### Route
+- **URL:** `/content/pages`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Title, Slug, Status, Sort Order, Updated, Actions |
+| Create/Edit | Tabbed modal (Basic Info, Media, Details) |
+| Image Upload | Featured image upload to `media/pages/` |
+| Content | Full Markdown content |
+| Sort Order | Integer ordering for navigation |
+| Publish/Unpublish | Toggle status + published_at |
+| Delete | Admin-only with confirmation |
+
+### Form Structure (Modal: xl, Tabs)
+**Basic Info Tab:**
+- Title (required)
+- Slug (auto-generated, unique check)
+- Content (Markdown textarea)
+- Status, Sort Order
+
+**Media Tab:**
+- Featured Image upload (optional)
+
+**Details Tab:**
+- SEO: Meta Title, Meta Description
+
+### CRUD Operations
+| Operation | Table | Notes |
+|-----------|-------|-------|
+| Create | `pages` | `created_by: user.id` |
+| Read | `pages` | All pages (drafts + published) |
+| Update | `pages` | `updated_by: user.id` |
+| Delete | `pages` | Admin-only |
+| Publish | Update `status: 'published'` + `published_at: now()` | |
+
+### Image Upload Flow
+1. User selects or drops image file
+2. Validate type (JPG, PNG, WebP, GIF) and size (max 5MB)
+3. Upload to `media` bucket: `pages/{timestamp}-{filename}`
+4. Get public URL and store in `featured_image_url` field
+5. "Remove" clears DB field only (storage cleanup deferred)
+
+### RBAC Matrix
+| Role | View | Create | Edit | Publish | Delete |
+|------|------|--------|------|---------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+---
+
+*Last updated: 2025-12-16 — Phase A4 Pages CRUD Complete*
