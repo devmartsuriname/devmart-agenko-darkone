@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A7 — Awards CRUD (Complete)**
+**Phase A8 — FAQs CRUD (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -29,8 +29,8 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A4 — Pages CRUD | ✅ Complete |
 | Phase A5 — Team Members CRUD | ✅ Complete |
 | Phase A6 — Testimonials CRUD | ✅ Complete |
-| **Phase A7 — Awards CRUD** | ✅ Complete |
-| Phase A8 — FAQs CRUD | ⏳ Next |
+| Phase A7 — Awards CRUD | ✅ Complete |
+| **Phase A8 — FAQs CRUD** | ✅ Complete |
 
 ### Frontend Documents (Created)
 
@@ -616,4 +616,50 @@ Verified Awards table before implementation:
 
 ---
 
-*Last updated: 2025-12-16 — Phase A7 Awards CRUD Complete*
+## Phase A8: Admin CRUD — FAQs Module (Complete)
+
+**Implemented:** 2025-12-16
+
+### Overview
+Eighth Admin CRUD module implementing full CRUD for FAQs content type. Notable difference: NO Media tab (no image_url in schema), 2-tab modal only.
+
+### Route
+- **URL:** `/content/faqs`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Question, Category, Status, Featured, Order, Updated, Actions |
+| Create/Edit | Tabbed modal (Basic Info, Details) — NO Media tab |
+| Toggle Active | is_active boolean (NOT status/published_at) |
+| Toggle Featured | is_featured boolean |
+| Delete | Admin-only with confirmation |
+
+### Form Structure (Modal: xl, 2 Tabs)
+**Basic Info Tab:**
+- Question (required)
+- Answer (required)
+- Category (optional, max 100 chars)
+
+**Details Tab:**
+- Sort Order
+- is_active toggle
+- is_featured toggle
+
+### Data Integrity (z.preprocess)
+| Field | Empty Input | Result |
+|-------|-------------|--------|
+| `category` | `""` | `null` |
+| `sort_order` | `""` or NaN | `0` |
+
+### RBAC Matrix
+| Role | View | Create | Edit | Toggle | Delete |
+|------|------|--------|------|--------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+---
+
+*Last updated: 2025-12-16 — Phase A8 FAQs CRUD Complete*

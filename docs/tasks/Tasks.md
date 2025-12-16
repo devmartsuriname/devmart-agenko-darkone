@@ -29,6 +29,7 @@
 | Phase A5 | Team Members CRUD | ✅ Complete | 100% |
 | Phase A6 | Testimonials CRUD | ✅ Complete | 100% |
 | Phase A7 | Awards CRUD | ✅ Complete | 100% |
+| Phase A8 | FAQs CRUD | ✅ Complete | 100% |
 ---
 
 ## Completed Tasks ✅
@@ -221,6 +222,79 @@ Verified Awards table columns + defaults before implementation:
 | `link_url` | `""` | → `null` (validated URL only when present) |
 | `issuer` | `""` | → `null` |
 | `description` | `""` | → `null` |
+
+---
+
+## Phase A8: FAQs CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for FAQs module in Admin app, following Awards pattern.
+
+### Pre-Flight Schema Verification
+Verified FAQs table columns + defaults before implementation:
+- `question` required (text)
+- `answer` required (text)
+- `category` nullable (text, max 100)
+- `is_active` defaults to TRUE
+- `is_featured` defaults to FALSE
+- `sort_order` defaults to 0
+- **NO slug column** → No slug uniqueness check needed
+- **NO image_url column** → 2 tabs only (Basic Info | Details), no Media tab
+
+### Key Implementation Notes
+- Uses `is_active` + `is_featured` boolean toggles (NO status/published_at)
+- 2-tab modal (no Media tab since no images)
+- z.preprocess for: category ("" → null), sort_order ("" or NaN → 0)
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA8_FAQsCRUD_BeforeChange.md)
+- [x] Add FAQs menu item under Content in sidebar (after Awards)
+- [x] Add `/content/faqs` route with RBAC guards
+- [x] Create FaqForm modal (xl size, 2-tab layout: Basic Info, Details)
+- [x] Create FaqDeleteModal component (Admin-only)
+- [x] Create faqs list page with full CRUD
+- [x] Implement z.preprocess for category (empty → null), sort_order (empty/NaN → 0)
+- [x] Implement is_active + is_featured toggles (NOT status/published_at)
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/faqs/page.tsx` | Full CRUD list page |
+| `apps/admin/src/app/(admin)/content/faqs/components/FaqForm.tsx` | Create/Edit modal |
+| `apps/admin/src/app/(admin)/content/faqs/components/FaqDeleteModal.tsx` | Delete confirmation |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/routes/index.tsx` | Added ContentFaqs lazy import + route |
+| `apps/admin/src/assets/data/menu-items.ts` | Added FAQs menu item under Content |
+
+### RBAC Matrix
+| Role | List | Create | Edit | Toggle Active | Toggle Featured | Delete |
+|------|------|--------|------|---------------|-----------------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — | — |
+
+### Data Integrity (z.preprocess)
+| Field | Empty Input | Behavior |
+|-------|-------------|----------|
+| `category` | `""` | → `null` |
+| `sort_order` | `""` or NaN | → `0` |
+
+### Verification
+- ✅ Build: PASS
+- ✅ Route loads: /content/faqs
+- ✅ CRUD operations: Create, Edit, Toggle Active, Toggle Featured, Delete
+- ✅ RBAC enforced (admin-only delete)
+- ✅ category empty saved as NULL
+- ✅ sort_order empty/NaN saved as 0
+- ✅ Modal parity (xl + 2 tabs: Basic Info, Details)
+- ✅ Restore point: docs/restorepoints/2025-12-16_PhaseA8_FAQsCRUD_BeforeChange.md
 
 ---
 
