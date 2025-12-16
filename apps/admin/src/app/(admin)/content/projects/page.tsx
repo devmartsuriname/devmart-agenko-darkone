@@ -139,15 +139,17 @@ const ProjectsPage = () => {
     <>
       <PageTitle title="Projects" />
       
+      {/* Add button placed ABOVE ComponentContainerCard */}
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="primary" onClick={handleCreate}>
+          <Icon icon="mingcute:add-line" className="me-1" />
+          Add Project
+        </Button>
+      </div>
+
       <ComponentContainerCard
         title="Projects"
         description="Manage your portfolio projects and case studies"
-        headerAction={
-          <Button variant="primary" onClick={handleCreate}>
-            <Icon icon="mingcute:add-line" className="me-1" />
-            Add Project
-          </Button>
-        }
       >
         {error && (
           <Alert variant="danger" dismissible onClose={() => setError(null)}>

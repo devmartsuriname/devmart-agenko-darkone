@@ -139,15 +139,17 @@ const ServicesPage = () => {
     <>
       <PageTitle title="Services" />
       
+      {/* Add button placed ABOVE ComponentContainerCard */}
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="primary" onClick={handleCreate}>
+          <Icon icon="mingcute:add-line" className="me-1" />
+          Add Service
+        </Button>
+      </div>
+
       <ComponentContainerCard
         title="Services"
         description="Manage your service offerings"
-        headerAction={
-          <Button variant="primary" onClick={handleCreate}>
-            <Icon icon="mingcute:add-line" className="me-1" />
-            Add Service
-          </Button>
-        }
       >
         {error && (
           <Alert variant="danger" dismissible onClose={() => setError(null)}>

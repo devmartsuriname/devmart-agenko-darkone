@@ -140,16 +140,18 @@ const ContentBlogPage = () => {
     <>
       <PageTitle subName="Content" title="Blog Posts" />
       
+      {/* Add button placed ABOVE ComponentContainerCard */}
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="primary" onClick={handleCreate}>
+          <Icon icon="mingcute:add-line" className="me-1" />
+          Add Blog Post
+        </Button>
+      </div>
+
       <ComponentContainerCard
         id="blog-list"
         title="Blog Posts"
         description="Create, edit, and publish blog posts."
-        titleEnd={
-          <Button variant="primary" size="sm" onClick={handleCreate}>
-            <Icon icon="mingcute:add-line" className="me-1" />
-            Add Blog Post
-          </Button>
-        }
       >
         {loading ? (
           <div className="text-center py-5">

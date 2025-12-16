@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A8 — FAQs CRUD (Complete)**
+**Phase A8.1 — UI Parity Fix (Complete)**
 
 ### CRUD Pattern Authority Statement
 
@@ -34,7 +34,8 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A5 — Team Members CRUD | ✅ Complete |
 | Phase A6 — Testimonials CRUD | ✅ Complete |
 | Phase A7 — Awards CRUD | ✅ Complete |
-| **Phase A8 — FAQs CRUD** | ✅ Complete |
+| Phase A8 — FAQs CRUD | ✅ Complete |
+| **Phase A8.1 — UI Parity Fix** | ✅ Complete |
 
 ### Frontend Documents (Created)
 
