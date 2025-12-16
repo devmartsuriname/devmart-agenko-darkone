@@ -26,6 +26,7 @@
 | Phase A2.1 | UI Cleanup (Services + Projects) | ✅ Complete | 100% |
 | Phase A3 | Blog Posts CRUD | ✅ Complete | 100% |
 | Phase A4 | Pages CRUD | ✅ Complete | 100% |
+| Phase A5 | Team Members CRUD | ✅ Complete | 100% |
 
 ---
 
@@ -89,6 +90,66 @@
 ## In Progress Tasks 🔄
 
 *No tasks currently in progress*
+
+---
+
+## Phase A5: Team Members CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for Team Members module in Admin app, following Services/Projects/Blog/Pages patterns.
+
+### Key Differences from Other Modules
+- Uses `is_active` (boolean) instead of `status`/`published_at`
+- Status column shows "Active" / "Inactive"
+- Includes social media links (LinkedIn, GitHub, Twitter)
+- Includes contact info (email, phone)
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA5_TeamCRUD_BeforeChange.md)
+- [x] Add Team menu item under Content in sidebar
+- [x] Add `/content/team` route with RBAC guards
+- [x] Create TeamMemberImageUpload component (upload to media/team/)
+- [x] Create TeamMemberDeleteModal component (Admin-only)
+- [x] Create TeamMemberForm modal (xl size, 3-tab layout: Basic Info, Media, Details)
+- [x] Create team members list page with full CRUD
+- [x] Implement slug auto-generation and uniqueness check (excludes current record when editing)
+- [x] Implement is_active toggle (not status/published_at)
+- [x] Implement URL field normalization (trim, empty → null)
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/team/page.tsx` | Full CRUD list page |
+| `apps/admin/src/app/(admin)/content/team/components/TeamMemberForm.tsx` | Create/Edit modal |
+| `apps/admin/src/app/(admin)/content/team/components/TeamMemberImageUpload.tsx` | Avatar upload |
+| `apps/admin/src/app/(admin)/content/team/components/TeamMemberDeleteModal.tsx` | Delete confirmation |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/routes/index.tsx` | Added ContentTeam lazy import + route |
+| `apps/admin/src/assets/data/menu-items.ts` | Added Team menu item under Content |
+
+### RBAC Matrix
+| Role | List | Create | Edit | Toggle Active | Delete |
+|------|------|--------|------|---------------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — |
+
+### Verification
+- ✅ Build: PASS
+- ✅ Route loads: /content/team
+- ✅ CRUD operations: Create, Edit, Toggle Active/Inactive, Delete
+- ✅ Image upload to Supabase Storage (media/team/)
+- ✅ RBAC enforced
+- ✅ Slug uniqueness excludes current record when editing
+- ✅ URL field normalization working
+- ✅ Modal parity with Projects/Services/Blog/Pages (xl + tabs)
 
 ---
 

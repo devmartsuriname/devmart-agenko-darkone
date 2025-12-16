@@ -317,12 +317,13 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A2.1 | ✅ Complete | UI Cleanup (Modal Parity) |
 | A3 | ✅ Complete | Admin CRUD — Blog Posts Module |
 | A4 | ✅ Complete | Admin CRUD — Pages Module |
+| A5 | ✅ Complete | Admin CRUD — Team Members Module |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| A5 | ⏳ Next | Admin CRUD — Team/Testimonials Module |
+| A6 | ⏳ Next | Admin CRUD — Testimonials/Awards Module |
 
 ### Phase A1 Summary (2025-12-15)
 - ✅ Services CRUD module complete

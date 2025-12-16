@@ -49,6 +49,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         parentKey: 'content',
       },
       {
+        key: 'content-team',
+        label: 'Team',
+        url: '/content/team',
+        parentKey: 'content',
+      },
+      {
         key: 'content-media',
         label: 'Media Library',
         url: '/content/media',
