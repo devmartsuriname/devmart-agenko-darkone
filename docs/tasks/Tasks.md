@@ -27,7 +27,7 @@
 | Phase A3 | Blog Posts CRUD | ✅ Complete | 100% |
 | Phase A4 | Pages CRUD | ✅ Complete | 100% |
 | Phase A5 | Team Members CRUD | ✅ Complete | 100% |
-
+| Phase A6 | Testimonials CRUD | ✅ Complete | 100% |
 ---
 
 ## Completed Tasks ✅
@@ -84,6 +84,76 @@
 - [x] Verify tables created successfully (12/12)
 - [x] Verify RLS policies applied correctly (60 policies)
 - [x] Verify storage buckets created (media + documents)
+
+---
+
+## Phase A6: Testimonials CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for Testimonials module in Admin app, following Services/Projects/Blog/Pages/Team patterns.
+
+### Key Differences from Other Modules
+- Uses `is_active` (boolean) instead of `status`/`published_at`
+- No slug field (testimonials don't have slugs)
+- Includes `rating` field (1-5, nullable)
+- Includes `project_id` optional dropdown (FK to projects)
+- z.preprocess for numeric handling: rating empty → null, sort_order empty → 0
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA6_TestimonialsCRUD_BeforeChange.md)
+- [x] Add Testimonials menu item under Content in sidebar
+- [x] Add `/content/testimonials` route with RBAC guards
+- [x] Create TestimonialImageUpload component (upload to media/testimonials/)
+- [x] Create TestimonialDeleteModal component (Admin-only)
+- [x] Create TestimonialForm modal (xl size, 3-tab layout: Basic Info, Media, Details)
+- [x] Create testimonials list page with full CRUD
+- [x] Implement z.preprocess for rating (empty → null) and sort_order (empty → 0)
+- [x] Implement project_id normalization (empty string → null)
+- [x] Implement projects dropdown with resilience (fetch failure doesn't block form)
+- [x] Implement is_active toggle (not status/published_at)
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/testimonials/page.tsx` | Full CRUD list page |
+| `apps/admin/src/app/(admin)/content/testimonials/components/TestimonialForm.tsx` | Create/Edit modal |
+| `apps/admin/src/app/(admin)/content/testimonials/components/TestimonialImageUpload.tsx` | Avatar upload |
+| `apps/admin/src/app/(admin)/content/testimonials/components/TestimonialDeleteModal.tsx` | Delete confirmation |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/routes/index.tsx` | Added ContentTestimonials lazy import + route |
+| `apps/admin/src/assets/data/menu-items.ts` | Added Testimonials menu item under Content |
+
+### RBAC Matrix
+| Role | List | Create | Edit | Toggle Active | Toggle Featured | Delete |
+|------|------|--------|------|---------------|-----------------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Editor | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Viewer | ❌ | — | — | — | — | — |
+
+### Numeric Handling (z.preprocess)
+| Field | Empty Input | Behavior |
+|-------|-------------|----------|
+| `rating` | `""` | → `null` (NOT 0) |
+| `sort_order` | `""` | → `0` |
+| `project_id` | `""` | → `null` |
+
+### Verification
+- ✅ Build: PASS
+- ✅ Route loads: /content/testimonials
+- ✅ CRUD operations: Create, Edit, Toggle Active/Inactive, Toggle Featured, Delete
+- ✅ Image upload to Supabase Storage (media/testimonials/)
+- ✅ RBAC enforced
+- ✅ Rating empty saved as null (NOT 0)
+- ✅ project_id empty saved as null (NOT "")
+- ✅ Projects dropdown resilient (fetch failure shows warning, form works)
+- ✅ Modal parity with other modules (xl + tabs)
 
 ---
 

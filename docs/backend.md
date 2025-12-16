@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A5 — Team Members CRUD (Complete)**
+**Phase A6 — Testimonials CRUD (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -27,8 +27,9 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A2.1 — UI Cleanup | ✅ Complete |
 | Phase A3 — Blog Posts CRUD | ✅ Complete |
 | Phase A4 — Pages CRUD | ✅ Complete |
-| **Phase A5 — Team Members CRUD** | ✅ Complete |
-| Phase A6 — Testimonials/Awards CRUD | ⏳ Next |
+| Phase A5 — Team Members CRUD | ✅ Complete |
+| **Phase A6 — Testimonials CRUD** | ✅ Complete |
+| Phase A7 — Awards/FAQs CRUD | ⏳ Next |
 
 ### Frontend Documents (Created)
 

@@ -70,6 +70,7 @@ const ContentBlog = lazy(() => import('@/app/(admin)/content/blog/page'))
 const ContentProjects = lazy(() => import('@/app/(admin)/content/projects/page'))
 const ContentServices = lazy(() => import('@/app/(admin)/content/services/page'))
 const ContentTeam = lazy(() => import('@/app/(admin)/content/team/page'))
+const ContentTestimonials = lazy(() => import('@/app/(admin)/content/testimonials/page'))
 const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
 const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
 const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
@@ -147,6 +148,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/content/team',
     name: 'Content - Team',
     element: <ContentTeam />,
+  },
+  {
+    path: '/content/testimonials',
+    name: 'Content - Testimonials',
+    element: <ContentTestimonials />,
   },
   {
     path: '/content/media',
