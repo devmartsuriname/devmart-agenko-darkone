@@ -24,6 +24,7 @@
 | Phase A1 | Services CRUD | ✅ Complete | 100% |
 | Phase A2 | Projects CRUD | ✅ Complete | 100% |
 | Phase A2.1 | UI Cleanup (Services + Projects) | ✅ Complete | 100% |
+| Phase A3 | Blog Posts CRUD | ✅ Complete | 100% |
 
 ---
 
@@ -87,6 +88,47 @@
 ## In Progress Tasks 🔄
 
 *No tasks currently in progress*
+
+---
+
+## Phase A3: Blog Posts CRUD ✅
+
+**Status:** ✅ Complete (2025-12-16)
+
+### Scope
+Full CRUD implementation for Blog Posts module in Admin app, following Services/Projects patterns.
+
+### Completed Tasks
+- [x] Create restore point (docs/restorepoints/2025-12-16_PhaseA3_BlogCRUD_BeforeChange.md)
+- [x] Create BlogPostImageUpload component (upload to media/blog/)
+- [x] Create TagsInput component (for tags array)
+- [x] Create BlogPostDeleteModal component (Admin-only)
+- [x] Create BlogPostForm modal (xl size, 3-tab layout: Basic Info, Media, Details)
+- [x] Replace blog page placeholder with full CRUD list page
+- [x] Implement slug auto-generation and uniqueness check
+- [x] Implement RBAC (Admin: full access, Editor: no delete, Viewer: denied)
+- [x] Update documentation
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/content/blog/components/BlogPostImageUpload.tsx` | Featured image upload |
+| `apps/admin/src/app/(admin)/content/blog/components/TagsInput.tsx` | Tags array input |
+| `apps/admin/src/app/(admin)/content/blog/components/BlogPostDeleteModal.tsx` | Delete confirmation |
+| `apps/admin/src/app/(admin)/content/blog/components/BlogPostForm.tsx` | Create/Edit modal |
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `apps/admin/src/app/(admin)/content/blog/page.tsx` | Replaced placeholder with CRUD page |
+
+### Verification
+- ✅ Build: PASS
+- ✅ Route loads: /content/blog
+- ✅ CRUD operations: Create, Edit, Publish/Unpublish, Delete
+- ✅ Image upload to Supabase Storage
+- ✅ RBAC enforced
+- ✅ Modal parity with Projects/Services (xl + tabs)
 
 ---
 
