@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase F3 — Branding & Theme Sync (Complete)**
+**Phase A2.1 — UI Cleanup (Complete)**
 
 | Phase | Status |
 |-------|--------|
@@ -20,8 +20,12 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase F1 — Frontend Cleanup | ✅ Complete |
 | Phase F2 — Frontend ↔ CMS Wiring | ✅ Complete |
 | Phase F2.1 — CMS Wiring Hotfix | ✅ Complete |
-| **Phase F3 — Branding & Theme Sync** | ✅ Complete |
-| Phase F4 — Content Seeding & QA | ⏳ Next |
+| Phase F3 — Branding & Theme Sync | ✅ Complete |
+| Phase F4 — Content Seeding & QA | ✅ Complete |
+| Phase A1 — Services CRUD | ✅ Complete |
+| Phase A2 — Projects CRUD | ✅ Complete |
+| **Phase A2.1 — UI Cleanup** | ✅ Complete |
+| Phase A3 — Blog CRUD | ⏳ Next |
 
 ### Frontend Documents (Created)
 
@@ -383,4 +387,47 @@ First Admin CRUD module implementing full create/read/update/delete operations f
 
 ---
 
-*Last updated: 2025-12-15 - Phase A1 Services CRUD Complete*
+## Phase A2: Admin CRUD — Projects Module (Complete)
+
+**Implemented:** 2025-12-15
+
+### Overview
+Second Admin CRUD module implementing full CRUD for Projects content type with image galleries and technologies tags.
+
+### Route
+- **URL:** `/content/projects`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Title, Category, Status, Featured, Sort Order, Actions |
+| Create/Edit | Tabbed modal (Basic Info, Media, Details) |
+| Image Upload | Thumbnail, Featured Image, Gallery (multi-image) |
+| Technologies | Tag/chip input for technologies array |
+| Publish/Unpublish | Toggle status + published_at |
+| Delete | Admin-only with confirmation |
+
+---
+
+## Phase A2.1: UI Cleanup — Modal Parity (Complete)
+
+**Implemented:** 2025-12-16
+
+### Overview
+Visual alignment of Services and Projects CRUD modules to match Darkone Demo Library patterns.
+
+### Changes Applied
+- ServiceForm modal size: `lg` → `xl`
+- ServiceForm tabs: Flat form → 3-tab layout (Basic Info, Media, Details)
+- Navigation fix: Suspense fallback in AdminLayout
+
+### Verification
+- ✅ Both modules visually aligned
+- ✅ Darkone 1:1 parity achieved
+- ✅ Build passes
+- ✅ No blank pages on navigation
+
+---
+
+*Last updated: 2025-12-16 — Phase A2.1 UI Cleanup Complete*
