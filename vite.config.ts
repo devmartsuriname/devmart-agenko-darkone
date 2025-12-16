@@ -18,6 +18,19 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "apps/admin/src"),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: [
+          'legacy-js-api',
+          'import',
+          'global-builtin',
+          'color-functions',
+          'if-function',
+        ],
+      },
+    },
+  },
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
