@@ -10,6 +10,10 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 **Phase A8 — FAQs CRUD (Complete)**
 
+### CRUD Pattern Authority Statement
+
+> **MANDATORY STANDARD**: All Admin CMS CRUD module implementations (A1–A∞) MUST follow the documented pattern in [`/docs/patterns/CRUD_Module_Pattern.md`](./patterns/CRUD_Module_Pattern.md). Deviations require explicit approval. This pattern covers: folder structure, Zod normalization, RBAC guards, toggle patterns, audit fields, and verification checklists.
+
 | Phase | Status |
 |-------|--------|
 | Phase 1 — Admin Demo Library | ✅ Complete |

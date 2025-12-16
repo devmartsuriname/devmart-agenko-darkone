@@ -354,6 +354,14 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 
 ## Admin CRUD Pattern (Phase A1+)
 
+### CRUD Module Pattern Documentation
+
+> **MANDATORY STANDARD**: All Admin CRUD module implementations MUST follow the documented pattern.
+
+For comprehensive implementation guidelines, copy/paste templates, Zod normalization rules, and verification checklists, see:
+
+→ [`/docs/patterns/CRUD_Module_Pattern.md`](./patterns/CRUD_Module_Pattern.md)
+
 ### Standard CRUD Module Structure
 ```
 apps/admin/src/app/(admin)/content/{module}/
