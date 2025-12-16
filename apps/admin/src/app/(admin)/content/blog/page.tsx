@@ -12,7 +12,6 @@ import { Button, Table, Spinner, Badge, Card, CardBody, ButtonGroup } from 'reac
 import { Icon } from '@iconify/react'
 import PageTitle from '@/components/PageTitle'
 import ComponentContainerCard from '@/components/ComponentContainerCard'
-import Footer from '@/components/layout/Footer'
 import { supabase } from '@/lib/supabase'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
@@ -23,10 +22,8 @@ import type { Tables } from '@/integrations/supabase/types'
 type BlogPost = Tables<'blog_posts'>
 
 const ContentBlogPage = () => {
-  const { userRoles } = useAuthContext()
+  const { isAdmin } = useAuthContext()
   const { showNotification } = useNotificationContext()
-  
-  const isAdmin = userRoles.includes('admin')
   
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -289,8 +286,6 @@ const ContentBlogPage = () => {
           onSuccess={handleDeleteSuccess}
         />
       )}
-
-      <Footer />
     </>
   )
 }
