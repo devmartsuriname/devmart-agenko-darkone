@@ -318,12 +318,13 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A3 | ✅ Complete | Admin CRUD — Blog Posts Module |
 | A4 | ✅ Complete | Admin CRUD — Pages Module |
 | A5 | ✅ Complete | Admin CRUD — Team Members Module |
+| A6 | ✅ Complete | Admin CRUD — Testimonials Module |
 
 ### Upcoming Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| A6 | ⏳ Next | Admin CRUD — Testimonials/Awards Module |
+| A7 | ⏳ Next | Admin CRUD — Awards/FAQs Module |
 
 ### Phase A1 Summary (2025-12-15)
 - ✅ Services CRUD module complete
