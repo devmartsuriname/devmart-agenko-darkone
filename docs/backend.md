@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A8.1 — UI Parity Fix (Complete)**
+**Phase A10 — Contact Submissions (Read-Only + Deactivate Only) (Complete)**
 
 ### CRUD Pattern Authority Statement
 
@@ -35,7 +35,32 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A6 — Testimonials CRUD | ✅ Complete |
 | Phase A7 — Awards CRUD | ✅ Complete |
 | Phase A8 — FAQs CRUD | ✅ Complete |
-| **Phase A8.1 — UI Parity Fix** | ✅ Complete |
+| Phase A8.1 — UI Parity Fix | ✅ Complete |
+| **Phase A10 — Contact Submissions (Read-Only)** | ✅ Complete |
+
+### Phase A10 — Contact Submissions (Read-Only + Deactivate Only)
+
+This module is **READ-ONLY** with status-based moderation:
+
+**Features:**
+- List view with filters (All/New/Read/Archived) and search
+- View modal showing full submission details
+- Auto "Mark as Read" when opening a 'new' submission
+- Archive/Restore functionality (status-based, no hard delete)
+
+**Status Flow:**
+- `new` → User submitted, not yet viewed
+- `read` → Admin/Editor has viewed the submission
+- `archived` → Admin has archived (soft deactivation)
+
+**RBAC:**
+| Role   | View List | View Modal | Archive/Restore |
+|--------|-----------|------------|-----------------|
+| Admin  | ✅        | ✅         | ✅              |
+| Editor | ✅        | ✅         | ❌              |
+| Viewer | ❌ (blocked) | ❌      | ❌              |
+
+**No Edit, No Delete** — This is a read-only audit module.
 
 ### Frontend Documents (Created)
 

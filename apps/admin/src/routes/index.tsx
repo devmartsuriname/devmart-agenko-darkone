@@ -76,6 +76,7 @@ const ContentFaqs = lazy(() => import('@/app/(admin)/content/faqs/page'))
 const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
 const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
 const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
+const CrmContactSubmissions = lazy(() => import('@/app/(admin)/crm/contact-submissions/page'))
 const MarketingNewsletter = lazy(() => import('@/app/(admin)/marketing/newsletter/page'))
 const MarketingSeo = lazy(() => import('@/app/(admin)/marketing/seo/page'))
 const SystemUsers = lazy(() => import('@/app/(admin)/system/users/page'))
@@ -181,6 +182,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/crm/partners',
     name: 'CRM - Partners',
     element: <CrmPartners />,
+  },
+  {
+    path: '/crm/contact-submissions',
+    name: 'CRM - Contact Submissions',
+    element: <CrmContactSubmissions />,
   },
   // Marketing
   {
