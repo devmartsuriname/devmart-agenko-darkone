@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { supabase } from '@/lib/supabase'
-import { showNotification } from '@/helpers/Notification'
+import { useNotificationContext } from '@/context/useNotificationContext'
 
 const subscriberSchema = z.object({
   email: z
@@ -35,6 +35,7 @@ const SubscriberFormModal = ({
   onSuccess,
   subscriber,
 }: SubscriberFormModalProps) => {
+  const { showNotification } = useNotificationContext()
   const isEditMode = !!subscriber
 
   const {

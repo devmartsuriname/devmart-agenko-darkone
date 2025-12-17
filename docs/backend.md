@@ -38,6 +38,19 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A8.1 — UI Parity Fix | ✅ Complete |
 | Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
 | **Phase A11 — Newsletter Subscribers (CRUD)** | ✅ Complete |
+| **Phase A11 Hotfix — Notification Import** | ✅ Complete |
+
+### Phase A11 Hotfix — Notification Import (Complete)
+
+**Implemented:** 2025-12-16
+
+**Issue:** Newsletter module imported `showNotification` from non-existent `@/helpers/Notification`.
+
+**Fix:** Replaced with canonical `useNotificationContext` from `@/context/useNotificationContext`.
+
+**Files Fixed:**
+- `apps/admin/src/app/(admin)/marketing/newsletter/page.tsx`
+- `apps/admin/src/app/(admin)/marketing/newsletter/components/SubscriberFormModal.tsx`
 
 ### Phase A10 — Contact Submissions (Read-Only + Deactivate Only)
 
