@@ -6,7 +6,7 @@ import IconifyIcon from '@/components/wrapper/IconifyIcon'
 import Footer from '@/components/layout/Footer'
 import { supabase } from '@/lib/supabase'
 import { useAuthContext } from '@/context/useAuthContext'
-import { showNotification } from '@/helpers/Notification'
+import { useNotificationContext } from '@/context/useNotificationContext'
 import SubscriberFormModal from './components/SubscriberFormModal'
 
 interface Subscriber {
@@ -20,6 +20,7 @@ interface Subscriber {
 
 const MarketingNewsletterPage = () => {
   const { isAdmin } = useAuthContext()
+  const { showNotification } = useNotificationContext()
   const canEdit = true // Admin + Editor can edit (route is already protected)
 
   const [subscribers, setSubscribers] = useState<Subscriber[]>([])
