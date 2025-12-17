@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A10 — Contact Submissions (Read-Only + Deactivate Only) (Complete)**
+**Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe) (Complete)**
 
 ### CRUD Pattern Authority Statement
 
@@ -36,7 +36,8 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A7 — Awards CRUD | ✅ Complete |
 | Phase A8 — FAQs CRUD | ✅ Complete |
 | Phase A8.1 — UI Parity Fix | ✅ Complete |
-| **Phase A10 — Contact Submissions (Read-Only)** | ✅ Complete |
+| Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
+| **Phase A11 — Newsletter Subscribers (CRUD)** | ✅ Complete |
 
 ### Phase A10 — Contact Submissions (Read-Only + Deactivate Only)
 
@@ -692,4 +693,59 @@ Eighth Admin CRUD module implementing full CRUD for FAQs content type. Notable d
 
 ---
 
-*Last updated: 2025-12-16 — Phase A8 FAQs CRUD Complete*
+## Phase A11: Marketing — Newsletter Subscribers Module (Complete)
+
+**Implemented:** 2025-12-16
+
+### Overview
+Newsletter Subscribers management module with full CRUD (Create, Read, Update) and Unsubscribe/Resubscribe functionality. No hard delete exposed in UI.
+
+### Route
+- **URL:** `/marketing/newsletter`
+- **RBAC:** Admin + Editor (Viewer denied)
+
+### Features
+| Feature | Description |
+|---------|-------------|
+| List View | Table with Email, Status, Source, Subscribed At, Actions |
+| Filters | Status (All/Subscribed/Unsubscribed), Source (All/admin/public/footer/import), Search by email |
+| Create | Modal form with email input, source auto-set to "admin" |
+| Edit | Update email only (source locked) |
+| Unsubscribe | Sets `is_active=false` + `unsubscribed_at=now()` |
+| Resubscribe | Sets `is_active=true` + `unsubscribed_at=null` |
+| CSV Import | Button disabled with "Coming soon" label |
+
+### Status Model
+Uses `is_active` boolean (NOT status text):
+- `is_active=true` → "Subscribed" (green badge)
+- `is_active=false` → "Unsubscribed" (secondary badge)
+
+### RLS Policies Updated
+| Policy | Roles | Operation |
+|--------|-------|-----------|
+| Admin and Editor can read newsletter subscribers | admin, editor | SELECT |
+| Admin and Editor can insert newsletter subscribers | admin, editor | INSERT |
+| Admin and Editor can update newsletter subscribers | admin, editor | UPDATE |
+| Admin can delete newsletter subscribers | admin | DELETE (not exposed in UI) |
+
+### RBAC Matrix
+| Role | View | Create | Edit | Unsubscribe/Resubscribe | Delete |
+|------|------|--------|------|-------------------------|--------|
+| Admin | ✅ | ✅ | ✅ | ✅ | ❌ (hidden) |
+| Editor | ✅ | ✅ | ✅ | ✅ | ❌ (hidden) |
+| Viewer | ❌ | — | — | — | — |
+
+### Files
+| File | Purpose |
+|------|---------|
+| `apps/admin/src/app/(admin)/marketing/newsletter/page.tsx` | List page with filters and actions |
+| `apps/admin/src/app/(admin)/marketing/newsletter/components/SubscriberFormModal.tsx` | Create/Edit modal |
+
+### Duplicate Email Handling
+- Unique constraint on `email` column enforced at DB level
+- UI shows user-friendly toast: "This email is already subscribed"
+- Error code `23505` caught and handled gracefully
+
+---
+
+*Last updated: 2025-12-16 — Phase A11 Newsletter Subscribers CRUD Complete*

@@ -31,7 +31,8 @@
 |-------|-------------|--------|
 | A1–A8 | CRUD Modules (Services, Projects, Blog, Pages, Team, Testimonials, Awards, FAQs) | ✅ Complete |
 | A8.1 | UI Parity Fix (Add buttons) | ✅ Complete |
-| **A10** | Contact Submissions (Read-Only + Deactivate) | ✅ Complete |
+| A10 | Contact Submissions (Read-Only + Deactivate) | ✅ Complete |
+| **A11** | Newsletter Subscribers (CRUD + Unsubscribe) | ✅ Complete |
 
 ---
 
@@ -330,6 +331,8 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A7 | ✅ Complete | Admin CRUD — Awards Module |
 | A8 | ✅ Complete | Admin CRUD — FAQs Module |
 | A8.1 | ✅ Complete | UI Parity Fix — Add buttons (Pages, Blog, Services, Projects) |
+| A10 | ✅ Complete | Contact Submissions (Read-Only + Deactivate) |
+| A11 | ✅ Complete | Newsletter Subscribers (CRUD + Unsubscribe) |
 
 ### Upcoming Phases
 
