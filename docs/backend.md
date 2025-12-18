@@ -26,7 +26,8 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase F2.1 — CMS Wiring Hotfix | ✅ Complete |
 | Phase F3 — Branding & Theme Sync | ✅ Complete |
 | Phase F4 — Content Seeding & QA | ✅ Complete |
-| **Phase F5 — Frontend Detail Pages Wiring** | ✅ Complete |
+| Phase F5 — Frontend Detail Pages Wiring | ✅ Complete |
+| **Phase F6 — Public Contact Form Wiring** | ✅ Complete |
 | Phase A1 — Services CRUD | ✅ Complete |
 | Phase A2 — Projects CRUD | ✅ Complete |
 | Phase A2.1 — UI Cleanup | ✅ Complete |
@@ -68,6 +69,40 @@ Wired 5 public frontend detail pages to fetch dynamic data from Supabase instead
 - Team slider populated from CMS data
 
 **No Schema Changes:** All wiring uses existing hooks and tables.
+
+### Phase F6 — Public Contact Form Wiring
+
+**Implemented:** 2025-12-18  
+**Status:** ✅ Complete
+
+**Overview:**
+Wired the public contact page form to INSERT into `contact_submissions` table.
+
+**File Modified:**
+- `apps/public/src/components/Pages/ContactPage.jsx`
+
+**Features:**
+- Form state management with React useState
+- Client-side validation (required fields, email format)
+- Loading state to prevent double submit
+- Success notification with form reset
+- Error notification with input preservation
+- Inline success/error message display (no external toast library)
+
+**Database Operation:**
+```javascript
+supabase.from('contact_submissions').insert({
+  name: formData.name.trim(),
+  email: formData.email.trim(),
+  subject: formData.subject.trim() || null,
+  message: formData.message.trim()
+  // status defaults to 'new' in database
+})
+```
+
+**RLS Policy:** "Public can submit contact form" — allows anonymous INSERT with `with_check: true`
+
+**No Schema Changes:** Uses existing `contact_submissions` table and RLS policies.
 
 ### Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)
 

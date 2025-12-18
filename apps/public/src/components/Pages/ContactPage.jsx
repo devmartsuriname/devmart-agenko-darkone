@@ -1,32 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Spacing from '../Spacing';
 import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
 import { pageTitle } from '../../helpers/PageTitle';
 import { Icon } from '@iconify/react';
 import { useSiteSettingsContext } from '../../context/SiteSettingsContext';
+import { supabase } from '../../lib/supabase';
 
 export default function ContactPage() {
   pageTitle('Contact');
   const { settings } = useSiteSettingsContext();
 
-  /**
-   * TODO: Phase F4 will implement contact form submission
-   * This will INSERT into contact_submissions table with fields:
-   * - name (required)
-   * - email (required)
-   * - subject (optional)
-   * - message (required)
-   * - ip_address (captured server-side)
-   * - user_agent (captured server-side)
-   * 
-   * Reference: docs/contracts/Admin_Frontend_Content_Contract.md
-   * Reference: docs/tasks/Tasks.md (Phase F4)
-   */
-  const handleContactSubmit = (e) => {
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Simple email validation
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear status when user starts typing again
+    if (submitStatus) {
+      setSubmitStatus(null);
+      setErrorMessage('');
+    }
+  };
+
+  // Handle form submission
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Phase F4 - INSERT into contact_submissions
-    console.log('[Contact] Form submission placeholder - Phase F4 will implement');
-    alert('Contact form submission coming soon!');
+
+    // Client-side validation
+    if (!formData.name.trim()) {
+      setSubmitStatus('error');
+      setErrorMessage('Please enter your name.');
+      return;
+    }
+    if (!formData.email.trim()) {
+      setSubmitStatus('error');
+      setErrorMessage('Please enter your email address.');
+      return;
+    }
+    if (!isValidEmail(formData.email)) {
+      setSubmitStatus('error');
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+    if (!formData.message.trim()) {
+      setSubmitStatus('error');
+      setErrorMessage('Please enter your message.');
+      return;
+    }
+
+    // Prevent double submit
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setErrorMessage('');
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim() || null,
+          message: formData.message.trim()
+          // status defaults to 'new' in database
+          // created_at defaults to now() in database
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      // Success: show message and reset form
+      setSubmitStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (err) {
+      // Error: show message and preserve form data
+      setSubmitStatus('error');
+      setErrorMessage('Unable to send your message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,8 +140,35 @@ export default function ContactPage() {
             <div className="col-lg-6">
               <div className="cs_contact_form_wrap">
                 <div className="cs_gray_bg_3 cs_contact_form_bg" />
-                {/* TODO: Phase F4 - Wire to contact_submissions INSERT */}
                 <form className="cs_contact_form" onSubmit={handleContactSubmit}>
+                  {/* Success Message */}
+                  {submitStatus === 'success' && (
+                    <div className="cs_success_message" style={{
+                      padding: '15px',
+                      marginBottom: '20px',
+                      backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                      border: '1px solid rgba(34, 197, 94, 0.3)',
+                      borderRadius: '8px',
+                      color: '#22c55e'
+                    }}>
+                      <strong>Thank you!</strong> Your message has been sent successfully. We'll get back to you soon.
+                    </div>
+                  )}
+
+                  {/* Error Message */}
+                  {submitStatus === 'error' && (
+                    <div className="cs_error_message" style={{
+                      padding: '15px',
+                      marginBottom: '20px',
+                      backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      borderRadius: '8px',
+                      color: '#ef4444'
+                    }}>
+                      <strong>Error:</strong> {errorMessage}
+                    </div>
+                  )}
+
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
                     Your full name *
                   </label>
@@ -76,6 +177,9 @@ export default function ContactPage() {
                     type="text"
                     className="cs_form_field"
                     name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     required
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
@@ -87,6 +191,9 @@ export default function ContactPage() {
                     type="email"
                     className="cs_form_field"
                     name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     required
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
@@ -98,6 +205,9 @@ export default function ContactPage() {
                     type="text"
                     className="cs_form_field"
                     name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
                   <label className="cs_fs_21 cs_semibold cs_primary_color">
@@ -109,11 +219,19 @@ export default function ContactPage() {
                     className="cs_form_field"
                     name="message"
                     placeholder="Tell us about your project..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     required
                   />
                   <div className="cs_height_38 cs_height_lg_25" />
-                  <button type="submit" className="cs_btn cs_style_1">
-                    Send Message
+                  <button 
+                    type="submit" 
+                    className="cs_btn cs_style_1"
+                    disabled={isSubmitting}
+                    style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                     <span>
                       <i>
                         <Icon icon="fa6-solid:arrow-right" />
