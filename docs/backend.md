@@ -37,20 +37,37 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A8 — FAQs CRUD | ✅ Complete |
 | Phase A8.1 — UI Parity Fix | ✅ Complete |
 | Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
-| **Phase A11 — Newsletter Subscribers (CRUD)** | ✅ Complete |
-| **Phase A11 Hotfix — Notification Import** | ✅ Complete |
+| **Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)** | ✅ Complete – Hotfix validated (build-blocker resolved) |
 
-### Phase A11 Hotfix — Notification Import (Complete)
+### Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)
 
-**Implemented:** 2025-12-16
+**Implemented:** 2025-12-16  
+**Status:** ✅ Complete – Hotfix validated (build-blocker resolved)
 
-**Issue:** Newsletter module imported `showNotification` from non-existent `@/helpers/Notification`.
+**Features:**
+- CRUD for newsletter subscribers (email + source)
+- Unsubscribe/Resubscribe toggle (is_active boolean + unsubscribed_at timestamp)
+- Filters: Status (All/Subscribed/Unsubscribed), Source (admin/public/import)
+- Search by email
 
-**Fix:** Replaced with canonical `useNotificationContext` from `@/context/useNotificationContext`.
+**Scope Freeze (Explicit):**
+- ❌ CSV import — explicitly postponed (disabled button placeholder only)
+- ❌ Email campaigns — NOT in scope
+- ❌ Name column — NOT added (email-only in this phase)
+- ❌ A12 features — NOT started
 
-**Files Fixed:**
+**RBAC:**
+| Role   | View | Create | Edit | Toggle Subscribe | Delete |
+|--------|------|--------|------|------------------|--------|
+| Admin  | ✅   | ✅     | ✅   | ✅               | ❌ (not exposed) |
+| Editor | ✅   | ✅     | ✅   | ✅               | ❌ (not exposed) |
+| Viewer | ❌   | ❌     | ❌   | ❌               | ❌ |
+
+**Files:**
 - `apps/admin/src/app/(admin)/marketing/newsletter/page.tsx`
 - `apps/admin/src/app/(admin)/marketing/newsletter/components/SubscriberFormModal.tsx`
+
+**Hotfix Applied:** Replaced incorrect `showNotification` import from non-existent `@/helpers/Notification` with canonical `useNotificationContext` from `@/context/useNotificationContext`.
 
 ### Phase A10 — Contact Submissions (Read-Only + Deactivate Only)
 
