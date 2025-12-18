@@ -10,63 +10,13 @@ import TeamSlider from '../Slider/TeamSlider';
 import Marquee from '../Marquee';
 import Brands from '../Brands';
 import { pageTitle } from '../../helpers/PageTitle';
+import { useTeamMembers } from '../../hooks/useContent';
 
 const funfactData = [
   { title: 'Happy Customers', number: '22k' },
   { title: "Work's Completed", number: '15k' },
   { title: 'Skilled Team Members', number: '121' },
   { title: 'Most Valuable Awards', number: '15' },
-];
-
-const teamData = [
-  {
-    memberImg: '/images/studio-agency/team_1.jpeg',
-    memberName: 'James Berline',
-    memberDesignation: 'React Developer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_2.jpeg',
-    memberName: 'Bella Zubena',
-    memberDesignation: 'Graphic Designer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_3.jpeg',
-    memberName: 'Kemnei Alekzend',
-    memberDesignation: 'Digital Marketer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_4.jpeg',
-    memberName: 'Juliya Jesmine',
-    memberDesignation: 'UX Researcher',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_1.jpeg',
-    memberName: 'James Berline',
-    memberDesignation: 'React Developer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_2.jpeg',
-    memberName: 'Bella Zubena',
-    memberDesignation: 'Graphic Designer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_3.jpeg',
-    memberName: 'Kemnei Alekzend',
-    memberDesignation: 'Digital Marketer',
-    href: '/team/team-details',
-  },
-  {
-    memberImg: '/images/studio-agency/team_4.jpeg',
-    memberName: 'Juliya Jesmine',
-    memberDesignation: 'UX Researcher',
-    href: '/team/team-details',
-  },
 ];
 
 const brandList = [
@@ -85,6 +35,23 @@ const brandListDark = [
 
 export default function AboutPage({ darkMode }) {
   pageTitle('About');
+  
+  // Fetch team members from Supabase
+  const { members, loading: teamLoading } = useTeamMembers();
+  
+  // Transform team members data to match slider format
+  const teamData = members.map((member) => ({
+    memberImg: member.avatar_url || '/images/studio-agency/team_1.jpeg',
+    memberName: member.name,
+    memberDesignation: member.role,
+    href: `/team/${member.slug}`,
+  }));
+  
+  // If we have team data, duplicate it for smoother slider experience (if needed)
+  const sliderTeamData = teamData.length > 0 
+    ? (teamData.length < 4 ? [...teamData, ...teamData] : teamData)
+    : [];
+
   return (
     <>
       <Spacing lg="70" md="70" />
@@ -172,6 +139,8 @@ export default function AboutPage({ darkMode }) {
         </div>
         <Spacing lg="150" md="80" />
       </section>
+      
+      {/* Team Section - Now uses dynamic data from Supabase */}
       <section className="cs_p76_full_width">
         <Spacing lg="143" md="75" />
         <div className="container">
@@ -181,8 +150,19 @@ export default function AboutPage({ darkMode }) {
           />
           <Spacing lg="85" md="45" />
         </div>
-        <TeamSlider data={teamData} />
+        {teamLoading ? (
+          <div className="container text-center">
+            <div className="cs_loader">Loading team...</div>
+          </div>
+        ) : sliderTeamData.length > 0 ? (
+          <TeamSlider data={sliderTeamData} />
+        ) : (
+          <div className="container text-center">
+            <p>No team members available.</p>
+          </div>
+        )}
       </section>
+      
       <Spacing lg="135" md="70" />
       <Marquee text="We Create Design - Build App - Website - Branding - SEO" />
       <Spacing lg="84" md="50" />

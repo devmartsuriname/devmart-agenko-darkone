@@ -1,18 +1,53 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Spacing from '../Spacing';
 import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
 import ProgressBar from '../ProgressBar';
 import { pageTitle } from '../../helpers/PageTitle';
+import { useTeamMember } from '../../hooks/useContent';
 
 export default function TeamDetailsPage() {
-  pageTitle('Team Details');
+  const { teamDetailsId } = useParams();
+  const { member, loading, error } = useTeamMember(teamDetailsId);
+
+  pageTitle(member?.name || 'Team Details');
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <Spacing lg="70" md="70" />
+        <Spacing lg="140" md="80" />
+        <div className="container text-center">
+          <div className="cs_loader">Loading...</div>
+        </div>
+        <Spacing lg="150" md="80" />
+      </>
+    );
+  }
+
+  // Not found state
+  if (error || !member) {
+    return (
+      <>
+        <Spacing lg="70" md="70" />
+        <Spacing lg="140" md="80" />
+        <div className="container text-center">
+          <h2>Team Member Not Found</h2>
+          <p>The team member you're looking for doesn't exist or is no longer active.</p>
+        </div>
+        <Spacing lg="150" md="80" />
+      </>
+    );
+  }
+
   return (
     <>
       <Spacing lg="70" md="70" />
       <Spacing lg="140" md="80" />
       <SectionHeadingStyle3
-        title="James Berline"
-        subTitle="React Developer"
+        title={member.name}
+        subTitle={member.role}
         shape="shape_3"
       />
       <Spacing lg="75" md="60" />
@@ -21,34 +56,49 @@ export default function TeamDetailsPage() {
           <div className="row">
             <div className="col-xl-5">
               <img
-                src="/images/others/team_details_1.jpeg"
-                alt="Member"
+                src={member.avatar_url || '/images/others/team_details_1.jpeg'}
+                alt={member.name}
                 className="w-100"
               />
             </div>
             <div className="col-xl-6 offset-xl-1">
               <Spacing lg="50" md="30" />
-              <h2 className="cs_fs_38">Bio & experience</h2>
-              <p>
-                Meet James Berline, a skilled React developer based in the USA.
-                With years of more experience and a passion for building
-                exceptional web applications, James Berline has become an expert
-                in the field. As a freelance developer, they have worked with
-                clients from around the world, delivering high-quality solutions
-                that exceed her limit expectations. In their free time, James
-                Berline enjoys exploring new technologies and mentoring junior
-                developers. She love also song writing.
-              </p>
-              <p>
-                Versatile developer with expertise in React and front-end
-                development. He also have nice extensive experience with SQL
-                databases. With a strong work ethic and attention to detail,
-                they deliver high-quality solutions that exceed expectations.
-              </p>
+              <h2 className="cs_fs_38">Bio & Experience</h2>
+              {member.bio ? (
+                <div dangerouslySetInnerHTML={{ __html: member.bio }} />
+              ) : (
+                <p>No bio available for this team member.</p>
+              )}
+              
+              {/* Social Links */}
+              {(member.social_linkedin || member.social_twitter || member.social_github) && (
+                <>
+                  <Spacing lg="20" md="15" />
+                  <div className="cs_team_social">
+                    {member.social_linkedin && (
+                      <a href={member.social_linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i className="fa-brands fa-linkedin-in"></i>
+                      </a>
+                    )}
+                    {member.social_twitter && (
+                      <a href={member.social_twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                        <i className="fa-brands fa-twitter"></i>
+                      </a>
+                    )}
+                    {member.social_github && (
+                      <a href={member.social_github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <i className="fa-brands fa-github"></i>
+                      </a>
+                    )}
+                  </div>
+                </>
+              )}
+              
+              {/* Keep skill progress bars as static placeholder - no skills field in schema */}
               <Spacing lg="15" md="15" />
-              <ProgressBar title="React Development" percentage="75" />
-              <ProgressBar title="Front-End Development" percentage="85" />
-              <ProgressBar title="Sql Database" percentage="80" />
+              <ProgressBar title="Technical Skills" percentage="85" />
+              <ProgressBar title="Communication" percentage="90" />
+              <ProgressBar title="Problem Solving" percentage="80" />
             </div>
           </div>
         </div>

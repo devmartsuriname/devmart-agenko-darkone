@@ -1,84 +1,88 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Spacing from '../Spacing';
 import SectionHeadingStyle3 from '../SectionHeading/SectionHeadingStyle3';
 import CtaStyle2 from '../Cta/CtaStyle2';
 import About from '../About';
-import CardStyle3 from '../Card/CardStyle3';
 import { pageTitle } from '../../helpers/PageTitle';
+import { useService } from '../../hooks/useContent';
 
 export default function ServiceDetailsPage() {
-  pageTitle('Service Details');
+  const { serviceDetailsId } = useParams();
+  const { service, loading, error } = useService(serviceDetailsId);
+
+  pageTitle(service?.title || 'Service Details');
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <Spacing lg="70" md="70" />
+        <Spacing lg="140" md="80" />
+        <div className="container text-center">
+          <div className="cs_loader">Loading...</div>
+        </div>
+        <Spacing lg="150" md="80" />
+      </>
+    );
+  }
+
+  // Not found state
+  if (error || !service) {
+    return (
+      <>
+        <Spacing lg="70" md="70" />
+        <Spacing lg="140" md="80" />
+        <div className="container text-center">
+          <h2>Service Not Found</h2>
+          <p>The service you're looking for doesn't exist or has been removed.</p>
+        </div>
+        <Spacing lg="150" md="80" />
+      </>
+    );
+  }
+
   return (
     <>
       <Spacing lg="70" md="70" />
       <Spacing lg="140" md="80" />
       <SectionHeadingStyle3
-        title="Improving website visibility and <br/>user experience"
-        subTitle="On Page Optimiztion"
+        title={service.title}
+        subTitle={service.short_description || 'Service Details'}
         shape="shape_3"
       />
       <Spacing lg="75" md="60" />
-      <div className="cs_service_info">
+      
+      {/* Service Image */}
+      {service.image_url && (
         <div className="container">
-          <div className="row align-items-center cs_gap_y_40">
-            <div className="col-lg-6">
-              <div
-                className="cs_service_info_thumb cs_bg_filed"
-                style={{
-                  backgroundImage:
-                    'url("/images/others/service_details_2.png")',
-                }}
-              />
-            </div>
-            <div className="col-lg-6">
-              <div className="row cs_gap_y_40">
-                <div className="col-sm-6">
-                  <CardStyle3
-                    number="01"
-                    title="Keywords"
-                    subTitle="One provide moment. Interesting an a upse you side it all the and don't listen. Cnfiden picture she one the what I nor least absolutes heavily polimer."
-                  />
-                </div>
-                <div className="col-sm-6">
-                  <CardStyle3
-                    number="02"
-                    title="SEO Writing"
-                    subTitle="One provide moment. Interesting an a upse you side it all the and don't listen. Cnfiden picture she one the what I nor least absolutes heavily polimer."
-                  />
-                </div>
-                <div className="col-sm-6">
-                  <CardStyle3
-                    number="03"
-                    title="Visual Assets"
-                    subTitle="One provide moment. Interesting an a upse you side it all the and don't listen. Cnfiden picture she one the what I nor least absolutes heavily polimer."
-                  />
-                </div>
-                <div className="col-sm-6">
-                  <CardStyle3
-                    number="04"
-                    title="Image Optimization"
-                    subTitle="One provide moment. Interesting an a upse you side it all the and don't listen. Cnfiden picture she one the what I nor least absolutes heavily polimer."
-                  />
-                </div>
-              </div>
-            </div>
+          <div className="cs_service_info">
+            <div
+              className="cs_service_info_thumb cs_bg_filed"
+              style={{
+                backgroundImage: `url("${service.image_url}")`,
+                minHeight: '400px',
+                borderRadius: '15px',
+              }}
+            />
           </div>
         </div>
-      </div>
-      <Spacing lg="150" md="80" />
-      <About
-        thumbnailSrc="/images/others/service_details_1.jpeg"
-        title="What you will get from this service?"
-        subTitle="Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and imaginative thinking, consumer behavior, and data-driven design with advanced."
-        featureList={[
-          'Powerful market strategy use',
-          'Trending marketing tools involve',
-          'Designing content with AI power',
-          'Compatible with all modern browsers',
-        ]}
-        btnText="Check Live Projects"
-        btnUrl="/portfolio"
-      />
+      )}
+      
+      <Spacing lg="75" md="60" />
+      
+      {/* Service Content */}
+      {service.content && (
+        <About
+          thumbnailSrc={service.image_url || '/images/others/service_details_1.jpeg'}
+          title="What you will get from this service?"
+          subTitle={service.content}
+          featureList={[]}
+          btnText="Check Live Projects"
+          btnUrl="/portfolio"
+        />
+      )}
+      
       <Spacing lg="150" md="80" />
       <div className="cs_height_140 cs_height_lg_70" />
       <CtaStyle2
