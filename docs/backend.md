@@ -28,6 +28,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase F4 — Content Seeding & QA | ✅ Complete |
 | Phase F5 — Frontend Detail Pages Wiring | ✅ Complete |
 | **Phase F6 — Public Contact Form Wiring** | ✅ Complete |
+| **Phase F7 — Public Newsletter Form Wiring** | ✅ Complete |
 | **Hotfix — Public App date-fns Dependency** | ✅ Complete |
 | Phase A1 — Services CRUD | ✅ Complete |
 | Phase A2 — Projects CRUD | ✅ Complete |
@@ -104,6 +105,44 @@ supabase.from('contact_submissions').insert({
 **RLS Policy:** "Public can submit contact form" — allows anonymous INSERT with `with_check: true`
 
 **No Schema Changes:** Uses existing `contact_submissions` table and RLS policies.
+
+### Phase F7 — Public Newsletter Form Wiring
+
+**Implemented:** 2025-12-18  
+**Status:** ✅ Complete
+
+**Overview:**
+Wired the public footer newsletter subscribe form to INSERT into `newsletter_subscribers` table.
+
+**File Modified:**
+- `apps/public/src/components/Footer/index.jsx`
+
+**Features:**
+- Form state management with React useState (email, isSubmitting, submitStatus, statusMessage)
+- Client-side email validation (basic regex)
+- Loading state with button/input disabled during submission
+- Success notification with form reset
+- Duplicate email handling via Postgres unique violation (error code 23505)
+- Inline success/error/exists message display (no external toast library)
+
+**Database Operation:**
+```javascript
+supabase.from('newsletter_subscribers').insert({
+  email: trimmedEmail,
+  source: 'public'
+  // is_active defaults to true in database
+  // subscribed_at defaults to now() in database
+})
+```
+
+**Error Handling:**
+- `error.code === '23505'` → "This email is already subscribed!" (amber warning)
+- Success → "Thank you for subscribing!" (green success)
+- Other errors → "Unable to subscribe. Please try again later." (red error)
+
+**RLS Policy:** "Public can subscribe to newsletter" — allows anonymous INSERT
+
+**No Schema Changes:** Uses existing `newsletter_subscribers` table, unique constraint on email, and RLS policies.
 
 ### Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)
 
