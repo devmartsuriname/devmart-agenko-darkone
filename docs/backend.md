@@ -28,6 +28,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase F4 — Content Seeding & QA | ✅ Complete |
 | Phase F5 — Frontend Detail Pages Wiring | ✅ Complete |
 | **Phase F6 — Public Contact Form Wiring** | ✅ Complete |
+| **Hotfix — Public App date-fns Dependency** | ✅ Complete |
 | Phase A1 — Services CRUD | ✅ Complete |
 | Phase A2 — Projects CRUD | ✅ Complete |
 | Phase A2.1 — UI Cleanup | ✅ Complete |
