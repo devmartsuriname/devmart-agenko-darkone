@@ -26,6 +26,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase F2.1 — CMS Wiring Hotfix | ✅ Complete |
 | Phase F3 — Branding & Theme Sync | ✅ Complete |
 | Phase F4 — Content Seeding & QA | ✅ Complete |
+| **Phase F5 — Frontend Detail Pages Wiring** | ✅ Complete |
 | Phase A1 — Services CRUD | ✅ Complete |
 | Phase A2 — Projects CRUD | ✅ Complete |
 | Phase A2.1 — UI Cleanup | ✅ Complete |
@@ -39,6 +40,34 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
 | **Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)** | ✅ Complete – Hotfix validated (build-blocker resolved) |
 | **Phase E — CRUD Completion Audit (A1–A11)** | ✅ Complete |
+
+### Phase F5 — Frontend Detail Pages Wiring
+
+**Implemented:** 2025-12-18  
+**Status:** ✅ Complete
+
+**Overview:**
+Wired 5 public frontend detail pages to fetch dynamic data from Supabase instead of hardcoded content.
+
+**Pages Wired:**
+| Page | File | Hook | Table |
+|------|------|------|-------|
+| ServiceDetailsPage | `apps/public/src/components/Pages/ServiceDetailsPage.jsx` | `useService(slug)` | `services` |
+| PortfolioDetailsPage | `apps/public/src/components/Pages/PortfolioDetailsPage.jsx` | `useProject(slug)` | `projects` |
+| BlogDetailsPage | `apps/public/src/components/Pages/BlogDetailsPage.jsx` | `useBlogPost(slug)` | `blog_posts` |
+| TeamDetailsPage | `apps/public/src/components/Pages/TeamDetailsPage.jsx` | `useTeamMember(slug)` | `team_members` |
+| AboutPage (team section) | `apps/public/src/components/Pages/AboutPage.jsx` | `useTeamMembers()` | `team_members` |
+
+**Features:**
+- Loading states for all detail pages
+- Not-found states when content doesn't exist
+- Dynamic page titles based on content
+- Gallery rendering for projects
+- Date formatting for blog posts
+- Social links for team members
+- Team slider populated from CMS data
+
+**No Schema Changes:** All wiring uses existing hooks and tables.
 
 ### Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)
 

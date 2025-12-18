@@ -34,6 +34,7 @@
 | A10 | Contact Submissions (Read-Only + Deactivate) | ✅ Complete |
 | **A11** | Newsletter Subscribers (CRUD + Unsubscribe) | ✅ Complete – Hotfix validated |
 | **Phase E** | CRUD Completion Audit (A1–A11) | ✅ Complete |
+| **Phase F5** | Frontend Detail Pages Wiring (5 pages) | ✅ Complete |
 
 ---
 
