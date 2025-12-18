@@ -1,8 +1,9 @@
 import { Icon } from '@iconify/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteSettingsContext } from '../../context/SiteSettingsContext';
 import { useServices } from '../../hooks/useContent';
+import { supabase } from '../../lib/supabase';
 
 const LinksMenuList = [
   { title: 'Home', href: '/' },
@@ -31,6 +32,12 @@ const fallbackServices = [
 export default function Footer() {
   const { settings } = useSiteSettingsContext();
   const { services } = useServices();
+  
+  // Newsletter form state
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'exists' | 'error'
+  const [statusMessage, setStatusMessage] = useState('');
 
   // Transform services for footer menu
   const serviceMenuList = services && services.length > 0
@@ -53,14 +60,52 @@ export default function Footer() {
     { icon: 'fa6-brands:facebook-f', href: '#' },
   ];
 
-  // Newsletter form handler
-  // TODO: Phase F4 will add INSERT mutation to newsletter_subscribers table
-  const handleNewsletterSubmit = (e) => {
+  // Newsletter form handler - INSERT into newsletter_subscribers
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement newsletter subscription in Phase F4
-    // This will INSERT into newsletter_subscribers table
-    console.log('[Newsletter] Submission handler placeholder - Phase F4 will implement');
-    alert('Newsletter subscription coming soon!');
+    
+    const trimmedEmail = email.trim().toLowerCase();
+    
+    // Basic email validation
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setSubmitStatus('error');
+      setStatusMessage('Please enter a valid email address.');
+      return;
+    }
+    
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setStatusMessage('');
+    
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert({
+          email: trimmedEmail,
+          source: 'public'
+        });
+      
+      if (error) {
+        // Handle unique constraint violation (email already exists)
+        if (error.code === '23505') {
+          setSubmitStatus('exists');
+          setStatusMessage('This email is already subscribed!');
+        } else {
+          throw error;
+        }
+      } else {
+        setSubmitStatus('success');
+        setStatusMessage('Thank you for subscribing!');
+        setEmail('');
+      }
+    } catch (err) {
+      console.error('[Newsletter] Subscription error:', err);
+      setSubmitStatus('error');
+      setStatusMessage('Unable to subscribe. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -117,16 +162,29 @@ export default function Footer() {
                       We make sure to only send emails that are noteworthy and
                       pertinent to the recipient.
                     </div>
-                    {/* TODO: Phase F4 will wire this form to INSERT into newsletter_subscribers */}
                     <form onSubmit={handleNewsletterSubmit} className="cs_newsletter_form">
                       <input
                         type="email"
                         className="cs_newsletter_input"
                         placeholder={settings.newsletter_placeholder || 'Email address'}
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (submitStatus) {
+                            setSubmitStatus(null);
+                            setStatusMessage('');
+                          }
+                        }}
+                        disabled={isSubmitting}
                         required
                       />
-                      <button type="submit" className="cs_btn cs_style_1">
-                        Submit
+                      <button 
+                        type="submit" 
+                        className="cs_btn cs_style_1"
+                        disabled={isSubmitting}
+                        style={{ opacity: isSubmitting ? 0.7 : 1 }}
+                      >
+                        {isSubmitting ? 'Subscribing...' : 'Submit'}
                         <span>
                           <i>
                             <Icon icon="fa6-solid:arrow-right" />
@@ -137,6 +195,36 @@ export default function Footer() {
                         </span>
                       </button>
                     </form>
+                    {submitStatus && (
+                      <div 
+                        className="cs_newsletter_status"
+                        style={{
+                          padding: '10px 15px',
+                          marginTop: '15px',
+                          borderRadius: '6px',
+                          fontSize: '14px',
+                          backgroundColor: submitStatus === 'success' 
+                            ? 'rgba(34, 197, 94, 0.15)' 
+                            : submitStatus === 'exists'
+                            ? 'rgba(251, 191, 36, 0.15)'
+                            : 'rgba(239, 68, 68, 0.15)',
+                          color: submitStatus === 'success' 
+                            ? '#22c55e' 
+                            : submitStatus === 'exists'
+                            ? '#fbbf24'
+                            : '#ef4444',
+                          border: `1px solid ${
+                            submitStatus === 'success' 
+                              ? 'rgba(34, 197, 94, 0.3)' 
+                              : submitStatus === 'exists'
+                              ? 'rgba(251, 191, 36, 0.3)'
+                              : 'rgba(239, 68, 68, 0.3)'
+                          }`
+                        }}
+                      >
+                        {statusMessage}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

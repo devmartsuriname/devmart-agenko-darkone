@@ -36,6 +36,7 @@
 | **Phase E** | CRUD Completion Audit (A1–A11) | ✅ Complete |
 | Phase F5 | Frontend Detail Pages Wiring (5 pages) | ✅ Complete |
 | **Phase F6** | Public Contact Form Wiring | ✅ Complete |
+| **Phase F7** | Public Newsletter Form Wiring | ✅ Complete |
 | **Hotfix** | Public App date-fns Dependency | ✅ Complete |
 
 ---
@@ -338,6 +339,7 @@ See [`/docs/tasks/Tasks.md`](./tasks/Tasks.md) for detailed task tracking.
 | A10 | ✅ Complete | Contact Submissions (Read-Only + Deactivate) |
 | A11 | ✅ Complete | Newsletter Subscribers (CRUD + Unsubscribe) |
 | F6 | ✅ Complete | Public Contact Form Wiring |
+| F7 | ✅ Complete | Public Newsletter Form Wiring |
 
 ### Upcoming Phases
 
