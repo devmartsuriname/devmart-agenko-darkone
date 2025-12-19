@@ -85,7 +85,8 @@ const SystemRoles = lazy(() => import('@/app/(admin)/system/roles/page'))
 const SystemSettings = lazy(() => import('@/app/(admin)/system/settings/page'))
 const SystemAuditLogs = lazy(() => import('@/app/(admin)/system/audit-logs/page'))
 
-// ============================================================================
+// Frontend Sections
+const FrontendHomeAbout = lazy(() => import('@/app/(admin)/frontend/sections/home/about/page'))
 // DEV ONLY — DO NOT SHIP
 // Demo Library routes are conditionally loaded only in development builds.
 // In production: demoLibraryRoutes = [] (empty array, routes do not exist)
@@ -225,6 +226,12 @@ const cmsRoutes: RoutesProps[] = [
     path: '/system/audit-logs',
     name: 'System - Audit Logs',
     element: <SystemAuditLogs />,
+  },
+  // Frontend Sections
+  {
+    path: '/frontend/sections/home/about',
+    name: 'Frontend - Home About Sections',
+    element: <FrontendHomeAbout />,
   },
 ]
 
@@ -519,11 +526,6 @@ const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV && DemoLibraryIndex
 // These routes exist before catch-all to ensure proper 404 behavior.
 // ============================================================================
 const frontendPlaceholder404Routes: RoutesProps[] = [
-  {
-    path: '/frontend/sections/about',
-    name: 'Frontend Sections - About (404)',
-    element: <Error404 />,
-  },
   {
     path: '/frontend/sections/contact',
     name: 'Frontend Sections - Contact (404)',

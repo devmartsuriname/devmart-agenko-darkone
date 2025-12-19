@@ -51,6 +51,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.5 — Frontend/Sections Navigation** | ✅ Complete (Hero moved from Content → Frontend/Sections) |
 | **Phase A12.6 — Hero CTA Admin Alignment** | ✅ Complete (CTA fields hidden in admin form — Zivan Hero has no CTA) |
 | **Phase A12.7 — Public Hero ↔ DB Wiring** | ✅ Complete (Read-only wiring verified, tie-breaker sort added) |
+| **Phase A12.8 — Home About Sections CRUD** | ✅ Complete (New table `home_about_sections`, admin CRUD at `/frontend/sections/home/about`) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
