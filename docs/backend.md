@@ -43,6 +43,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
 | **Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)** | ✅ Complete – Hotfix validated (build-blocker resolved) |
 | **Phase E — CRUD Completion Audit (A1–A11)** | ✅ Complete |
+| **Phase F8 — Frontend ↔ Admin Alignment Inventory** | ✅ Complete (Docs Only) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
