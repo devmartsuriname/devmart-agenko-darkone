@@ -38,6 +38,13 @@
 | **Phase F6** | Public Contact Form Wiring | ✅ Complete |
 | **Phase F7** | Public Newsletter Form Wiring | ✅ Complete |
 | **Hotfix** | Public App date-fns Dependency | ✅ Complete |
+| **Phase F8** | Frontend ↔ Admin Alignment Inventory | ✅ Complete (Docs Only) |
+| **Phase A12.1** | Hero Sections Admin CRUD | ✅ Complete |
+| **Phase A12.2** | Public Hero Wiring Plan | ✅ Documented / Code-reviewed wiring |
+| **Phase A12.3** | Section Editing Strategy | ✅ Documented (Planning Only) |
+| **Phase A12.4** | Admin Structure Decision | ✅ Documented (Decision Only) |
+| **Phase A12.5** | Frontend/Sections Navigation | ✅ Complete (Hero moved from Content → Frontend/Sections) |
+| **Phase A12.6** | Hero CTA Admin Alignment | ✅ Complete (CTA fields hidden in admin — Zivan Hero has no CTA) |
 
 ---
 

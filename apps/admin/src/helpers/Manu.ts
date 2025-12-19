@@ -15,6 +15,7 @@ const ROUTE_ROLE_REQUIREMENTS: RouteRoleConfig[] = [
   { pathPrefix: '/content', roles: ['admin', 'editor'] },
   { pathPrefix: '/crm', roles: ['admin', 'editor'] },
   { pathPrefix: '/marketing', roles: ['admin', 'editor'] },
+  { pathPrefix: '/frontend', roles: ['admin', 'editor'] },
 ];
 
 /**

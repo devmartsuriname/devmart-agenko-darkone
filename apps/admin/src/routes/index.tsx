@@ -73,6 +73,7 @@ const ContentTeam = lazy(() => import('@/app/(admin)/content/team/page'))
 const ContentTestimonials = lazy(() => import('@/app/(admin)/content/testimonials/page'))
 const ContentAwards = lazy(() => import('@/app/(admin)/content/awards/page'))
 const ContentFaqs = lazy(() => import('@/app/(admin)/content/faqs/page'))
+const ContentHero = lazy(() => import('@/app/(admin)/content/hero/page'))
 const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
 const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
 const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
@@ -166,6 +167,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/content/faqs',
     name: 'Content - FAQs',
     element: <ContentFaqs />,
+  },
+  {
+    path: '/content/hero',
+    name: 'Content - Hero Sections',
+    element: <ContentHero />,
   },
   {
     path: '/content/media',
@@ -508,6 +514,29 @@ const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV && DemoLibraryIndex
 ] : []
 
 // ============================================================================
+// FRONTEND SECTION PLACEHOLDER 404 ROUTES
+// Disabled placeholders at /frontend/sections/* return 404 (not redirect).
+// These routes exist before catch-all to ensure proper 404 behavior.
+// ============================================================================
+const frontendPlaceholder404Routes: RoutesProps[] = [
+  {
+    path: '/frontend/sections/about',
+    name: 'Frontend Sections - About (404)',
+    element: <Error404 />,
+  },
+  {
+    path: '/frontend/sections/contact',
+    name: 'Frontend Sections - Contact (404)',
+    element: <Error404 />,
+  },
+  {
+    path: '/frontend/sections/footer',
+    name: 'Frontend Sections - Footer (404)',
+    element: <Error404 />,
+  },
+]
+
+// ============================================================================
 // CATCH-ALL 404 ROUTE (exported separately for router to handle WITHOUT auth)
 // Must be rendered last. Unknown paths show 404 page, not login redirect.
 // This ensures /demo-library/* (and any other unknown route) shows 404 in PROD.
@@ -529,5 +558,6 @@ export const appRoutes = [
   ...tableRoutes,
   ...iconRoutes,
   ...demoLibraryRoutes, // DEV ONLY — empty in production
+  ...frontendPlaceholder404Routes, // Frontend section placeholders return 404
   // NOTE: catchAllRoute is NOT included here - router handles it separately
 ]

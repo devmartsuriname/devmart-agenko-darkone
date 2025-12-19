@@ -43,6 +43,13 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | Phase A10 — Contact Submissions (Read-Only) | ✅ Complete |
 | **Phase A11 — Newsletter Subscribers (CRUD + Unsubscribe)** | ✅ Complete – Hotfix validated (build-blocker resolved) |
 | **Phase E — CRUD Completion Audit (A1–A11)** | ✅ Complete |
+| **Phase F8 — Frontend ↔ Admin Alignment Inventory** | ✅ Complete (Docs Only) |
+| **Phase A12.1 — Hero Sections Admin CRUD** | ✅ Complete |
+| **Phase A12.2 — Public Hero Wiring Plan** | ✅ Documented / Code-reviewed wiring |
+| **Phase A12.3 — Section Editing Strategy** | ✅ Documented (Planning Only) |
+| **Phase A12.4 — Admin Structure Decision** | ✅ Documented (Decision Only) |
+| **Phase A12.5 — Frontend/Sections Navigation** | ✅ Complete (Hero moved from Content → Frontend/Sections) |
+| **Phase A12.6 — Hero CTA Admin Alignment** | ✅ Complete (CTA fields hidden in admin form — Zivan Hero has no CTA) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
