@@ -73,6 +73,7 @@ const ContentTeam = lazy(() => import('@/app/(admin)/content/team/page'))
 const ContentTestimonials = lazy(() => import('@/app/(admin)/content/testimonials/page'))
 const ContentAwards = lazy(() => import('@/app/(admin)/content/awards/page'))
 const ContentFaqs = lazy(() => import('@/app/(admin)/content/faqs/page'))
+const ContentHero = lazy(() => import('@/app/(admin)/content/hero/page'))
 const ContentMedia = lazy(() => import('@/app/(admin)/content/media/page'))
 const CrmClients = lazy(() => import('@/app/(admin)/crm/clients/page'))
 const CrmPartners = lazy(() => import('@/app/(admin)/crm/partners/page'))
@@ -166,6 +167,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/content/faqs',
     name: 'Content - FAQs',
     element: <ContentFaqs />,
+  },
+  {
+    path: '/content/hero',
+    name: 'Content - Hero Sections',
+    element: <ContentHero />,
   },
   {
     path: '/content/media',

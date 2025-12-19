@@ -39,6 +39,7 @@
 | **Phase F7** | Public Newsletter Form Wiring | ✅ Complete |
 | **Hotfix** | Public App date-fns Dependency | ✅ Complete |
 | **Phase F8** | Frontend ↔ Admin Alignment Inventory | ✅ Complete (Docs Only) |
+| **Phase A12.1** | Hero Sections Admin CRUD | ✅ Complete |
 
 ---
 
