@@ -47,6 +47,7 @@
 | **Phase A12.6** | Hero CTA Admin Alignment | ✅ Complete (CTA fields hidden in admin — Zivan Hero has no CTA) |
 | **Phase A12.7** | Public Hero ↔ DB Wiring | ✅ Complete (Read-only wiring verified, tie-breaker sort added) |
 | **Phase A12.8** | Home About Sections CRUD | ✅ Complete (New table `home_about_sections`, admin CRUD at `/frontend/sections/home/about`) |
+| **Phase A12.9** | Public Home About ↔ DB Wiring | ✅ Complete (Home About fetches from `home_about_sections`, bullets support array + string) |
 
 ---
 

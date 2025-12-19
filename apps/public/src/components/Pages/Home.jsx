@@ -15,6 +15,7 @@ import PostCarousel from '../Slider/PostCarousel';
 import { pageTitle } from '../../helpers/PageTitle';
 import {
   useHeroSections,
+  useHomeAboutSections,
   useServices,
   useProjects,
   useTestimonials,
@@ -168,6 +169,21 @@ const fallbackLayeredImages = [
   '/images/creative-agency/layer_img_5.jpeg',
 ];
 
+// A12.9: Fallback for Home About section
+const fallbackAbout = {
+  thumbnail: '/images/creative-agency/about_1.jpeg',
+  uperTitle: 'Who We Are',
+  title: 'Full-stack creatives and designing agency',
+  subTitle: "Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking, consumer behavior, and data-driven design with advanced technology to deliver unparalleled brand experiences.",
+  featureList: [
+    'Designing content with AI power',
+    'Trending marketing tools involve',
+    'Powerful market strategy use',
+  ],
+  btnText: 'Learn More',
+  btnUrl: '/about',
+};
+
 // ============================================
 // DATA TRANSFORMERS
 // Map CMS data to component props
@@ -230,6 +246,47 @@ function transformTestimonialsData(testimonials) {
 
 // FAQ transformer removed - FAQ is now standalone /faq page
 
+/**
+ * A12.9: Transform home about sections data
+ * Supports bullets as: jsonb array OR newline-delimited string
+ */
+function transformHomeAboutData(sections) {
+  if (!sections || sections.length === 0) return fallbackAbout;
+  
+  const section = sections[0]; // Use first active section
+  
+  // Parse bullets - handle both jsonb array and newline-delimited string
+  let bulletList = fallbackAbout.featureList;
+  if (section.bullets) {
+    if (Array.isArray(section.bullets)) {
+      // jsonb array format (preferred)
+      const filtered = section.bullets.filter(b => typeof b === 'string' && b.trim());
+      if (filtered.length > 0) {
+        bulletList = filtered;
+      }
+    } else if (typeof section.bullets === 'string') {
+      // Newline-delimited string fallback
+      const parsed = section.bullets
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+      if (parsed.length > 0) {
+        bulletList = parsed;
+      }
+    }
+  }
+  
+  return {
+    thumbnail: section.image_url || fallbackAbout.thumbnail,
+    uperTitle: section.eyebrow || fallbackAbout.uperTitle,
+    title: section.heading || fallbackAbout.title,
+    subTitle: section.body || fallbackAbout.subTitle,
+    featureList: bulletList,
+    btnText: section.cta_text || fallbackAbout.btnText,
+    btnUrl: section.cta_link || fallbackAbout.btnUrl,
+  };
+}
+
 function transformBlogPostsData(posts) {
   if (!posts || posts.length === 0) return fallbackPosts;
   
@@ -249,6 +306,7 @@ export default function Home() {
 
   // Fetch CMS data (READ-ONLY)
   const { heroes } = useHeroSections();
+  const { sections: aboutSections } = useHomeAboutSections();
   const { services } = useServices();
   const { projects } = useProjects({ featuredOnly: true });
   const { testimonials } = useTestimonials();
@@ -257,6 +315,7 @@ export default function Home() {
 
   // Transform CMS data with fallbacks
   const heroData = transformHeroData(heroes);
+  const aboutData = transformHomeAboutData(aboutSections);
   const serviceListData = transformServicesData(services);
   const portfolioData = transformProjectsData(projects);
   const awardData = transformAwardsData(awards);
@@ -277,17 +336,13 @@ export default function Home() {
       </div>
       <Spacing lg="125" md="70" />
       <About
-        thumbnail="/images/creative-agency/about_1.jpeg"
-        uperTitle="Who We Are"
-        title="Full-stack creatives and designing agency"
-        subTitle="Our team, specializing in strategic digital marketing, partners with the world's leading brands. Breaking from the norm, we push boundaries and merge imaginative thinking, consumer behavior, and data-driven design with advanced technology to deliver unparalleled brand experiences."
-        featureList={[
-          'Designing content with AI power',
-          'Trending marketing tools involve',
-          'Powerful market strategy use',
-        ]}
-        btnText="Learn More"
-        btnUrl="/about"
+        thumbnail={aboutData.thumbnail}
+        uperTitle={aboutData.uperTitle}
+        title={aboutData.title}
+        subTitle={aboutData.subTitle}
+        featureList={aboutData.featureList}
+        btnText={aboutData.btnText}
+        btnUrl={aboutData.btnUrl}
       />
       <Spacing lg="185" md="75" />
       <WhyChose
