@@ -73,12 +73,6 @@ export const MENU_ITEMS: MenuItemType[] = [
         parentKey: 'content',
       },
       {
-        key: 'content-hero',
-        label: 'Hero Sections',
-        url: '/content/hero',
-        parentKey: 'content',
-      },
-      {
         key: 'content-media',
         label: 'Media Library',
         url: '/content/media',
@@ -131,6 +125,49 @@ export const MENU_ITEMS: MenuItemType[] = [
         label: 'SEO',
         url: '/marketing/seo',
         parentKey: 'marketing',
+      },
+    ],
+  },
+
+  // ====================FRONTEND===============
+  {
+    key: 'frontend',
+    label: 'Frontend',
+    icon: 'mingcute:layout-line',
+    children: [
+      {
+        key: 'frontend-sections',
+        label: 'Sections',
+        parentKey: 'frontend',
+        children: [
+          {
+            key: 'frontend-sections-hero',
+            label: 'Hero Sections',
+            url: '/content/hero', // Uses existing Hero route (no new CRUD routes)
+            parentKey: 'frontend-sections',
+          },
+          {
+            key: 'frontend-sections-about',
+            label: 'About Sections',
+            url: '/frontend/sections/about', // Placeholder — returns 404
+            parentKey: 'frontend-sections',
+            isDisabled: true,
+          },
+          {
+            key: 'frontend-sections-contact',
+            label: 'Contact Sections',
+            url: '/frontend/sections/contact', // Placeholder — returns 404
+            parentKey: 'frontend-sections',
+            isDisabled: true,
+          },
+          {
+            key: 'frontend-sections-footer',
+            label: 'Footer Sections',
+            url: '/frontend/sections/footer', // Placeholder — returns 404
+            parentKey: 'frontend-sections',
+            isDisabled: true,
+          },
+        ],
       },
     ],
   },

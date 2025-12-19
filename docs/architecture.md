@@ -43,6 +43,7 @@
 | **Phase A12.2** | Public Hero Wiring Plan | ✅ Documented / Code-reviewed wiring |
 | **Phase A12.3** | Section Editing Strategy | ✅ Documented (Planning Only) |
 | **Phase A12.4** | Admin Structure Decision | ✅ Documented (Decision Only) |
+| **Phase A12.5** | Frontend/Sections Navigation | ✅ Complete (Hero moved from Content → Frontend/Sections) |
 
 ---
 

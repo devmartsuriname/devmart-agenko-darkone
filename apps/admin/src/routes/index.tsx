@@ -514,6 +514,29 @@ const demoLibraryRoutes: RoutesProps[] = import.meta.env.DEV && DemoLibraryIndex
 ] : []
 
 // ============================================================================
+// FRONTEND SECTION PLACEHOLDER 404 ROUTES
+// Disabled placeholders at /frontend/sections/* return 404 (not redirect).
+// These routes exist before catch-all to ensure proper 404 behavior.
+// ============================================================================
+const frontendPlaceholder404Routes: RoutesProps[] = [
+  {
+    path: '/frontend/sections/about',
+    name: 'Frontend Sections - About (404)',
+    element: <Error404 />,
+  },
+  {
+    path: '/frontend/sections/contact',
+    name: 'Frontend Sections - Contact (404)',
+    element: <Error404 />,
+  },
+  {
+    path: '/frontend/sections/footer',
+    name: 'Frontend Sections - Footer (404)',
+    element: <Error404 />,
+  },
+]
+
+// ============================================================================
 // CATCH-ALL 404 ROUTE (exported separately for router to handle WITHOUT auth)
 // Must be rendered last. Unknown paths show 404 page, not login redirect.
 // This ensures /demo-library/* (and any other unknown route) shows 404 in PROD.
@@ -535,5 +558,6 @@ export const appRoutes = [
   ...tableRoutes,
   ...iconRoutes,
   ...demoLibraryRoutes, // DEV ONLY — empty in production
+  ...frontendPlaceholder404Routes, // Frontend section placeholders return 404
   // NOTE: catchAllRoute is NOT included here - router handles it separately
 ]
