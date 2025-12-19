@@ -5,8 +5,11 @@
  * IMPORTANT: Uses z.preprocess for field normalization:
  * - sort_order: "" → 0, otherwise integer >= 0
  * - overlay_opacity: "" → 50, otherwise integer 0-100
- * - cta_link: "" → null, validate URL only when present
- * - subheading/cta_text: "" → null (trimmed)
+ * - subheading: "" → null (trimmed)
+ * 
+ * NOTE (A12.6): CTA fields (cta_text, cta_link) are hidden from UI
+ * because the public Zivan Hero does not render a CTA button.
+ * Schema retains CTA fields; onSubmit omits them to preserve existing DB values.
  */
 import { useState, useEffect } from 'react'
 import { Modal, Button, Form, Row, Col, Spinner, Tab, Nav } from 'react-bootstrap'
@@ -99,8 +102,6 @@ export const HeroForm = ({ show, onHide, hero, onSuccess }: HeroFormProps) => {
       subheading: null,
       background_image_url: null,
       background_video_url: null,
-      cta_text: null,
-      cta_link: null,
       text_alignment: 'center',
       overlay_opacity: 50,
       is_active: true,
@@ -116,8 +117,6 @@ export const HeroForm = ({ show, onHide, hero, onSuccess }: HeroFormProps) => {
         subheading: hero.subheading,
         background_image_url: hero.background_image_url,
         background_video_url: hero.background_video_url,
-        cta_text: hero.cta_text,
-        cta_link: hero.cta_link,
         text_alignment: hero.text_alignment as 'left' | 'center' | 'right',
         overlay_opacity: hero.overlay_opacity,
         is_active: hero.is_active,
@@ -129,8 +128,6 @@ export const HeroForm = ({ show, onHide, hero, onSuccess }: HeroFormProps) => {
         subheading: null,
         background_image_url: null,
         background_video_url: null,
-        cta_text: null,
-        cta_link: null,
         text_alignment: 'center',
         overlay_opacity: 50,
         is_active: true,
@@ -144,13 +141,13 @@ export const HeroForm = ({ show, onHide, hero, onSuccess }: HeroFormProps) => {
     try {
       setLoading(true)
 
+      // NOTE (A12.6): cta_text and cta_link are intentionally OMITTED
+      // to avoid overwriting existing DB values (Zivan Hero has no CTA)
       const payload = {
         heading: data.heading,
         subheading: data.subheading,
         background_image_url: data.background_image_url,
         background_video_url: data.background_video_url,
-        cta_text: data.cta_text,
-        cta_link: data.cta_link,
         text_alignment: data.text_alignment,
         overlay_opacity: data.overlay_opacity,
         is_active: data.is_active,
@@ -248,36 +245,7 @@ export const HeroForm = ({ show, onHide, hero, onSuccess }: HeroFormProps) => {
                   </Col>
                 </Row>
 
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>CTA Button Text</Form.Label>
-                      <Form.Control
-                        type="text"
-                        {...register('cta_text')}
-                        isInvalid={!!errors.cta_text}
-                        placeholder="Get Started"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.cta_text?.message}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>CTA Button Link</Form.Label>
-                      <Form.Control
-                        type="url"
-                        {...register('cta_link')}
-                        isInvalid={!!errors.cta_link}
-                        placeholder="https://example.com/contact"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.cta_link?.message}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                </Row>
+                {/* CTA fields hidden (A12.6): Zivan public Hero has no CTA button */}
               </Tab.Pane>
 
               {/* Media Tab */}
