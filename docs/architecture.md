@@ -45,6 +45,7 @@
 | **Phase A12.4** | Admin Structure Decision | ✅ Documented (Decision Only) |
 | **Phase A12.5** | Frontend/Sections Navigation | ✅ Complete (Hero moved from Content → Frontend/Sections) |
 | **Phase A12.6** | Hero CTA Admin Alignment | ✅ Complete (CTA fields hidden in admin — Zivan Hero has no CTA) |
+| **Phase A12.7** | Public Hero ↔ DB Wiring | ✅ Complete (Read-only wiring verified, tie-breaker sort added) |
 
 ---
 

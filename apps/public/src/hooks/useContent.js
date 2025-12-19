@@ -54,7 +54,8 @@ export function useHeroSections() {
           .from('hero_sections')
           .select('*')
           .eq('is_active', true)
-          .order('sort_order', { ascending: true });
+          .order('sort_order', { ascending: true })
+          .order('updated_at', { ascending: false }); // A12.7: Tie-breaker for deterministic ordering
 
         if (error) throw error;
         setHeroes(data || []);
