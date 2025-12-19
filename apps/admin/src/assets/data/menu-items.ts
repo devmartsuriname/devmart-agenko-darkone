@@ -73,6 +73,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         parentKey: 'content',
       },
       {
+        key: 'content-hero',
+        label: 'Hero Sections',
+        url: '/content/hero',
+        parentKey: 'content',
+      },
+      {
         key: 'content-media',
         label: 'Media Library',
         url: '/content/media',
