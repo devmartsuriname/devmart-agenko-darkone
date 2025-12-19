@@ -38,6 +38,7 @@
 | **Phase F6** | Public Contact Form Wiring | ✅ Complete |
 | **Phase F7** | Public Newsletter Form Wiring | ✅ Complete |
 | **Hotfix** | Public App date-fns Dependency | ✅ Complete |
+| **Phase F8** | Frontend ↔ Admin Alignment Inventory | ✅ Complete (Docs Only) |
 
 ---
 
