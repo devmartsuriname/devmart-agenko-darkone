@@ -141,17 +141,23 @@ export const MENU_ITEMS: MenuItemType[] = [
         parentKey: 'frontend',
         children: [
           {
-            key: 'frontend-sections-hero',
-            label: 'Hero Sections',
-            url: '/content/hero', // Uses existing Hero route (no new CRUD routes)
+            key: 'frontend-sections-home',
+            label: 'Home',
             parentKey: 'frontend-sections',
-          },
-          {
-            key: 'frontend-sections-about',
-            label: 'About Sections',
-            url: '/frontend/sections/about', // Placeholder — returns 404
-            parentKey: 'frontend-sections',
-            isDisabled: true,
+            children: [
+              {
+                key: 'frontend-sections-home-hero',
+                label: 'Hero Sections',
+                url: '/content/hero',
+                parentKey: 'frontend-sections-home',
+              },
+              {
+                key: 'frontend-sections-home-about',
+                label: 'About Sections',
+                url: '/frontend/sections/home/about',
+                parentKey: 'frontend-sections-home',
+              },
+            ],
           },
           {
             key: 'frontend-sections-contact',

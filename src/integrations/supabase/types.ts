@@ -277,6 +277,57 @@ export type Database = {
         }
         Relationships: []
       }
+      home_about_sections: {
+        Row: {
+          body: string | null
+          bullets: Json | null
+          created_at: string
+          created_by: string | null
+          cta_link: string | null
+          cta_text: string | null
+          eyebrow: string | null
+          heading: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          sort_order: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          body?: string | null
+          bullets?: Json | null
+          created_at?: string
+          created_by?: string | null
+          cta_link?: string | null
+          cta_text?: string | null
+          eyebrow?: string | null
+          heading: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          body?: string | null
+          bullets?: Json | null
+          created_at?: string
+          created_by?: string | null
+          cta_link?: string | null
+          cta_text?: string | null
+          eyebrow?: string | null
+          heading?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           email: string
