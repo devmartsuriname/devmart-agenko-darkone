@@ -47,6 +47,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.1 — Hero Sections Admin CRUD** | ✅ Complete |
 | **Phase A12.2 — Public Hero Wiring Plan** | ✅ Documented / Code-reviewed wiring |
 | **Phase A12.3 — Section Editing Strategy** | ✅ Documented (Planning Only) |
+| **Phase A12.4 — Admin Structure Decision** | ✅ Documented (Decision Only) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
