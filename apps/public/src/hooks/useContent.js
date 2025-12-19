@@ -73,6 +73,40 @@ export function useHeroSections() {
 }
 
 /**
+ * Fetch active home about sections (ordered by sort_order)
+ * A12.9: Wire public Home About to database
+ */
+export function useHomeAboutSections() {
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchSections() {
+      try {
+        const { data, error } = await supabase
+          .from('home_about_sections')
+          .select('*')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true })
+          .order('updated_at', { ascending: false }); // Tie-breaker for deterministic ordering
+
+        if (error) throw error;
+        setSections(data || []);
+      } catch (err) {
+        console.error('Error fetching home about sections:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSections();
+  }, []);
+
+  return { sections, loading, error };
+}
+
+/**
  * Fetch published services (ordered by sort_order)
  */
 export function useServices() {
