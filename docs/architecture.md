@@ -55,6 +55,8 @@
 | **Phase A12.12b-QG** | Quality Gates Verification | ✅ PASS (Fallback verified with 0 DB rows; no console errors; seeding deferred) |
 | **Phase A12.13** | WhyChoose Admin Data Seeding | ✅ Complete (1 record, 3 features; public renders DB data) |
 | **Phase A12.14** | FunFacts Admin Data Seeding | ✅ Complete (4 records: 22K/15K/121/15; public renders DB data) |
+| **Phase A13** | Site Settings Admin UI Expansion | ✅ Complete (All 23 fields exposed in tabbed UI; no schema changes) |
+| **Phase A13** | Public Primary Color Fix | ✅ Complete (Button styling matches Zivan demo; hardcoded orange removed from SCSS) |
 
 ---
 

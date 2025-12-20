@@ -6,74 +6,219 @@
  * This file provides CSS custom property overrides for dynamic branding.
  * The --cs-primary-color variable is set at runtime by BrandingProvider.jsx
  * based on the primary_color value from site_settings table.
+ * 
+ * IMPORTANT: This file overrides compile-time $accent usages with runtime
+ * CSS variables, enabling CMS-driven primary color without modifying SCSS variables.
  */
 
 :root {
   // Default fallback (matches $accent in _color_variable.scss)
+  // This is overridden at runtime by BrandingProvider.jsx
   --cs-primary-color: #fd6219;
   --cs-primary-color-rgb: 253, 98, 25;
 }
 
-// Override accent color where CSS custom properties are supported
-// This allows CMS-driven primary color without modifying SCSS variables
-
-// Buttons
+// ============================================================
+// BUTTONS - Zivan demo behavior:
+// - Default: transparent background, primary border, primary icon
+// - Hover: primary background fill, white text/icon
+// ============================================================
 .cs_btn.cs_style_1 {
-  background-color: var(--cs-primary-color) !important;
+  // Override border color with CMS primary (default state remains transparent from _general.scss)
+  border-color: var(--cs-primary-color) !important;
+  
+  i {
+    color: var(--cs-primary-color);
+  }
   
   &:hover {
     background-color: var(--cs-primary-color) !important;
-    filter: brightness(1.1);
+    border-color: var(--cs-primary-color) !important;
+    color: #fff;
+    
+    i {
+      color: #fff;
+    }
+  }
+  
+  // Accent variant (already filled)
+  &.cs_btn_accent {
+    background-color: var(--cs-primary-color) !important;
+    border-color: var(--cs-primary-color) !important;
+    
+    &:hover {
+      filter: brightness(1.1);
+    }
   }
 }
 
-// Links hover state
+// ============================================================
+// LINKS
+// ============================================================
 a:hover {
   color: var(--cs-primary-color);
 }
 
-// Accent text
+// ============================================================
+// ACCENT UTILITIES
+// ============================================================
 .cs_accent_color {
   color: var(--cs-primary-color) !important;
 }
 
-// Accent background
 .cs_accent_bg {
   background-color: var(--cs-primary-color) !important;
 }
 
-// Icon boxes with accent
+// ============================================================
+// ICON BOXES
+// ============================================================
 .cs_iconbox.cs_style_1 .cs_iconbox_icon {
   color: var(--cs-primary-color);
 }
 
-// Counter accent
+.cs_iconbox.cs_style_3 .cs_iconbox_icon {
+  border-color: var(--cs-primary-color);
+}
+
+.cs_iconbox.cs_style_4:hover .cs_iconbox_icon {
+  background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
+}
+
+.cs_iconbox.cs_style_5:hover {
+  color: var(--cs-primary-color);
+}
+
+.cs_iconbox_3_list .cs_hover_tab.active .cs_iconbox_icon {
+  background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// COUNTERS
+// ============================================================
 .cs_counter.cs_style_1 .cs_counter_number {
   color: var(--cs-primary-color);
 }
 
-// Portfolio hover
+// ============================================================
+// PORTFOLIO
+// ============================================================
 .cs_portfolio.cs_style_1 .cs_portfolio_overlay {
   background: rgba(var(--cs-primary-color-rgb), 0.9);
 }
 
-// Testimonial accent
+// ============================================================
+// TESTIMONIALS
+// ============================================================
 .cs_testimonial.cs_style_1 .cs_testimonial_quote {
   color: var(--cs-primary-color);
 }
 
-// CTA section
+// ============================================================
+// CTA SECTION
+// ============================================================
 .cs_cta.cs_style_1 .cs_btn {
   background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
 }
 
-// Section title accent
+// ============================================================
+// SECTION TITLES
+// ============================================================
 .cs_section_title .cs_accent {
   color: var(--cs-primary-color);
 }
 
-// Loading spinner
+// ============================================================
+// ACCORDIONS
+// ============================================================
+.cs_accordian:hover .cs_accordian_title {
+  color: var(--cs-primary-color);
+}
+
+// ============================================================
+// ROUND PROGRESS
+// ============================================================
+.cs_round_progress_in::after {
+  border-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// ISOTOPE / PORTFOLIO FILTERS
+// ============================================================
+.cs_isotope_filter_menu li.active a,
+.cs_isotope_filter_menu li a:hover {
+  color: var(--cs-primary-color);
+}
+
+.cs_isotope_filter_menu li.active a::before,
+.cs_isotope_filter_menu li a:hover::before {
+  background-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// FOOTER
+// ============================================================
+.cs_footer .cs_footer_social_list a:hover {
+  border-color: var(--cs-primary-color);
+  
+  svg {
+    fill: var(--cs-primary-color);
+  }
+}
+
+.cs_footer .cs_newsletter_form button:hover {
+  background-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// SLIDER
+// ============================================================
+.cs_slider_arrows button:hover {
+  color: var(--cs-primary-color);
+}
+
+// ============================================================
+// FORMS
+// ============================================================
+.cs_form_field_2:focus {
+  border-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// POSTS / BLOG
+// ============================================================
+.cs_post.cs_style_1 .cs_post_btn:hover {
+  color: var(--cs-primary-color);
+}
+
+// ============================================================
+// IMAGE BOX
+// ============================================================
+.cs_image_box.cs_style_1:hover .cs_image_box_btn {
+  border-color: var(--cs-primary-color);
+  background-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// LOADING SPINNER
+// ============================================================
 .cs_spinner {
   border-color: var(--cs-primary-color);
   border-top-color: transparent;
+}
+
+// ============================================================
+// DARK MODE OVERRIDES
+// ============================================================
+.cs_dark {
+  .cs_btn.cs_style_1:hover {
+    color: #fff;
+  }
+  
+  .cs_iconbox.cs_style_3 .cs_iconbox_icon {
+    border-color: var(--cs-primary-color);
+  }
 }
