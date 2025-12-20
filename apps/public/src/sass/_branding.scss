@@ -116,6 +116,16 @@ a:hover {
   color: var(--cs-primary-color);
 }
 
+// Audit Item #3: Testimonial quote icon (orange quote mark)
+.cs_testimonial.cs_style_1 .cs_testimonial_icon {
+  color: var(--cs-primary-color);
+}
+
+// Audit Item #9: Testimonial slider nav hover
+.cs_testimonial_2_wrap .cs_swiper_navigation.cs_style_1 > *:hover {
+  color: var(--cs-primary-color);
+}
+
 // ============================================================
 // CTA SECTION
 // ============================================================
@@ -194,6 +204,16 @@ a:hover {
   color: var(--cs-primary-color);
 }
 
+// Audit Item #5: Category badges (blog list)
+.cs_category {
+  background-color: var(--cs-primary-color);
+  
+  &:hover {
+    background-color: var(--cs-primary-color);
+    opacity: 0.8;
+  }
+}
+
 // ============================================================
 // IMAGE BOX
 // ============================================================
@@ -208,6 +228,60 @@ a:hover {
 .cs_spinner {
   border-color: var(--cs-primary-color);
   border-top-color: transparent;
+}
+
+// ============================================================
+// HOW WE WORK SECTION (About page)
+// ============================================================
+// Audit Item #4: Dashed connector lines between circles
+.cs_working_process_wrap .cs_working_process_col:not(:last-child)::before {
+  border-top-color: var(--cs-primary-color);
+}
+
+// Audit Item #4: Circle borders (cs_iconbox.cs_style_6)
+.cs_iconbox.cs_style_6 {
+  border-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// SERVICE SECTION (Narrowed to exact selectors)
+// ============================================================
+// Audit Item #7: Service icon hover - cs_iconbox.cs_style_3 only
+.cs_iconbox.cs_style_3:hover .cs_iconbox_icon {
+  background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
+}
+
+.cs_iconbox.cs_style_3 .cs_iconbox_icon:hover {
+  background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
+}
+
+// Audit Item #7: Service icon active state - cs_iconbox_3_list only
+.cs_iconbox_3_list .cs_hover_tab.active .cs_iconbox_icon {
+  background-color: var(--cs-primary-color);
+  border-color: var(--cs-primary-color);
+}
+
+// Audit Item #8: Image layer background (service section image accent)
+.cs_image_layer.cs_style_1 .cs_image_layer_in::after {
+  background-color: var(--cs-primary-color);
+}
+
+// ============================================================
+// VIDEO PLAY BUTTON
+// ============================================================
+// Audit Item #1: Hero video play button color
+.cs_video_play_btn {
+  color: var(--cs-primary-color);
+}
+
+// ============================================================
+// ICONBOX SHAPE
+// ============================================================
+// Audit Item #2: IconBox shape color
+.cs_iconbox.cs_style_1 .cs_iconbox_icon_shape {
+  color: var(--cs-primary-color);
 }
 
 // ============================================================
