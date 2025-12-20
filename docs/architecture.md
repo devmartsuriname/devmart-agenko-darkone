@@ -57,6 +57,7 @@
 | **Phase A12.14** | FunFacts Admin Data Seeding | ✅ Complete (4 records: 22K/15K/121/15; public renders DB data) |
 | **Phase A13** | Site Settings Admin UI Expansion | ✅ Complete (All 23 fields exposed in tabbed UI; no schema changes) |
 | **Phase A13** | Public Primary Color Fix | ✅ Complete (Button styling matches Zivan demo; hardcoded orange removed from SCSS) |
+| **Phase A14** | Footer Contact + About Fields | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
 
 ---
 

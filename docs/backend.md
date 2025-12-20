@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A12.10 — Home FunFacts CRUD (Complete)**
+**Phase A14 — Footer Contact + About Fields (Complete)**
 
 ### CRUD Pattern Authority Statement
 
@@ -62,6 +62,45 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.14 — FunFacts Admin Data Seeding** | ✅ Complete (4 active records seeded: 22K/15K/121/15; public renders DB data; no schema/RLS changes) |
 | **Phase A13 — Site Settings Admin UI Expansion** | ✅ Complete (All 23 fields exposed in tabbed UI; General, Branding, SEO, Social Links, Footer, CTA, Newsletter tabs; no schema changes) |
 | **Phase A13 — Public Primary Color Fix** | ✅ Complete (Button styling fixed: transparent+border default, fill on hover; hardcoded #fd6219 replaced in 2 SCSS files; _branding.scss extended for CMS-driven theming) |
+| **Phase A14 — Footer Contact + About Fields** | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
+
+### Phase A14 — Footer Contact + About Fields
+
+**Implemented:** 2025-12-20  
+**Status:** ✅ Complete
+
+**Overview:**
+Extended `site_settings` table with 10 new columns for footer about section, contact information, and map settings. Wired to Admin Settings Footer tab and Public Footer + Contact Page.
+
+**New Database Columns:**
+| Column | Type | Purpose |
+|--------|------|---------|
+| `footer_about_title` | TEXT | Heading for footer about section |
+| `footer_about_description` | TEXT | Description text for footer about |
+| `contact_email` | TEXT | Contact email (footer + contact page) |
+| `contact_phone` | TEXT | Contact phone (footer + contact page) |
+| `contact_address_line1` | TEXT | Street address line 1 |
+| `contact_address_line2` | TEXT | Optional address line 2 |
+| `contact_city` | TEXT | City |
+| `contact_country` | TEXT | Country |
+| `contact_map_embed_url` | TEXT | Map iframe embed URL |
+| `contact_map_link_url` | TEXT | Fallback map link URL |
+
+**Files Modified:**
+| App | File | Change |
+|-----|------|--------|
+| Admin | `apps/admin/src/app/(admin)/system/settings/page.tsx` | Extended interface + Footer tab UI with 3 sections |
+| Public | `apps/public/src/context/SiteSettingsContext.jsx` | Added default fallbacks for new fields |
+| Public | `apps/public/src/components/Footer/index.jsx` | Wired About + Contact info from settings |
+| Public | `apps/public/src/components/Pages/ContactPage.jsx` | Wired Contact info + Map from settings |
+
+**Map Behavior:**
+1. If `contact_map_embed_url` exists → Show iframe embed
+2. Else if `contact_map_link_url` exists → Show "View on Map" button
+3. Else → Show default placeholder embed
+
+**RLS:** Existing public read policy on `site_settings` covers new columns (no changes needed).
+
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
