@@ -59,6 +59,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.12b — Public Home WhyChoose ↔ DB Wiring** | ✅ Complete (Home WhyChoose fetches from `home_whychoose`, all-or-nothing fallback when no active record or invalid features; Zivan component unchanged — wiring only) |
 | **Phase A12.12b — Quality Gates Verification** | ✅ PASS (Fallback verified with 0 active DB rows; no console errors; DB seeding intentionally deferred) |
 | **Phase A12.13 — WhyChoose Admin Data Seeding** | ✅ Complete (1 active record with 3 features seeded; public renders DB data; no schema/RLS changes) |
+| **Phase A12.14 — FunFacts Admin Data Seeding** | ✅ Complete (4 active records seeded: 22K/15K/121/15; public renders DB data; no schema/RLS changes) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
