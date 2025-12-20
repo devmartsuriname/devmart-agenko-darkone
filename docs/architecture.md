@@ -52,6 +52,7 @@
 | **Phase A12.11** | Public Home FunFacts ↔ DB Wiring | ✅ Complete (Home FunFacts fetches from `home_funfacts`, fallback when <4 active) |
 | **Phase A12.12a** | Home WhyChoose Admin Structure | ✅ Complete (New table `home_whychoose` + JSONB features, admin CRUD) |
 | **Phase A12.12b** | Public Home WhyChoose ↔ DB Wiring | ✅ Complete (Wiring only; Zivan component unchanged; all-or-nothing fallback) |
+| **Phase A12.12b-QG** | Quality Gates Verification | ✅ PASS (Fallback verified with 0 DB rows; no console errors; seeding deferred) |
 
 ---
 
