@@ -142,6 +142,43 @@ export function useHomeFunFacts() {
 }
 
 /**
+ * Fetch active home whychoose section (first active by sort_order)
+ * A12.12b: Wire public Home WhyChoose to database
+ * Returns single record or null (homepage expects one section)
+ */
+export function useHomeWhyChoose() {
+  const [section, setSection] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchSection() {
+      try {
+        const { data, error } = await supabase
+          .from('home_whychoose')
+          .select('id, section_title, section_subtitle, thumbnail_url, features, is_active, sort_order')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: true })  // Tie-breaker for deterministic ordering
+          .limit(1)
+          .maybeSingle();  // Returns null if no record, object if found
+
+        if (error) throw error;
+        setSection(data);  // null if no active record
+      } catch (err) {
+        console.error('Error fetching home whychoose section:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSection();
+  }, []);
+
+  return { section, loading, error };
+}
+
+/**
  * Fetch published services (ordered by sort_order)
  */
 export function useServices() {

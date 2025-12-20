@@ -56,6 +56,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.10 — Home FunFacts CRUD** | ✅ Complete (New table `home_funfacts`, max 4 items enforced, admin CRUD at `/frontend/sections/home/funfacts`) |
 | **Phase A12.11 — Public Home FunFacts ↔ DB Wiring** | ✅ Complete (Home FunFacts fetches from `home_funfacts`, fallback when <4 active) |
 | **Phase A12.12a — Home WhyChoose Admin Structure** | ✅ Complete (New table `home_whychoose` with JSONB features, admin CRUD at `/frontend/sections/home/whychoose`) |
+| **Phase A12.12b — Public Home WhyChoose ↔ DB Wiring** | ✅ Complete (Home WhyChoose fetches from `home_whychoose`, all-or-nothing fallback when no active record or invalid features; Zivan component unchanged — wiring only) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
