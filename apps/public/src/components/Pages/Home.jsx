@@ -17,6 +17,7 @@ import {
   useHeroSections,
   useHomeAboutSections,
   useHomeFunFacts,
+  useHomeWhyChoose,
   useServices,
   useProjects,
   useTestimonials,
@@ -303,6 +304,56 @@ function transformHomeFunFactsData(funfacts) {
   }));
 }
 
+/**
+ * A12.12b: Transform home whychoose section data
+ * All-or-nothing fallback: if section is null OR features invalid/empty => use FULL fallback
+ */
+function transformHomeWhyChooseData(section) {
+  // No active record -> full fallback
+  if (!section) {
+    return {
+      sectionTitle: "We have depth of market knowledge",
+      sectionSubTitle: "Why Choose Us",
+      whyChoseFeatureData: fallbackWhyChose,
+      thumbnailSrc: "/images/creative-agency/why_choose_us_img_3.jpeg",
+    };
+  }
+  
+  // Validate features array exists and is array
+  const features = section.features;
+  if (!Array.isArray(features) || features.length === 0) {
+    return {
+      sectionTitle: "We have depth of market knowledge",
+      sectionSubTitle: "Why Choose Us",
+      whyChoseFeatureData: fallbackWhyChose,
+      thumbnailSrc: "/images/creative-agency/why_choose_us_img_3.jpeg",
+    };
+  }
+  
+  // Validate each feature has required shape {title: string, content: string}
+  const validFeatures = features.filter(
+    f => f && typeof f.title === 'string' && f.title.trim() && typeof f.content === 'string' && f.content.trim()
+  );
+  
+  // If no valid features after filtering -> full fallback
+  if (validFeatures.length === 0) {
+    return {
+      sectionTitle: "We have depth of market knowledge",
+      sectionSubTitle: "Why Choose Us",
+      whyChoseFeatureData: fallbackWhyChose,
+      thumbnailSrc: "/images/creative-agency/why_choose_us_img_3.jpeg",
+    };
+  }
+  
+  // Valid DB data - use it with field-level fallbacks
+  return {
+    sectionTitle: section.section_title || "We have depth of market knowledge",
+    sectionSubTitle: section.section_subtitle || "Why Choose Us",
+    whyChoseFeatureData: validFeatures,
+    thumbnailSrc: section.thumbnail_url || "/images/creative-agency/why_choose_us_img_3.jpeg",
+  };
+}
+
 function transformBlogPostsData(posts) {
   if (!posts || posts.length === 0) return fallbackPosts;
   
@@ -324,6 +375,7 @@ export default function Home() {
   const { heroes } = useHeroSections();
   const { sections: aboutSections } = useHomeAboutSections();
   const { funfacts } = useHomeFunFacts();
+  const { section: whyChooseSection } = useHomeWhyChoose();
   const { services } = useServices();
   const { projects } = useProjects({ featuredOnly: true });
   const { testimonials } = useTestimonials();
@@ -334,6 +386,7 @@ export default function Home() {
   const heroData = transformHeroData(heroes);
   const aboutData = transformHomeAboutData(aboutSections);
   const funfactData = transformHomeFunFactsData(funfacts);
+  const whyChooseData = transformHomeWhyChooseData(whyChooseSection);
   const serviceListData = transformServicesData(services);
   const portfolioData = transformProjectsData(projects);
   const awardData = transformAwardsData(awards);
@@ -364,10 +417,10 @@ export default function Home() {
       />
       <Spacing lg="185" md="75" />
       <WhyChose
-        sectionTitle="We have depth of market knowledge"
-        sectionSubTitle="Why Choose Us"
-        whyChoseFeatureData={fallbackWhyChose}
-        thumbnailSrc="/images/creative-agency/why_choose_us_img_3.jpeg"
+        sectionTitle={whyChooseData.sectionTitle}
+        sectionSubTitle={whyChooseData.sectionSubTitle}
+        whyChoseFeatureData={whyChooseData.whyChoseFeatureData}
+        thumbnailSrc={whyChooseData.thumbnailSrc}
       />
       <Spacing lg="150" md="80" />
       <section className="cs_primary_bg">
