@@ -54,6 +54,7 @@
 | **Phase A12.12b** | Public Home WhyChoose ↔ DB Wiring | ✅ Complete (Wiring only; Zivan component unchanged; all-or-nothing fallback) |
 | **Phase A12.12b-QG** | Quality Gates Verification | ✅ PASS (Fallback verified with 0 DB rows; no console errors; seeding deferred) |
 | **Phase A12.13** | WhyChoose Admin Data Seeding | ✅ Complete (1 record, 3 features; public renders DB data) |
+| **Phase A12.14** | FunFacts Admin Data Seeding | ✅ Complete (4 records: 22K/15K/121/15; public renders DB data) |
 
 ---
 
