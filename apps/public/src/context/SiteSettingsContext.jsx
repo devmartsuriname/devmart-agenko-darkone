@@ -14,6 +14,20 @@ const defaultSettings = {
   logo_light_url: '/images/logo_white.svg',
   logo_dark_url: '/images/logo.svg',
   footer_copyright: `Copyright © ${new Date().getFullYear()} Devmart.`,
+  // Footer About
+  footer_about_title: null,
+  footer_about_description: null,
+  // Contact Info
+  contact_email: null,
+  contact_phone: null,
+  contact_address_line1: null,
+  contact_address_line2: null,
+  contact_city: null,
+  contact_country: null,
+  // Map
+  contact_map_embed_url: null,
+  contact_map_link_url: null,
+  // Social
   social_facebook: null,
   social_twitter: null,
   social_instagram: null,

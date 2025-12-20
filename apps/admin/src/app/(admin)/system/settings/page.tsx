@@ -28,6 +28,20 @@ interface SiteSettings {
   social_linkedin: string
   social_github: string
   footer_copyright: string
+  // Footer About
+  footer_about_title: string
+  footer_about_description: string
+  // Contact Info
+  contact_email: string
+  contact_phone: string
+  contact_address_line1: string
+  contact_address_line2: string
+  contact_city: string
+  contact_country: string
+  // Map
+  contact_map_embed_url: string
+  contact_map_link_url: string
+  // CTA
   cta_heading: string
   cta_subheading: string
   cta_button_text: string
@@ -54,6 +68,16 @@ const defaultSettings: SiteSettings = {
   social_linkedin: '',
   social_github: '',
   footer_copyright: '',
+  footer_about_title: '',
+  footer_about_description: '',
+  contact_email: '',
+  contact_phone: '',
+  contact_address_line1: '',
+  contact_address_line2: '',
+  contact_city: '',
+  contact_country: '',
+  contact_map_embed_url: '',
+  contact_map_link_url: '',
   cta_heading: '',
   cta_subheading: '',
   cta_button_text: '',
@@ -108,6 +132,16 @@ const SystemSettingsPage = () => {
             social_linkedin: data.social_linkedin || '',
             social_github: data.social_github || '',
             footer_copyright: data.footer_copyright || '',
+            footer_about_title: data.footer_about_title || '',
+            footer_about_description: data.footer_about_description || '',
+            contact_email: data.contact_email || '',
+            contact_phone: data.contact_phone || '',
+            contact_address_line1: data.contact_address_line1 || '',
+            contact_address_line2: data.contact_address_line2 || '',
+            contact_city: data.contact_city || '',
+            contact_country: data.contact_country || '',
+            contact_map_embed_url: data.contact_map_embed_url || '',
+            contact_map_link_url: data.contact_map_link_url || '',
             cta_heading: data.cta_heading || '',
             cta_subheading: data.cta_subheading || '',
             cta_button_text: data.cta_button_text || '',
@@ -158,6 +192,16 @@ const SystemSettingsPage = () => {
         social_linkedin: settings.social_linkedin || null,
         social_github: settings.social_github || null,
         footer_copyright: settings.footer_copyright || null,
+        footer_about_title: settings.footer_about_title || null,
+        footer_about_description: settings.footer_about_description || null,
+        contact_email: settings.contact_email || null,
+        contact_phone: settings.contact_phone || null,
+        contact_address_line1: settings.contact_address_line1 || null,
+        contact_address_line2: settings.contact_address_line2 || null,
+        contact_city: settings.contact_city || null,
+        contact_country: settings.contact_country || null,
+        contact_map_embed_url: settings.contact_map_embed_url || null,
+        contact_map_link_url: settings.contact_map_link_url || null,
         cta_heading: settings.cta_heading || null,
         cta_subheading: settings.cta_subheading || null,
         cta_button_text: settings.cta_button_text || null,
@@ -512,6 +556,7 @@ const SystemSettingsPage = () => {
 
                 {/* Footer Tab */}
                 <Tab eventKey="footer" title="Footer">
+                  {/* Existing Footer Copyright */}
                   <Row>
                     <Col md={8}>
                       <TextField 
@@ -519,6 +564,113 @@ const SystemSettingsPage = () => {
                         field="footer_copyright" 
                         placeholder="© 2025 Your Company. All rights reserved."
                         helpText="Copyright text displayed in the footer"
+                      />
+                    </Col>
+                  </Row>
+
+                  <hr className="my-4" />
+                  <h6 className="text-muted mb-3">Footer About</h6>
+                  <Row>
+                    <Col md={6}>
+                      <TextField 
+                        label="About Title" 
+                        field="footer_about_title" 
+                        placeholder="About Us"
+                        helpText="Heading for the about section in the footer"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>About Description</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          value={settings.footer_about_description}
+                          onChange={(e) => handleChange('footer_about_description', e.target.value)}
+                          placeholder="Brief description about your company..."
+                          disabled={!canEdit}
+                          maxLength={500}
+                        />
+                        <Form.Text className="text-muted">
+                          Short description displayed in the footer. {500 - (settings.footer_about_description?.length || 0)} chars remaining.
+                        </Form.Text>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <hr className="my-4" />
+                  <h6 className="text-muted mb-3">Contact Information</h6>
+                  <Row>
+                    <Col md={6}>
+                      <TextField 
+                        label="Email" 
+                        field="contact_email" 
+                        placeholder="hello@company.com"
+                        type="email"
+                        helpText="Contact email (displayed in footer and contact page)"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <TextField 
+                        label="Phone" 
+                        field="contact_phone" 
+                        placeholder="+1 (555) 123-4567"
+                        helpText="Contact phone number"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <TextField 
+                        label="Address Line 1" 
+                        field="contact_address_line1" 
+                        placeholder="123 Main Street"
+                        helpText="Street address"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <TextField 
+                        label="Address Line 2" 
+                        field="contact_address_line2" 
+                        placeholder="Suite 100"
+                        helpText="Optional additional address line"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <TextField 
+                        label="City" 
+                        field="contact_city" 
+                        placeholder="New York"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <TextField 
+                        label="Country" 
+                        field="contact_country" 
+                        placeholder="USA"
+                      />
+                    </Col>
+                  </Row>
+
+                  <hr className="my-4" />
+                  <h6 className="text-muted mb-3">Map Settings</h6>
+                  <Row>
+                    <Col md={6}>
+                      <UrlField 
+                        label="Map Embed URL" 
+                        field="contact_map_embed_url" 
+                        placeholder="https://www.google.com/maps/embed?pb=..."
+                        helpText="Iframe embed URL for map display on Contact page"
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <UrlField 
+                        label="Map Link URL" 
+                        field="contact_map_link_url" 
+                        placeholder="https://maps.google.com/?q=..."
+                        helpText="Fallback link if embed URL is not provided"
                       />
                     </Col>
                   </Row>

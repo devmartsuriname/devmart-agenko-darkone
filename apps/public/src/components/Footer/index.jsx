@@ -121,11 +121,32 @@ export default function Footer() {
                 <div className="cs_text_widget">
                   <img src={settings.logo_light_url || '/images/logo_white.svg'} alt={settings.site_name || 'Logo'} />
                 </div>
-                {settings.tagline && (
-                  <p className="cs_footer_tagline">{settings.tagline}</p>
-                )}
-                <ul className="cs_menu_widget cs_mp0">
-                  <li>Contact us for inquiries</li>
+                <h2 className="cs_widget_title" style={{ marginTop: '20px' }}>
+                  {settings.footer_about_title || 'About Us'}
+                </h2>
+                <p className="cs_footer_about_text">
+                  {settings.footer_about_description || settings.tagline || 'Creative Digital Agency'}
+                </p>
+                {/* Compact contact info in footer */}
+                <ul className="cs_menu_widget cs_mp0 cs_footer_contact_list">
+                  {settings.contact_email && (
+                    <li>
+                      <a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>
+                    </li>
+                  )}
+                  {settings.contact_phone && (
+                    <li>
+                      <a href={`tel:${settings.contact_phone.replace(/\s/g, '')}`}>{settings.contact_phone}</a>
+                    </li>
+                  )}
+                  {(settings.contact_city || settings.contact_country) && (
+                    <li>
+                      {[settings.contact_city, settings.contact_country].filter(Boolean).join(', ')}
+                    </li>
+                  )}
+                  {!settings.contact_email && !settings.contact_phone && !settings.contact_city && !settings.contact_country && (
+                    <li>Contact us for inquiries</li>
+                  )}
                 </ul>
               </div>
             </div>

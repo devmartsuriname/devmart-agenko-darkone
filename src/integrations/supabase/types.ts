@@ -624,12 +624,22 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          contact_address_line1: string | null
+          contact_address_line2: string | null
+          contact_city: string | null
+          contact_country: string | null
+          contact_email: string | null
+          contact_map_embed_url: string | null
+          contact_map_link_url: string | null
+          contact_phone: string | null
           created_at: string
           cta_button_link: string | null
           cta_button_text: string | null
           cta_heading: string | null
           cta_subheading: string | null
           favicon_url: string | null
+          footer_about_description: string | null
+          footer_about_title: string | null
           footer_copyright: string | null
           id: string
           logo_dark_url: string | null
@@ -652,12 +662,22 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          contact_address_line1?: string | null
+          contact_address_line2?: string | null
+          contact_city?: string | null
+          contact_country?: string | null
+          contact_email?: string | null
+          contact_map_embed_url?: string | null
+          contact_map_link_url?: string | null
+          contact_phone?: string | null
           created_at?: string
           cta_button_link?: string | null
           cta_button_text?: string | null
           cta_heading?: string | null
           cta_subheading?: string | null
           favicon_url?: string | null
+          footer_about_description?: string | null
+          footer_about_title?: string | null
           footer_copyright?: string | null
           id?: string
           logo_dark_url?: string | null
@@ -680,12 +700,22 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          contact_address_line1?: string | null
+          contact_address_line2?: string | null
+          contact_city?: string | null
+          contact_country?: string | null
+          contact_email?: string | null
+          contact_map_embed_url?: string | null
+          contact_map_link_url?: string | null
+          contact_phone?: string | null
           created_at?: string
           cta_button_link?: string | null
           cta_button_text?: string | null
           cta_heading?: string | null
           cta_subheading?: string | null
           favicon_url?: string | null
+          footer_about_description?: string | null
+          footer_about_title?: string | null
           footer_copyright?: string | null
           id?: string
           logo_dark_url?: string | null

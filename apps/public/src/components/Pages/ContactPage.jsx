@@ -125,15 +125,21 @@ export default function ContactPage() {
               <ul className="cs_mp0 cs_contact_info">
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Email:</h3>
-                  <p className="mb-0">hello@devmart.com</p>
+                  <p className="mb-0">{settings.contact_email || 'hello@devmart.com'}</p>
                 </li>
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Phone:</h3>
-                  <p className="mb-0">+1 (555) 123-4567</p>
+                  <p className="mb-0">{settings.contact_phone || '+1 (555) 123-4567'}</p>
                 </li>
                 <li>
                   <h3 className="cs_fs_29 cs_semibold">Address:</h3>
-                  <p className="mb-0">123 Creative Street, Design City</p>
+                  <p className="mb-0">
+                    {settings.contact_address_line1 || '123 Creative Street, Design City'}
+                    {settings.contact_address_line2 && <><br />{settings.contact_address_line2}</>}
+                    {(settings.contact_city || settings.contact_country) && (
+                      <><br />{[settings.contact_city, settings.contact_country].filter(Boolean).join(', ')}</>
+                    )}
+                  </p>
                 </li>
               </ul>
             </div>
@@ -249,12 +255,46 @@ export default function ContactPage() {
         <div className="cs_height_0 cs_height_lg_80" />
       </section>
       <div className="cs_map">
-        <iframe
-          id="map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96652.27317354927!2d-74.33557928194516!3d40.79756494697628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3a82f1352d0dd%3A0x81d4f72c4435aab5!2sTroy+Meadows+Wetlands!5e0!3m2!1sen!2sbd!4v1563075599994!5m2!1sen!2sbd"
-          allowFullScreen
-          title="Google Map"
-        />
+        {settings.contact_map_embed_url ? (
+          <iframe
+            id="map"
+            src={settings.contact_map_embed_url}
+            allowFullScreen
+            title="Location Map"
+            style={{ width: '100%', height: '100%', border: 0, minHeight: '450px' }}
+          />
+        ) : settings.contact_map_link_url ? (
+          <div 
+            className="cs_map_fallback" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              height: '450px', 
+              background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+            }}
+          >
+            <a 
+              href={settings.contact_map_link_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cs_btn cs_style_1"
+            >
+              View on Map
+              <span>
+                <i><Icon icon="fa6-solid:arrow-right" /></i>
+                <i><Icon icon="fa6-solid:arrow-right" /></i>
+              </span>
+            </a>
+          </div>
+        ) : (
+          <iframe
+            id="map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96652.27317354927!2d-74.33557928194516!3d40.79756494697628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3a82f1352d0dd%3A0x81d4f72c4435aab5!2sTroy+Meadows+Wetlands!5e0!3m2!1sen!2sbd!4v1563075599994!5m2!1sen!2sbd"
+            allowFullScreen
+            title="Location Map"
+          />
+        )}
       </div>
     </>
   );
