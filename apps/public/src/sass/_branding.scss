@@ -295,4 +295,13 @@ a:hover {
   .cs_iconbox.cs_style_3 .cs_iconbox_icon {
     border-color: var(--cs-primary-color);
   }
+  
+  // Audit Item #7 Fix: Active service icon border in dark mode
+  // Confirmed state: ACTIVE (when service item is selected/clicked)
+  // The _dark.scss line 74-75 uses compile-time $accent, this override
+  // uses same specificity with CSS variable to win via source order
+  .cs_iconbox_3_list .cs_hover_tab.active .cs_iconbox_icon {
+    border-color: var(--cs-primary-color);
+    background-color: var(--cs-primary-color);
+  }
 }
