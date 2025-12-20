@@ -87,6 +87,7 @@ const SystemAuditLogs = lazy(() => import('@/app/(admin)/system/audit-logs/page'
 
 // Frontend Sections
 const FrontendHomeAbout = lazy(() => import('@/app/(admin)/frontend/sections/home/about/page'))
+const FrontendHomeFunfacts = lazy(() => import('@/app/(admin)/frontend/sections/home/funfacts/page'))
 // DEV ONLY — DO NOT SHIP
 // Demo Library routes are conditionally loaded only in development builds.
 // In production: demoLibraryRoutes = [] (empty array, routes do not exist)
@@ -232,6 +233,11 @@ const cmsRoutes: RoutesProps[] = [
     path: '/frontend/sections/home/about',
     name: 'Frontend - Home About Sections',
     element: <FrontendHomeAbout />,
+  },
+  {
+    path: '/frontend/sections/home/funfacts',
+    name: 'Frontend - Home FunFacts',
+    element: <FrontendHomeFunfacts />,
   },
 ]
 
