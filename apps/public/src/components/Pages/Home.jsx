@@ -16,6 +16,7 @@ import { pageTitle } from '../../helpers/PageTitle';
 import {
   useHeroSections,
   useHomeAboutSections,
+  useHomeFunFacts,
   useServices,
   useProjects,
   useTestimonials,
@@ -287,6 +288,21 @@ function transformHomeAboutData(sections) {
   };
 }
 
+/**
+ * A12.11: Transform home funfacts data
+ * Hard requirement: If NOT exactly 4 active items, use fallback entirely (preserve "exact 4" template)
+ */
+function transformHomeFunFactsData(funfacts) {
+  if (!funfacts || funfacts.length !== 4) {
+    return fallbackFunfact;
+  }
+  
+  return funfacts.map(f => ({
+    title: f.title,
+    number: f.number,
+  }));
+}
+
 function transformBlogPostsData(posts) {
   if (!posts || posts.length === 0) return fallbackPosts;
   
@@ -307,6 +323,7 @@ export default function Home() {
   // Fetch CMS data (READ-ONLY)
   const { heroes } = useHeroSections();
   const { sections: aboutSections } = useHomeAboutSections();
+  const { funfacts } = useHomeFunFacts();
   const { services } = useServices();
   const { projects } = useProjects({ featuredOnly: true });
   const { testimonials } = useTestimonials();
@@ -316,6 +333,7 @@ export default function Home() {
   // Transform CMS data with fallbacks
   const heroData = transformHeroData(heroes);
   const aboutData = transformHomeAboutData(aboutSections);
+  const funfactData = transformHomeFunFactsData(funfacts);
   const serviceListData = transformServicesData(services);
   const portfolioData = transformProjectsData(projects);
   const awardData = transformAwardsData(awards);
@@ -332,7 +350,7 @@ export default function Home() {
       />
       <Spacing lg="125" md="70" />
       <div className="container">
-        <FunFact data={fallbackFunfact} />
+        <FunFact data={funfactData} />
       </div>
       <Spacing lg="125" md="70" />
       <About
