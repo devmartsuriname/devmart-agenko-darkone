@@ -501,7 +501,7 @@ hr {
     content: '';
     width: calc(100% - 15px);
     height: calc(100% - 20px);
-    background-color: #fd6219;
+    background-color: var(--cs-primary-color);
     border-radius: 15px;
     position: absolute;
     left: -32px;

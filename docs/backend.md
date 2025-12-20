@@ -60,6 +60,8 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A12.12b — Quality Gates Verification** | ✅ PASS (Fallback verified with 0 active DB rows; no console errors; DB seeding intentionally deferred) |
 | **Phase A12.13 — WhyChoose Admin Data Seeding** | ✅ Complete (1 active record with 3 features seeded; public renders DB data; no schema/RLS changes) |
 | **Phase A12.14 — FunFacts Admin Data Seeding** | ✅ Complete (4 active records seeded: 22K/15K/121/15; public renders DB data; no schema/RLS changes) |
+| **Phase A13 — Site Settings Admin UI Expansion** | ✅ Complete (All 23 fields exposed in tabbed UI; General, Branding, SEO, Social Links, Footer, CTA, Newsletter tabs; no schema changes) |
+| **Phase A13 — Public Primary Color Fix** | ✅ Complete (Button styling fixed: transparent+border default, fill on hover; hardcoded #fd6219 replaced in 2 SCSS files; _branding.scss extended for CMS-driven theming) |
 
 ### Phase F5 — Frontend Detail Pages Wiring
 
