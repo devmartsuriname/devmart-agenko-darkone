@@ -364,6 +364,48 @@ export type Database = {
         }
         Relationships: []
       }
+      home_whychoose: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          features: Json
+          id: string
+          is_active: boolean
+          section_subtitle: string | null
+          section_title: string
+          sort_order: number
+          thumbnail_url: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean
+          section_subtitle?: string | null
+          section_title: string
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean
+          section_subtitle?: string | null
+          section_title?: string
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           email: string
