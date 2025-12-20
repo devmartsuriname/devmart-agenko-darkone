@@ -163,6 +163,12 @@ export const MENU_ITEMS: MenuItemType[] = [
                 url: '/frontend/sections/home/funfacts',
                 parentKey: 'frontend-sections-home',
               },
+              {
+                key: 'frontend-sections-home-whychoose',
+                label: 'WhyChoose',
+                url: '/frontend/sections/home/whychoose',
+                parentKey: 'frontend-sections-home',
+              },
             ],
           },
           {
