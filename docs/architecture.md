@@ -49,6 +49,7 @@
 | **Phase A12.8** | Home About Sections CRUD | ✅ Complete (New table `home_about_sections`, admin CRUD at `/frontend/sections/home/about`) |
 | **Phase A12.9** | Public Home About ↔ DB Wiring | ✅ Complete (Home About fetches from `home_about_sections`, bullets support array + string) |
 | **Phase A12.10** | Home FunFacts CRUD | ✅ Complete (New table `home_funfacts`, max 4 items, admin CRUD at `/frontend/sections/home/funfacts`) |
+| **Phase A12.11** | Public Home FunFacts ↔ DB Wiring | ✅ Complete (Home FunFacts fetches from `home_funfacts`, fallback when <4 active) |
 
 ---
 

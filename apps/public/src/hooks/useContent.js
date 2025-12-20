@@ -107,6 +107,41 @@ export function useHomeAboutSections() {
 }
 
 /**
+ * Fetch active home funfacts (ordered by sort_order, max 4)
+ * A12.11: Wire public Home FunFacts to database
+ */
+export function useHomeFunFacts() {
+  const [funfacts, setFunfacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchFunfacts() {
+      try {
+        const { data, error } = await supabase
+          .from('home_funfacts')
+          .select('id, title, number, is_active, sort_order')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: true })
+          .limit(4);
+
+        if (error) throw error;
+        setFunfacts(data || []);
+      } catch (err) {
+        console.error('Error fetching home funfacts:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchFunfacts();
+  }, []);
+
+  return { funfacts, loading, error };
+}
+
+/**
  * Fetch published services (ordered by sort_order)
  */
 export function useServices() {
