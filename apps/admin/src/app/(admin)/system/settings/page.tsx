@@ -113,7 +113,7 @@ const defaultSettings: SiteSettings = {
 }
 
 const SystemSettingsPage = () => {
-  const { isAdmin, isEditor, isViewer } = useAuthContext()
+  const { isAdmin, isEditor, isViewer, user } = useAuthContext()
   
   // State
   const [settings, setSettings] = useState<SiteSettings>(defaultSettings)
@@ -122,6 +122,19 @@ const SystemSettingsPage = () => {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [activeTab, setActiveTab] = useState('general')
+  
+  // Save status instrumentation
+  const [saveStatus, setSaveStatus] = useState<{
+    lastSavedAt: string | null
+    lastSaveResult: 'success' | 'error' | 'none'
+    lastErrorMessage: string | null
+    verified: boolean
+  }>({
+    lastSavedAt: null,
+    lastSaveResult: 'none',
+    lastErrorMessage: null,
+    verified: false
+  })
 
   // RBAC: Admin can edit, Editor can view, Viewer no access
   const canEdit = isAdmin
@@ -193,10 +206,28 @@ const SystemSettingsPage = () => {
     setSettings(prev => ({ ...prev, [field]: value }))
   }
 
-  // Handle save
+  // Handle save with full instrumentation
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!canEdit) return
+    
+    const timestamp = new Date().toISOString()
+    console.log('[SETTINGS_SAVE] SAVE_CLICKED at', timestamp)
+    console.log('[SETTINGS_SAVE] Current user:', user?.email, 'Roles:', user?.roles)
+    console.log('[SETTINGS_SAVE] canEdit:', canEdit, 'isAdmin:', isAdmin, 'isEditor:', isEditor)
+    console.log('[SETTINGS_SAVE] settings.id:', settings.id)
+    
+    if (!canEdit) {
+      const msg = 'Cannot save: User does not have edit permissions (requires admin role)'
+      console.error('[SETTINGS_SAVE] BLOCKED:', msg)
+      setError(msg)
+      setSaveStatus({
+        lastSavedAt: timestamp,
+        lastSaveResult: 'error',
+        lastErrorMessage: msg,
+        verified: false
+      })
+      return
+    }
 
     setSaving(true)
     setError(null)
@@ -239,31 +270,102 @@ const SystemSettingsPage = () => {
         newsletter_placeholder: settings.newsletter_placeholder || null
       }
 
+      // Log payload keys and value lengths (avoid printing full values for security)
+      console.log('[SETTINGS_SAVE] Payload keys:', Object.keys(payload))
+      console.log('[SETTINGS_SAVE] Payload summary:', Object.entries(payload).map(([k, v]) => 
+        `${k}: ${v === null ? 'null' : typeof v === 'string' ? `string(${v.length})` : typeof v}`
+      ))
+
+      let saveError: Error | null = null
+      let rowsAffected = 0
+
       if (settings.id) {
-        // Update existing row
-        const { error } = await supabase
+        // Update existing row - use .select() to verify affected rows
+        console.log('[SETTINGS_SAVE] Attempting UPDATE for id:', settings.id)
+        const { data: updateData, error: updateError } = await supabase
           .from('site_settings')
           .update(payload)
           .eq('id', settings.id)
+          .select('id')
 
-        if (error) throw error
+        saveError = updateError
+        rowsAffected = updateData?.length || 0
+        console.log('[SETTINGS_SAVE] UPDATE result:', { 
+          error: updateError?.message || null, 
+          rowsAffected,
+          returnedData: updateData 
+        })
+
+        if (updateError) throw updateError
+        
+        // CRITICAL: If no rows affected, RLS might have blocked the update silently
+        if (rowsAffected === 0) {
+          const rlsMsg = 'Update returned 0 rows - RLS policy may have blocked the update. Ensure user has admin or editor role.'
+          console.error('[SETTINGS_SAVE] RLS_BLOCK:', rlsMsg)
+          throw new Error(rlsMsg)
+        }
       } else {
         // Insert new row (first time setup)
+        console.log('[SETTINGS_SAVE] Attempting INSERT (no existing id)')
         const { data, error } = await supabase
           .from('site_settings')
           .insert(payload)
           .select('id')
           .single()
 
+        console.log('[SETTINGS_SAVE] INSERT result:', { error: error?.message || null, newId: data?.id })
+
         if (error) throw error
         setSettings(prev => ({ ...prev, id: data.id }))
+        rowsAffected = 1
+      }
+
+      // VERIFICATION: Re-fetch from DB to confirm persistence
+      console.log('[SETTINGS_SAVE] Verifying persistence...')
+      const { data: verifyData, error: verifyError } = await supabase
+        .from('site_settings')
+        .select('*')
+        .eq('id', settings.id || '')
+        .maybeSingle()
+
+      if (verifyError) {
+        console.error('[SETTINGS_SAVE] Verification fetch error:', verifyError)
+      } else if (verifyData) {
+        // Check a few key fields to confirm they persisted
+        const verified = 
+          verifyData.footer_about_title === (settings.footer_about_title || null) &&
+          verifyData.contact_email === (settings.contact_email || null) &&
+          verifyData.contact_map_embed_url === (settings.contact_map_embed_url || null)
+        
+        console.log('[SETTINGS_SAVE] Verification result:', { 
+          verified,
+          db_footer_about_title: verifyData.footer_about_title,
+          local_footer_about_title: settings.footer_about_title || null,
+          db_contact_email: verifyData.contact_email,
+          local_contact_email: settings.contact_email || null
+        })
+
+        setSaveStatus({
+          lastSavedAt: timestamp,
+          lastSaveResult: 'success',
+          lastErrorMessage: null,
+          verified
+        })
       }
 
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      console.log('[SETTINGS_SAVE] SUCCESS - Save completed and verified')
+      setTimeout(() => setSuccess(false), 5000)
     } catch (err) {
-      console.error('Error saving settings:', err)
-      setError('Failed to save settings. Please try again.')
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+      console.error('[SETTINGS_SAVE] ERROR:', errorMessage, err)
+      setError(`Failed to save settings: ${errorMessage}`)
+      setSaveStatus({
+        lastSavedAt: timestamp,
+        lastSaveResult: 'error',
+        lastErrorMessage: errorMessage,
+        verified: false
+      })
     } finally {
       setSaving(false)
     }
@@ -376,6 +478,18 @@ const SystemSettingsPage = () => {
         </Card>
       ) : (
         <Form onSubmit={handleSave}>
+          {/* Debug Panel - Auth State */}
+          <Alert variant="secondary" className="mb-3 small">
+            <div className="d-flex flex-wrap gap-3">
+              <span><strong>User:</strong> {user?.email || 'Not logged in'}</span>
+              <span><strong>Roles:</strong> {user?.roles?.join(', ') || 'None'}</span>
+              <span><strong>isAdmin:</strong> {isAdmin ? '✓' : '✗'}</span>
+              <span><strong>isEditor:</strong> {isEditor ? '✓' : '✗'}</span>
+              <span><strong>canEdit:</strong> {canEdit ? '✓' : '✗'}</span>
+              <span><strong>Settings ID:</strong> {settings.id || 'NULL'}</span>
+            </div>
+          </Alert>
+          
           {/* Alerts */}
           {error && (
             <Alert variant="danger" dismissible onClose={() => setError(null)} className="mb-3">
@@ -384,7 +498,7 @@ const SystemSettingsPage = () => {
           )}
           {success && (
             <Alert variant="success" dismissible onClose={() => setSuccess(false)} className="mb-3">
-              Settings saved successfully!
+              Settings saved and verified!
             </Alert>
           )}
 
@@ -923,6 +1037,46 @@ const SystemSettingsPage = () => {
                       </>
                     )}
                   </Button>
+                  
+                  {/* Save Status Instrumentation Row */}
+                  {saveStatus.lastSaveResult !== 'none' && (
+                    <div className={`mt-3 p-3 rounded border ${
+                      saveStatus.lastSaveResult === 'success' 
+                        ? 'border-success bg-success bg-opacity-10' 
+                        : 'border-danger bg-danger bg-opacity-10'
+                    }`}>
+                      <div className="d-flex flex-wrap gap-3 align-items-center small">
+                        <span>
+                          <strong>Last Save:</strong>{' '}
+                          {saveStatus.lastSavedAt ? new Date(saveStatus.lastSavedAt).toLocaleString() : 'Never'}
+                        </span>
+                        <span>
+                          <strong>Result:</strong>{' '}
+                          <span className={saveStatus.lastSaveResult === 'success' ? 'text-success' : 'text-danger'}>
+                            {saveStatus.lastSaveResult.toUpperCase()}
+                          </span>
+                        </span>
+                        {saveStatus.lastSaveResult === 'success' && (
+                          <span>
+                            <strong>Verified:</strong>{' '}
+                            <span className={saveStatus.verified ? 'text-success' : 'text-warning'}>
+                              {saveStatus.verified ? 'YES ✓' : 'PENDING'}
+                            </span>
+                          </span>
+                        )}
+                        {saveStatus.lastErrorMessage && (
+                          <span className="text-danger">
+                            <strong>Error:</strong> {saveStatus.lastErrorMessage}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-2 small text-muted">
+                        <strong>Current User:</strong> {user?.email || 'Not logged in'} | 
+                        <strong> Roles:</strong> {user?.roles?.join(', ') || 'None'} | 
+                        <strong> Can Edit:</strong> {canEdit ? 'Yes' : 'No'}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
