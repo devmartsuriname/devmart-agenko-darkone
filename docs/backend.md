@@ -64,52 +64,49 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A13 — Public Primary Color Fix** | ✅ Complete (Button styling fixed: transparent+border default, fill on hover; hardcoded #fd6219 replaced in 2 SCSS files; _branding.scss extended for CMS-driven theming) |
 | **Phase A14 — Footer Contact + About Fields** | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
 | **Phase A15** | Simple Footer Links v1 | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback) |
-| **Phase A15.1** | Settings Save Integrity Audit | 🔄 In Progress (Instrumentation added to diagnose save failures) |
+| **Phase A15.1** | Settings Save Integrity Audit | ✅ Complete (Regression fixed: inline components + URL validation) |
 
-### Phase A15.1 — Settings Save Integrity Audit
+### Phase A15.1 — Settings Save Integrity Audit (FIXED)
 
 **Started:** 2025-12-21  
-**Status:** 🔄 In Progress
+**Completed:** 2025-12-21  
+**Status:** ✅ Complete
 
 **Problem Statement:**
-User reports that Settings do not persist even after clicking "Save All Settings". Diagnosis required.
+Settings module had three critical regressions:
+1. Input fields lost focus after typing one character
+2. "Save All Settings" did not persist
+3. CTA Button Link rejected valid relative paths like `/contact`
 
-**Instrumentation Added:**
-1. **Console logging** - Full save pipeline logging with `[SETTINGS_SAVE]` prefix:
-   - `SAVE_CLICKED` with timestamp
-   - User email, roles, permissions
-   - Payload keys and value lengths
-   - Supabase response (success/error, rows affected)
-   - Verification result (re-fetch comparison)
+**Root Cause Analysis:**
 
-2. **RLS Check** - If UPDATE returns 0 rows, surface explicit error about RLS blocking
+1. **Input Focus Loss (CRITICAL)**
+   - **Cause:** `TextField` and `UrlField` components were defined **inside** `SystemSettingsPage` function (lines 394-466)
+   - **Effect:** Every keystroke caused React to re-render, recreate the component functions (different references), unmount old inputs, mount new inputs → focus lost
+   - **Fix:** Moved `TextField` and `UrlField` **outside** the component to module scope (stable references)
 
-3. **Auth Debug Panel** - Visible at top of Settings page showing:
-   - Current user email
-   - Assigned roles
-   - isAdmin / isEditor / canEdit status
-   - Settings row ID
+2. **Save Blocking**
+   - **Cause:** `UrlField` used HTML5 `type="url"` attribute, which requires full URLs
+   - **Effect:** Browser validation blocked form submission when `/contact` was entered
+   - **Fix:** Changed all `UrlField` to use `type="text"` (allows relative paths + full URLs)
 
-4. **Save Status Row** - Below Save button showing:
-   - Last save timestamp
-   - Result (SUCCESS/ERROR)
-   - Verification status
-   - Error message (if any)
-
-**Diagnostic Questions:**
-- Is the user logged in as an admin?
-- Does the user's account have the `admin` role in `user_roles` table?
-- Is the Supabase UPDATE call actually executing?
-- Is RLS silently blocking the update (0 rows returned)?
+3. **CTA Button Link Validation**
+   - **Cause:** Same as #2 — `type="url"` rejected relative paths
+   - **Fix:** CTA Button Link now uses `TextField` with `type="text"`
 
 **Files Modified:**
 | File | Change |
 |------|--------|
-| `apps/admin/src/app/(admin)/system/settings/page.tsx` | Added save instrumentation, auth debug panel, save status row |
+| `apps/admin/src/app/(admin)/system/settings/page.tsx` | Moved TextField/UrlField outside component; Added useCallback for handleChange; Changed all URL fields to type="text" |
 
-**Hard Guards:**
-- ❌ No refactors
-- ❌ No SCSS changes
+**Structural Prevention:**
+- Field components are now **stable module-level definitions** — they will never be recreated on re-render
+- All field components accept explicit `value`, `onChange`, `disabled` props — no closures
+- `handleChange` wrapped in `useCallback` for additional stability
+
+**Hard Guards Maintained:**
+- ❌ No Darkone SCSS changes
+- ❌ No Zivan styling changes
 - ❌ No schema changes
 - ❌ No Contact page styling changes
 
