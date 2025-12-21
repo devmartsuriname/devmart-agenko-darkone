@@ -58,7 +58,7 @@
 | **Phase A13** | Site Settings Admin UI Expansion | ✅ Complete (All 23 fields exposed in tabbed UI; no schema changes) |
 | **Phase A13** | Public Primary Color Fix | ✅ Complete (Button styling matches Zivan demo; hardcoded orange removed from SCSS) |
 | **Phase A14** | Footer Contact + About Fields | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
-| **Phase A15** | Simple Footer Links v1 | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback) |
+| **Phase A15** | Simple Footer Links v1 | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback; Map URL prefill in Admin UI) |
 
 ---
 

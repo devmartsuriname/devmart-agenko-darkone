@@ -106,6 +106,12 @@ Added configurable footer links that allow admins to select and reorder pages fr
 - If `footer_links` is NULL or empty → Show all 7 default Zivan links
 - If `footer_links` has items → Show only selected links in configured order
 
+**Map URL Prefill (Admin UI):**
+- If `contact_map_embed_url` or `contact_map_link_url` are NULL/empty when loading settings, the Admin UI prefills them with default values:
+  - Embed URL: `https://www.google.com/maps?ll=5.811011,-55.21039&z=16&t=m&hl=en&gl=US&mapclient=embed&cid=1270414310031602223`
+  - Link URL: `https://www.google.com/maps?cid=1270414310031602223`
+- This is UI-only prefill — user must click "Save All Settings" to persist to database
+
 **RLS:** Existing public read policy on `site_settings` covers new column (no changes needed).
 
 ### Phase A14 — Footer Contact + About Fields

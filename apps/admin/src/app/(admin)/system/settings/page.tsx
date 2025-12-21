@@ -10,6 +10,10 @@ import { useAuthContext } from '@/context/useAuthContext'
 // Default branding values
 const DEFAULT_PRIMARY_COLOR = '#7e67fe'
 
+// Default map URLs (prefill when empty)
+const DEFAULT_MAP_EMBED_URL = 'https://www.google.com/maps?ll=5.811011,-55.21039&z=16&t=m&hl=en&gl=US&mapclient=embed&cid=1270414310031602223'
+const DEFAULT_MAP_LINK_URL = 'https://www.google.com/maps?cid=1270414310031602223'
+
 // Footer link item interface
 interface FooterLinkItem {
   key: string
@@ -161,8 +165,9 @@ const SystemSettingsPage = () => {
             contact_address_line2: data.contact_address_line2 || '',
             contact_city: data.contact_city || '',
             contact_country: data.contact_country || '',
-            contact_map_embed_url: data.contact_map_embed_url || '',
-            contact_map_link_url: data.contact_map_link_url || '',
+            // Prefill map URLs with defaults if empty (UI-only, user must save to persist)
+            contact_map_embed_url: data.contact_map_embed_url || DEFAULT_MAP_EMBED_URL,
+            contact_map_link_url: data.contact_map_link_url || DEFAULT_MAP_LINK_URL,
             footer_links: data.footer_links || null,
             cta_heading: data.cta_heading || '',
             cta_subheading: data.cta_subheading || '',

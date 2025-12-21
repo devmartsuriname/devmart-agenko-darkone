@@ -184,7 +184,6 @@ export default function Footer() {
                       <Link to={item.href}>{item.title}</Link>
                     </li>
                   ))}
-                  ))}
                 </ul>
               </div>
             </div>
