@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import PageTitle from '@/components/PageTitle'
 import ComponentContainerCard from '@/components/ComponentContainerCard'
 import { Card, CardBody, Form, Button, Spinner, Alert, Tabs, Tab, Row, Col } from 'react-bootstrap'
@@ -112,6 +112,107 @@ const defaultSettings: SiteSettings = {
   newsletter_placeholder: ''
 }
 
+// ============================================================================
+// STABLE FIELD COMPONENTS (defined OUTSIDE the page component to prevent re-creation)
+// ============================================================================
+
+interface TextFieldProps {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  helpText?: string
+  type?: string
+  disabled?: boolean
+}
+
+/**
+ * Text input field - stable component defined outside SystemSettingsPage
+ * to prevent re-mounting on every keystroke
+ */
+const TextField = ({ 
+  label, 
+  value, 
+  onChange, 
+  placeholder = '', 
+  helpText = '',
+  type = 'text',
+  disabled = false
+}: TextFieldProps) => (
+  <Form.Group className="mb-3">
+    <Form.Label>{label}</Form.Label>
+    <Form.Control
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      disabled={disabled}
+    />
+    {helpText && <Form.Text className="text-muted">{helpText}</Form.Text>}
+  </Form.Group>
+)
+
+interface UrlFieldProps {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  helpText?: string
+  showPreview?: boolean
+  disabled?: boolean
+}
+
+/**
+ * URL input field with optional preview - stable component defined outside
+ * SystemSettingsPage to prevent re-mounting on every keystroke.
+ * Uses type="text" to allow relative paths like "/contact"
+ */
+const UrlField = ({ 
+  label, 
+  value, 
+  onChange, 
+  placeholder = 'https://',
+  helpText = '',
+  showPreview = false,
+  disabled = false
+}: UrlFieldProps) => (
+  <Form.Group className="mb-3">
+    <Form.Label>{label}</Form.Label>
+    <div className="d-flex gap-2 align-items-start">
+      <div className="flex-grow-1">
+        <Form.Control
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          disabled={disabled}
+        />
+        {helpText && <Form.Text className="text-muted">{helpText}</Form.Text>}
+      </div>
+      {showPreview && value && (
+        <img 
+          src={value} 
+          alt="Preview" 
+          style={{ 
+            maxWidth: 80, 
+            maxHeight: 40, 
+            objectFit: 'contain',
+            border: '1px solid rgba(0,0,0,0.1)',
+            borderRadius: 4,
+            padding: 4,
+            backgroundColor: '#f8f9fa'
+          }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+        />
+      )}
+    </div>
+  </Form.Group>
+)
+
+// ============================================================================
+// MAIN PAGE COMPONENT
+// ============================================================================
+
 const SystemSettingsPage = () => {
   const { isAdmin, isEditor, isViewer, user } = useAuthContext()
   
@@ -201,10 +302,10 @@ const SystemSettingsPage = () => {
     fetchSettings()
   }, [])
 
-  // Handle field change
-  const handleChange = (field: keyof SiteSettings, value: string | boolean | FooterLinkItem[] | null) => {
+  // Handle field change - stable callback
+  const handleChange = useCallback((field: keyof SiteSettings, value: string | boolean | FooterLinkItem[] | null) => {
     setSettings(prev => ({ ...prev, [field]: value }))
-  }
+  }, [])
 
   // Handle save with full instrumentation
   const handleSave = async (e: React.FormEvent) => {
@@ -391,80 +492,6 @@ const SystemSettingsPage = () => {
     )
   }
 
-  // Text input field helper
-  const TextField = ({ 
-    label, 
-    field, 
-    placeholder = '', 
-    helpText = '',
-    type = 'text'
-  }: { 
-    label: string
-    field: keyof SiteSettings
-    placeholder?: string
-    helpText?: string
-    type?: string
-  }) => (
-    <Form.Group className="mb-3">
-      <Form.Label>{label}</Form.Label>
-      <Form.Control
-        type={type}
-        value={settings[field] as string}
-        onChange={(e) => handleChange(field, e.target.value)}
-        placeholder={placeholder}
-        disabled={!canEdit}
-      />
-      {helpText && <Form.Text className="text-muted">{helpText}</Form.Text>}
-    </Form.Group>
-  )
-
-  // URL field with preview helper
-  const UrlField = ({ 
-    label, 
-    field, 
-    placeholder = 'https://',
-    helpText = '',
-    showPreview = false
-  }: { 
-    label: string
-    field: keyof SiteSettings
-    placeholder?: string
-    helpText?: string
-    showPreview?: boolean
-  }) => (
-    <Form.Group className="mb-3">
-      <Form.Label>{label}</Form.Label>
-      <div className="d-flex gap-2 align-items-start">
-        <div className="flex-grow-1">
-          <Form.Control
-            type="url"
-            value={settings[field] as string}
-            onChange={(e) => handleChange(field, e.target.value)}
-            placeholder={placeholder}
-            disabled={!canEdit}
-          />
-          {helpText && <Form.Text className="text-muted">{helpText}</Form.Text>}
-        </div>
-        {showPreview && settings[field] && (
-          <img 
-            src={settings[field] as string} 
-            alt="Preview" 
-            style={{ 
-              maxWidth: 80, 
-              maxHeight: 40, 
-              objectFit: 'contain',
-              border: '1px solid rgba(0,0,0,0.1)',
-              borderRadius: 4,
-              padding: 4,
-              backgroundColor: '#f8f9fa'
-            }}
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-          />
-        )}
-      </div>
-    </Form.Group>
-  )
-
   return (
     <>
       <PageTitle subName="System" title="Settings" />
@@ -516,17 +543,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="Site Name" 
-                        field="site_name" 
+                        value={settings.site_name}
+                        onChange={(val) => handleChange('site_name', val)}
                         placeholder="My Website"
                         helpText="The name of your website"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="Tagline" 
-                        field="tagline" 
+                        value={settings.tagline}
+                        onChange={(val) => handleChange('tagline', val)}
                         placeholder="Your site's tagline"
                         helpText="A short description or slogan"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -584,17 +615,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="Logo (Light Mode)" 
-                        field="logo_light_url" 
+                        value={settings.logo_light_url}
+                        onChange={(val) => handleChange('logo_light_url', val)}
                         helpText="Logo for light backgrounds"
                         showPreview
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <UrlField 
                         label="Logo (Dark Mode)" 
-                        field="logo_dark_url" 
+                        value={settings.logo_dark_url}
+                        onChange={(val) => handleChange('logo_dark_url', val)}
                         helpText="Logo for dark backgrounds"
                         showPreview
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -602,9 +637,11 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="Favicon URL" 
-                        field="favicon_url" 
+                        value={settings.favicon_url}
+                        onChange={(val) => handleChange('favicon_url', val)}
                         helpText="Browser tab icon (recommended: 32x32 PNG)"
                         showPreview
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -616,17 +653,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="Default Meta Title" 
-                        field="meta_title_default" 
+                        value={settings.meta_title_default}
+                        onChange={(val) => handleChange('meta_title_default', val)}
                         placeholder="My Website | Tagline"
                         helpText="Default title for pages without custom SEO"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <UrlField 
                         label="Social Image URL" 
-                        field="social_image_url" 
+                        value={settings.social_image_url}
+                        onChange={(val) => handleChange('social_image_url', val)}
                         helpText="Default image for social sharing (1200x630 recommended)"
                         showPreview
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -657,15 +698,19 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="Facebook" 
-                        field="social_facebook" 
+                        value={settings.social_facebook}
+                        onChange={(val) => handleChange('social_facebook', val)}
                         placeholder="https://facebook.com/yourpage"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <UrlField 
                         label="Twitter / X" 
-                        field="social_twitter" 
+                        value={settings.social_twitter}
+                        onChange={(val) => handleChange('social_twitter', val)}
                         placeholder="https://twitter.com/yourhandle"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -673,15 +718,19 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="Instagram" 
-                        field="social_instagram" 
+                        value={settings.social_instagram}
+                        onChange={(val) => handleChange('social_instagram', val)}
                         placeholder="https://instagram.com/yourhandle"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <UrlField 
                         label="LinkedIn" 
-                        field="social_linkedin" 
+                        value={settings.social_linkedin}
+                        onChange={(val) => handleChange('social_linkedin', val)}
                         placeholder="https://linkedin.com/company/yourcompany"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -689,8 +738,10 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="GitHub" 
-                        field="social_github" 
+                        value={settings.social_github}
+                        onChange={(val) => handleChange('social_github', val)}
                         placeholder="https://github.com/yourusername"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -703,9 +754,11 @@ const SystemSettingsPage = () => {
                     <Col md={8}>
                       <TextField 
                         label="Footer Copyright Text" 
-                        field="footer_copyright" 
+                        value={settings.footer_copyright}
+                        onChange={(val) => handleChange('footer_copyright', val)}
                         placeholder="© 2025 Your Company. All rights reserved."
                         helpText="Copyright text displayed in the footer"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -716,9 +769,11 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="About Title" 
-                        field="footer_about_title" 
+                        value={settings.footer_about_title}
+                        onChange={(val) => handleChange('footer_about_title', val)}
                         placeholder="About Us"
                         helpText="Heading for the about section in the footer"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
@@ -746,18 +801,22 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="Email" 
-                        field="contact_email" 
+                        value={settings.contact_email}
+                        onChange={(val) => handleChange('contact_email', val)}
                         placeholder="hello@company.com"
                         type="email"
                         helpText="Contact email (displayed in footer and contact page)"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="Phone" 
-                        field="contact_phone" 
+                        value={settings.contact_phone}
+                        onChange={(val) => handleChange('contact_phone', val)}
                         placeholder="+1 (555) 123-4567"
                         helpText="Contact phone number"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -765,17 +824,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="Address Line 1" 
-                        field="contact_address_line1" 
+                        value={settings.contact_address_line1}
+                        onChange={(val) => handleChange('contact_address_line1', val)}
                         placeholder="123 Main Street"
                         helpText="Street address"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="Address Line 2" 
-                        field="contact_address_line2" 
+                        value={settings.contact_address_line2}
+                        onChange={(val) => handleChange('contact_address_line2', val)}
                         placeholder="Suite 100"
                         helpText="Optional additional address line"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -783,15 +846,19 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="City" 
-                        field="contact_city" 
+                        value={settings.contact_city}
+                        onChange={(val) => handleChange('contact_city', val)}
                         placeholder="New York"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="Country" 
-                        field="contact_country" 
+                        value={settings.contact_country}
+                        onChange={(val) => handleChange('contact_country', val)}
                         placeholder="USA"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -802,17 +869,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <UrlField 
                         label="Map Embed URL" 
-                        field="contact_map_embed_url" 
+                        value={settings.contact_map_embed_url}
+                        onChange={(val) => handleChange('contact_map_embed_url', val)}
                         placeholder="https://www.google.com/maps/embed?pb=..."
                         helpText="Iframe embed URL for map display on Contact page"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <UrlField 
                         label="Map Link URL" 
-                        field="contact_map_link_url" 
+                        value={settings.contact_map_link_url}
+                        onChange={(val) => handleChange('contact_map_link_url', val)}
                         placeholder="https://maps.google.com/?q=..."
                         helpText="Fallback link if embed URL is not provided"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -942,17 +1013,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="CTA Heading" 
-                        field="cta_heading" 
+                        value={settings.cta_heading}
+                        onChange={(val) => handleChange('cta_heading', val)}
                         placeholder="Ready to get started?"
                         helpText="Main heading for the call-to-action section"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="CTA Subheading" 
-                        field="cta_subheading" 
+                        value={settings.cta_subheading}
+                        onChange={(val) => handleChange('cta_subheading', val)}
                         placeholder="Join thousands of satisfied customers"
                         helpText="Supporting text below the heading"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -960,17 +1035,22 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="CTA Button Text" 
-                        field="cta_button_text" 
+                        value={settings.cta_button_text}
+                        onChange={(val) => handleChange('cta_button_text', val)}
                         placeholder="Get Started"
                         helpText="Text displayed on the CTA button"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
-                      <UrlField 
+                      {/* Use TextField (type="text") for CTA Button Link to allow relative paths like "/contact" */}
+                      <TextField 
                         label="CTA Button Link" 
-                        field="cta_button_link" 
+                        value={settings.cta_button_link}
+                        onChange={(val) => handleChange('cta_button_link', val)}
                         placeholder="/contact"
-                        helpText="URL the button links to"
+                        helpText="URL the button links to (relative paths like /contact allowed)"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
@@ -999,17 +1079,21 @@ const SystemSettingsPage = () => {
                     <Col md={6}>
                       <TextField 
                         label="Newsletter Heading" 
-                        field="newsletter_heading" 
+                        value={settings.newsletter_heading}
+                        onChange={(val) => handleChange('newsletter_heading', val)}
                         placeholder="Subscribe to our newsletter"
                         helpText="Heading text for the newsletter section"
+                        disabled={!canEdit}
                       />
                     </Col>
                     <Col md={6}>
                       <TextField 
                         label="Email Placeholder" 
-                        field="newsletter_placeholder" 
+                        value={settings.newsletter_placeholder}
+                        onChange={(val) => handleChange('newsletter_placeholder', val)}
                         placeholder="Enter your email"
                         helpText="Placeholder text for the email input field"
+                        disabled={!canEdit}
                       />
                     </Col>
                   </Row>
