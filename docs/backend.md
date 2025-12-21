@@ -63,6 +63,50 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A13 — Site Settings Admin UI Expansion** | ✅ Complete (All 23 fields exposed in tabbed UI; General, Branding, SEO, Social Links, Footer, CTA, Newsletter tabs; no schema changes) |
 | **Phase A13 — Public Primary Color Fix** | ✅ Complete (Button styling fixed: transparent+border default, fill on hover; hardcoded #fd6219 replaced in 2 SCSS files; _branding.scss extended for CMS-driven theming) |
 | **Phase A14 — Footer Contact + About Fields** | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
+| **Phase A15 — Simple Footer Links v1** | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback) |
+
+### Phase A15 — Simple Footer Links v1
+
+**Implemented:** 2025-12-21  
+**Status:** ✅ Complete
+
+**Overview:**
+Added configurable footer links that allow admins to select and reorder pages from a fixed whitelist. No nested menus, no custom URLs.
+
+**New Database Column:**
+| Column | Type | Default | Purpose |
+|--------|------|---------|---------|
+| `footer_links` | JSONB | NULL | JSON array of selected footer link items |
+
+**Data Shape:**
+```json
+[
+  { "key": "home", "label": "Home", "href": "/" },
+  { "key": "about", "label": "About", "href": "/about" }
+]
+```
+
+**Available Pages (Fixed Whitelist):**
+- Home (`/`)
+- About (`/about`)
+- Services (`/service`)
+- Portfolio (`/portfolio`)
+- Blog (`/blog`)
+- FAQ (`/faq`)
+- Contact (`/contact`)
+
+**Files Modified:**
+| App | File | Change |
+|-----|------|--------|
+| Admin | `apps/admin/src/app/(admin)/system/settings/page.tsx` | Added FooterLinksEditor with checkbox + reorder UI |
+| Public | `apps/public/src/context/SiteSettingsContext.jsx` | Added `footer_links: null` default |
+| Public | `apps/public/src/components/Footer/index.jsx` | Dynamic footer links with fallback to Zivan defaults |
+
+**Fallback Behavior:**
+- If `footer_links` is NULL or empty → Show all 7 default Zivan links
+- If `footer_links` has items → Show only selected links in configured order
+
+**RLS:** Existing public read policy on `site_settings` covers new column (no changes needed).
 
 ### Phase A14 — Footer Contact + About Fields
 
