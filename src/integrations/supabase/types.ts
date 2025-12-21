@@ -641,6 +641,7 @@ export type Database = {
           footer_about_description: string | null
           footer_about_title: string | null
           footer_copyright: string | null
+          footer_links: Json | null
           id: string
           logo_dark_url: string | null
           logo_light_url: string | null
@@ -679,6 +680,7 @@ export type Database = {
           footer_about_description?: string | null
           footer_about_title?: string | null
           footer_copyright?: string | null
+          footer_links?: Json | null
           id?: string
           logo_dark_url?: string | null
           logo_light_url?: string | null
@@ -717,6 +719,7 @@ export type Database = {
           footer_about_description?: string | null
           footer_about_title?: string | null
           footer_copyright?: string | null
+          footer_links?: Json | null
           id?: string
           logo_dark_url?: string | null
           logo_light_url?: string | null

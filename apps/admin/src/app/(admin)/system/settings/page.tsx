@@ -10,6 +10,24 @@ import { useAuthContext } from '@/context/useAuthContext'
 // Default branding values
 const DEFAULT_PRIMARY_COLOR = '#7e67fe'
 
+// Footer link item interface
+interface FooterLinkItem {
+  key: string
+  label: string
+  href: string
+}
+
+// Available pages for footer links (fixed whitelist)
+const AVAILABLE_FOOTER_PAGES: FooterLinkItem[] = [
+  { key: 'home', label: 'Home', href: '/' },
+  { key: 'about', label: 'About', href: '/about' },
+  { key: 'services', label: 'Services', href: '/service' },
+  { key: 'portfolio', label: 'Portfolio', href: '/portfolio' },
+  { key: 'blog', label: 'Blog', href: '/blog' },
+  { key: 'faq', label: 'FAQ', href: '/faq' },
+  { key: 'contact', label: 'Contact', href: '/contact' },
+]
+
 // Settings interface matching site_settings table
 interface SiteSettings {
   id: string | null
@@ -41,6 +59,8 @@ interface SiteSettings {
   // Map
   contact_map_embed_url: string
   contact_map_link_url: string
+  // Footer Links
+  footer_links: FooterLinkItem[] | null
   // CTA
   cta_heading: string
   cta_subheading: string
@@ -78,6 +98,7 @@ const defaultSettings: SiteSettings = {
   contact_country: '',
   contact_map_embed_url: '',
   contact_map_link_url: '',
+  footer_links: null,
   cta_heading: '',
   cta_subheading: '',
   cta_button_text: '',
@@ -142,6 +163,7 @@ const SystemSettingsPage = () => {
             contact_country: data.contact_country || '',
             contact_map_embed_url: data.contact_map_embed_url || '',
             contact_map_link_url: data.contact_map_link_url || '',
+            footer_links: data.footer_links || null,
             cta_heading: data.cta_heading || '',
             cta_subheading: data.cta_subheading || '',
             cta_button_text: data.cta_button_text || '',
@@ -162,7 +184,7 @@ const SystemSettingsPage = () => {
   }, [])
 
   // Handle field change
-  const handleChange = (field: keyof SiteSettings, value: string | boolean) => {
+  const handleChange = (field: keyof SiteSettings, value: string | boolean | FooterLinkItem[] | null) => {
     setSettings(prev => ({ ...prev, [field]: value }))
   }
 
@@ -202,6 +224,7 @@ const SystemSettingsPage = () => {
         contact_country: settings.contact_country || null,
         contact_map_embed_url: settings.contact_map_embed_url || null,
         contact_map_link_url: settings.contact_map_link_url || null,
+        footer_links: settings.footer_links && settings.footer_links.length > 0 ? settings.footer_links : null,
         cta_heading: settings.cta_heading || null,
         cta_subheading: settings.cta_subheading || null,
         cta_button_text: settings.cta_button_text || null,
@@ -674,6 +697,124 @@ const SystemSettingsPage = () => {
                       />
                     </Col>
                   </Row>
+
+                  <hr className="my-4" />
+                  <h6 className="text-muted mb-3">Footer Links</h6>
+                  <p className="text-muted small mb-3">
+                    Select which pages appear in the footer "Links" column and drag to reorder.
+                  </p>
+                  
+                  {/* Footer Links Selection & Reorder */}
+                  <div className="border rounded p-3 bg-light">
+                    {(() => {
+                      // Get selected links or default to all available
+                      const selectedLinks = settings.footer_links || []
+                      const selectedKeys = new Set(selectedLinks.map(l => l.key))
+                      
+                      // Toggle link inclusion
+                      const toggleLink = (page: FooterLinkItem) => {
+                        if (!canEdit) return
+                        
+                        if (selectedKeys.has(page.key)) {
+                          // Remove from selection
+                          const newLinks = selectedLinks.filter(l => l.key !== page.key)
+                          handleChange('footer_links', newLinks.length > 0 ? newLinks : null)
+                        } else {
+                          // Add to selection (at end)
+                          const newLinks = [...selectedLinks, page]
+                          handleChange('footer_links', newLinks)
+                        }
+                      }
+                      
+                      // Move link up
+                      const moveUp = (index: number) => {
+                        if (!canEdit || index === 0) return
+                        const newLinks = [...selectedLinks]
+                        ;[newLinks[index - 1], newLinks[index]] = [newLinks[index], newLinks[index - 1]]
+                        handleChange('footer_links', newLinks)
+                      }
+                      
+                      // Move link down
+                      const moveDown = (index: number) => {
+                        if (!canEdit || index === selectedLinks.length - 1) return
+                        const newLinks = [...selectedLinks]
+                        ;[newLinks[index], newLinks[index + 1]] = [newLinks[index + 1], newLinks[index]]
+                        handleChange('footer_links', newLinks)
+                      }
+                      
+                      return (
+                        <>
+                          {/* Selected links with reorder controls */}
+                          {selectedLinks.length > 0 && (
+                            <div className="mb-3">
+                              <small className="text-muted d-block mb-2">Selected (in order):</small>
+                              {selectedLinks.map((link, index) => (
+                                <div 
+                                  key={link.key} 
+                                  className="d-flex align-items-center gap-2 mb-2 p-2 bg-white rounded border"
+                                >
+                                  <Form.Check
+                                    type="checkbox"
+                                    checked
+                                    onChange={() => toggleLink(link)}
+                                    disabled={!canEdit}
+                                  />
+                                  <span className="flex-grow-1">{link.label}</span>
+                                  <small className="text-muted">{link.href}</small>
+                                  <Button
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    onClick={() => moveUp(index)}
+                                    disabled={!canEdit || index === 0}
+                                    title="Move up"
+                                  >
+                                    ↑
+                                  </Button>
+                                  <Button
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    onClick={() => moveDown(index)}
+                                    disabled={!canEdit || index === selectedLinks.length - 1}
+                                    title="Move down"
+                                  >
+                                    ↓
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {/* Unselected pages */}
+                          {AVAILABLE_FOOTER_PAGES.filter(p => !selectedKeys.has(p.key)).length > 0 && (
+                            <div>
+                              <small className="text-muted d-block mb-2">Available pages:</small>
+                              {AVAILABLE_FOOTER_PAGES.filter(p => !selectedKeys.has(p.key)).map(page => (
+                                <div 
+                                  key={page.key} 
+                                  className="d-flex align-items-center gap-2 mb-2 p-2 bg-white rounded border opacity-75"
+                                >
+                                  <Form.Check
+                                    type="checkbox"
+                                    checked={false}
+                                    onChange={() => toggleLink(page)}
+                                    disabled={!canEdit}
+                                  />
+                                  <span className="flex-grow-1">{page.label}</span>
+                                  <small className="text-muted">{page.href}</small>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {selectedLinks.length === 0 && (
+                            <p className="text-muted small mb-0 mt-2">
+                              <em>No links selected. The footer will show default links (all pages).</em>
+                            </p>
+                          )}
+                        </>
+                      )
+                    })()}
+                  </div>
                 </Tab>
 
                 {/* CTA Tab */}

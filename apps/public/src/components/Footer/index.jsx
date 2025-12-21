@@ -1,11 +1,12 @@
 import { Icon } from '@iconify/react';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteSettingsContext } from '../../context/SiteSettingsContext';
 import { useServices } from '../../hooks/useContent';
 import { supabase } from '../../lib/supabase';
 
-const LinksMenuList = [
+// Default footer links (Zivan static list) - used as fallback
+const DEFAULT_FOOTER_LINKS = [
   { title: 'Home', href: '/' },
   { title: 'About', href: '/about' },
   { title: 'Services', href: '/service' },
@@ -43,6 +44,18 @@ export default function Footer() {
   const serviceMenuList = services && services.length > 0
     ? services.slice(0, 6).map(s => ({ title: s.title, href: `/service/${s.slug}` }))
     : fallbackServices;
+
+  // Dynamic footer links from settings with fallback to Zivan defaults
+  const footerLinks = useMemo(() => {
+    if (settings.footer_links && Array.isArray(settings.footer_links) && settings.footer_links.length > 0) {
+      // Map from settings format {key, label, href} to render format {title, href}
+      return settings.footer_links.map(link => ({
+        title: link.label,
+        href: link.href
+      }));
+    }
+    return DEFAULT_FOOTER_LINKS;
+  }, [settings.footer_links]);
 
   // Build social links from settings
   const socialBtnList = [
@@ -166,10 +179,11 @@ export default function Footer() {
               <div className="cs_footer_item">
                 <h2 className="cs_widget_title">Links</h2>
                 <ul className="cs_menu_widget cs_mp0">
-                  {LinksMenuList.map((item, index) => (
+                  {footerLinks.map((item, index) => (
                     <li key={index}>
                       <Link to={item.href}>{item.title}</Link>
                     </li>
+                  ))}
                   ))}
                 </ul>
               </div>

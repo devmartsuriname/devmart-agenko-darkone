@@ -27,6 +27,8 @@ const defaultSettings = {
   // Map
   contact_map_embed_url: null,
   contact_map_link_url: null,
+  // Footer Links
+  footer_links: null,
   // Social
   social_facebook: null,
   social_twitter: null,
