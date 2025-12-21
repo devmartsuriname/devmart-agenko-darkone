@@ -8,7 +8,7 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 
 ## Current Phase
 
-**Phase A14 — Footer Contact + About Fields (Complete)**
+**Phase A15.1 — Settings Save Integrity Audit (In Progress)**
 
 ### CRUD Pattern Authority Statement
 
@@ -63,7 +63,55 @@ This document describes the backend architecture for the Zivan-Darkone monorepo.
 | **Phase A13 — Site Settings Admin UI Expansion** | ✅ Complete (All 23 fields exposed in tabbed UI; General, Branding, SEO, Social Links, Footer, CTA, Newsletter tabs; no schema changes) |
 | **Phase A13 — Public Primary Color Fix** | ✅ Complete (Button styling fixed: transparent+border default, fill on hover; hardcoded #fd6219 replaced in 2 SCSS files; _branding.scss extended for CMS-driven theming) |
 | **Phase A14 — Footer Contact + About Fields** | ✅ Complete (10 new columns in site_settings; Admin Footer tab expanded; Public Footer + Contact Page wired) |
-| **Phase A15 — Simple Footer Links v1** | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback) |
+| **Phase A15** | Simple Footer Links v1 | ✅ Complete (JSONB column for footer links selection/reorder; Admin UI in Footer tab; Public Footer dynamic with fallback) |
+| **Phase A15.1** | Settings Save Integrity Audit | 🔄 In Progress (Instrumentation added to diagnose save failures) |
+
+### Phase A15.1 — Settings Save Integrity Audit
+
+**Started:** 2025-12-21  
+**Status:** 🔄 In Progress
+
+**Problem Statement:**
+User reports that Settings do not persist even after clicking "Save All Settings". Diagnosis required.
+
+**Instrumentation Added:**
+1. **Console logging** - Full save pipeline logging with `[SETTINGS_SAVE]` prefix:
+   - `SAVE_CLICKED` with timestamp
+   - User email, roles, permissions
+   - Payload keys and value lengths
+   - Supabase response (success/error, rows affected)
+   - Verification result (re-fetch comparison)
+
+2. **RLS Check** - If UPDATE returns 0 rows, surface explicit error about RLS blocking
+
+3. **Auth Debug Panel** - Visible at top of Settings page showing:
+   - Current user email
+   - Assigned roles
+   - isAdmin / isEditor / canEdit status
+   - Settings row ID
+
+4. **Save Status Row** - Below Save button showing:
+   - Last save timestamp
+   - Result (SUCCESS/ERROR)
+   - Verification status
+   - Error message (if any)
+
+**Diagnostic Questions:**
+- Is the user logged in as an admin?
+- Does the user's account have the `admin` role in `user_roles` table?
+- Is the Supabase UPDATE call actually executing?
+- Is RLS silently blocking the update (0 rows returned)?
+
+**Files Modified:**
+| File | Change |
+|------|--------|
+| `apps/admin/src/app/(admin)/system/settings/page.tsx` | Added save instrumentation, auth debug panel, save status row |
+
+**Hard Guards:**
+- ❌ No refactors
+- ❌ No SCSS changes
+- ❌ No schema changes
+- ❌ No Contact page styling changes
 
 ### Phase A15 — Simple Footer Links v1
 
